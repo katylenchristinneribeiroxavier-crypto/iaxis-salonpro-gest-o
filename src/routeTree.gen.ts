@@ -14,8 +14,10 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
+import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
+import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authenticated/area-revendedor'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
 import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
 import { Route as AuthenticatedConexaoWhatsappRouteImport } from './routes/_authenticated/conexao-whatsapp'
@@ -32,6 +34,7 @@ import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
 import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authenticated/servicos-precos'
 import { Route as AuthenticatedTicketsSuporteRouteImport } from './routes/_authenticated/tickets-suporte'
+import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_authenticated/tornar-se-revendedor'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
@@ -62,6 +65,11 @@ const ClienteRoute = ClienteRouteImport.update({
   path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SuporteRoute = SuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -71,6 +79,12 @@ const AuthenticatedAgendaDoDiaRoute =
   AuthenticatedAgendaDoDiaRouteImport.update({
     id: '/agenda-do-dia',
     path: '/agenda-do-dia',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAreaRevendedorRoute =
+  AuthenticatedAreaRevendedorRouteImport.update({
+    id: '/area-revendedor',
+    path: '/area-revendedor',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedChatEquipeRoute = AuthenticatedChatEquipeRouteImport.update({
@@ -165,6 +179,12 @@ const AuthenticatedTicketsSuporteRoute =
     path: '/tickets-suporte',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTornarSeRevendedorRoute =
+  AuthenticatedTornarSeRevendedorRouteImport.update({
+    id: '/tornar-se-revendedor',
+    path: '/tornar-se-revendedor',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedValidarRoute = AuthenticatedValidarRouteImport.update({
   id: '/validar',
   path: '/validar',
@@ -197,8 +217,10 @@ export interface FileRoutesByFullPath {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -215,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
+  '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -226,8 +249,10 @@ export interface FileRoutesByTo {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -243,6 +268,7 @@ export interface FileRoutesByTo {
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
+  '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -256,8 +282,10 @@ export interface FileRoutesById {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/_authenticated/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/_authenticated/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -274,6 +302,7 @@ export interface FileRoutesById {
   '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/_authenticated/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/_authenticated/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
+  '/_authenticated/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -287,8 +316,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/suporte'
     | '/admin'
     | '/agenda-do-dia'
+    | '/area-revendedor'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/conexao-whatsapp'
@@ -305,6 +336,7 @@ export interface FileRouteTypes {
     | '/salao'
     | '/servicos-precos'
     | '/tickets-suporte'
+    | '/tornar-se-revendedor'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -316,8 +348,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/suporte'
     | '/admin'
     | '/agenda-do-dia'
+    | '/area-revendedor'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/conexao-whatsapp'
@@ -333,6 +367,7 @@ export interface FileRouteTypes {
     | '/revendedor'
     | '/servicos-precos'
     | '/tickets-suporte'
+    | '/tornar-se-revendedor'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -345,8 +380,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/suporte'
     | '/_authenticated/admin'
     | '/_authenticated/agenda-do-dia'
+    | '/_authenticated/area-revendedor'
     | '/_authenticated/chat-equipe'
     | '/_authenticated/clientes-categorias'
     | '/_authenticated/conexao-whatsapp'
@@ -363,6 +400,7 @@ export interface FileRouteTypes {
     | '/_authenticated/salao'
     | '/_authenticated/servicos-precos'
     | '/_authenticated/tickets-suporte'
+    | '/_authenticated/tornar-se-revendedor'
     | '/_authenticated/validar'
     | '/r/$code'
     | '/_authenticated/revendedor/codigos'
@@ -376,6 +414,7 @@ export interface RootRouteChildren {
   AssinarRoute: typeof AssinarRoute
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
+  SuporteRoute: typeof SuporteRoute
   RCodeRoute: typeof RCodeRoute
 }
 
@@ -416,6 +455,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/suporte': {
+      id: '/suporte'
+      path: '/suporte'
+      fullPath: '/suporte'
+      preLoaderRoute: typeof SuporteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -428,6 +474,13 @@ declare module '@tanstack/react-router' {
       path: '/agenda-do-dia'
       fullPath: '/agenda-do-dia'
       preLoaderRoute: typeof AuthenticatedAgendaDoDiaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/area-revendedor': {
+      id: '/_authenticated/area-revendedor'
+      path: '/area-revendedor'
+      fullPath: '/area-revendedor'
+      preLoaderRoute: typeof AuthenticatedAreaRevendedorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/chat-equipe': {
@@ -542,6 +595,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTicketsSuporteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tornar-se-revendedor': {
+      id: '/_authenticated/tornar-se-revendedor'
+      path: '/tornar-se-revendedor'
+      fullPath: '/tornar-se-revendedor'
+      preLoaderRoute: typeof AuthenticatedTornarSeRevendedorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/validar': {
       id: '/_authenticated/validar'
       path: '/validar'
@@ -610,6 +670,7 @@ const AuthenticatedSalaoRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
+  AuthenticatedAreaRevendedorRoute: typeof AuthenticatedAreaRevendedorRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
   AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
   AuthenticatedConexaoWhatsappRoute: typeof AuthenticatedConexaoWhatsappRoute
@@ -626,12 +687,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
   AuthenticatedServicosPrecosRoute: typeof AuthenticatedServicosPrecosRoute
   AuthenticatedTicketsSuporteRoute: typeof AuthenticatedTicketsSuporteRoute
+  AuthenticatedTornarSeRevendedorRoute: typeof AuthenticatedTornarSeRevendedorRoute
   AuthenticatedValidarRoute: typeof AuthenticatedValidarRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
+  AuthenticatedAreaRevendedorRoute: AuthenticatedAreaRevendedorRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
   AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
   AuthenticatedConexaoWhatsappRoute: AuthenticatedConexaoWhatsappRoute,
@@ -650,6 +713,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,
   AuthenticatedServicosPrecosRoute: AuthenticatedServicosPrecosRoute,
   AuthenticatedTicketsSuporteRoute: AuthenticatedTicketsSuporteRoute,
+  AuthenticatedTornarSeRevendedorRoute: AuthenticatedTornarSeRevendedorRoute,
   AuthenticatedValidarRoute: AuthenticatedValidarRoute,
 }
 
@@ -662,6 +726,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssinarRoute: AssinarRoute,
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
+  SuporteRoute: SuporteRoute,
   RCodeRoute: RCodeRoute,
 }
 export const routeTree = rootRouteImport
