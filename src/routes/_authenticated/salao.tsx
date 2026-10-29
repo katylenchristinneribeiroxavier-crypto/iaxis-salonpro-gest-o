@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/salao")({
         role="Dono do Salão"
         nav={[
           { to: "/salao", label: "Início" },
+          { to: "/validar", label: "Código do revendedor" },
           ...salaoFolders.map((f) => ({ to: "/salao/$pasta", label: f.title, params: { pasta: f.slug } })),
         ]}
       >

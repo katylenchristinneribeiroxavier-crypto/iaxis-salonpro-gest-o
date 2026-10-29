@@ -38,7 +38,7 @@ function Rev() {
   const link = `${typeof window !== "undefined" ? window.location.origin : ""}/r/${data.reseller.code}`;
 
   return (
-    <Shell role="Sócio Revendedor" nav={[{ to: "/revendedor", label: "Meu Painel" }]}>
+    <Shell role="Sócio Revendedor" nav={[{ to: "/revendedor", label: "Meu Painel" }, { to: "/revendedor/codigos", label: "Códigos de venda" }]}>
       <PageTitle title="Meu painel de revenda" sub={`Você ganha ${pct}% recorrente de cada salão ativo`} />
       <div className="rounded-xl border bg-card p-5">
         <p className="text-xs uppercase tracking-wider text-muted-foreground">Seu link de afiliado</p>

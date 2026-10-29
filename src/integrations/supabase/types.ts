@@ -203,6 +203,50 @@ export type Database = {
         }
         Relationships: []
       }
+      sale_codes: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          note: string | null
+          reseller_id: string
+          salon_id: string | null
+          used_at: string | null
+          used_by: string | null
+          used_by_name: string | null
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          reseller_id: string
+          salon_id?: string | null
+          used_at?: string | null
+          used_by?: string | null
+          used_by_name?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          reseller_id?: string
+          salon_id?: string | null
+          used_at?: string | null
+          used_by?: string | null
+          used_by_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sale_codes_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       salons: {
         Row: {
           brand_color: string
@@ -364,6 +408,7 @@ export type Database = {
         Returns: boolean
       }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
+      redeem_sale_code: { Args: { _code: string }; Returns: string }
     }
     Enums: {
       app_role: "super_admin" | "revendedor" | "dono_salao" | "cliente"
