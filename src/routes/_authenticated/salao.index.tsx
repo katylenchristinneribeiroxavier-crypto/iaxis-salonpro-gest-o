@@ -3,7 +3,7 @@ import * as Icons from "lucide-react";
 import { PageTitle, Stat, StatusBadge } from "@/components/Shell";
 import { agendaHoje, salaoFolders } from "@/lib/modules";
 
-export const Route = createFileRoute("/salao/")({
+export const Route = createFileRoute("/_authenticated/salao/")({
   head: () => ({ meta: [
     { title: "Painel do Salão — IAxis SalonPRO" },
     { name: "description", content: "Agenda do dia, faturamento e todas as pastas de gestão do salão." },

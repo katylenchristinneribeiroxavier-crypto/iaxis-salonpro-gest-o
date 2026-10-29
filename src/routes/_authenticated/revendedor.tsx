@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageTitle, Shell, Stat, StatusBadge } from "@/components/Shell";
 import { saloes } from "@/lib/modules";
 
-export const Route = createFileRoute("/revendedor")({
+export const Route = createFileRoute("/_authenticated/revendedor")({
   head: () => ({ meta: [
     { title: "Painel do Revendedor — IAxis SalonPRO" },
     { name: "description", content: "Link de afiliado, salões vendidos e repasse mensal." },

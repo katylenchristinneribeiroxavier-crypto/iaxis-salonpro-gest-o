@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PageTitle, Shell, Stat, StatusBadge } from "@/components/Shell";
 import { planos, saloes as inicial } from "@/lib/modules";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [
     { title: "Painel Master — IAxis SalonPRO" },
     { name: "description", content: "Super Admin: salões, planos, revendedores, MRR e churn." },
