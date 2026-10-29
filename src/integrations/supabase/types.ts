@@ -80,6 +80,7 @@ export type Database = {
       }
       plans: {
         Row: {
+          annual_monthly_price: number
           id: string
           name: string
           online_fee_pct: number
@@ -87,6 +88,7 @@ export type Database = {
           sort: number
         }
         Insert: {
+          annual_monthly_price?: number
           id?: string
           name: string
           online_fee_pct?: number
@@ -94,11 +96,36 @@ export type Database = {
           sort?: number
         }
         Update: {
+          annual_monthly_price?: number
           id?: string
           name?: string
           online_fee_pct?: number
           price?: number
           sort?: number
+        }
+        Relationships: []
+      }
+      platform_settings: {
+        Row: {
+          id: number
+          pix_bank: string
+          pix_cnpj: string
+          pix_holder: string
+          pix_key: string
+        }
+        Insert: {
+          id?: number
+          pix_bank?: string
+          pix_cnpj?: string
+          pix_holder?: string
+          pix_key?: string
+        }
+        Update: {
+          id?: number
+          pix_bank?: string
+          pix_cnpj?: string
+          pix_holder?: string
+          pix_key?: string
         }
         Relationships: []
       }
@@ -251,6 +278,53 @@ export type Database = {
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscription_requests: {
+        Row: {
+          amount: number
+          billing: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          plan_id: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          billing?: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          plan_id?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          billing?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          plan_id?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_requests_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
             referencedColumns: ["id"]
           },
         ]
