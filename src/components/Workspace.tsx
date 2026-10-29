@@ -1,0 +1,22 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
+import { salonContextOptions } from '@/lib/salon-data';
+import { Shell } from './Shell';
+export const workspaceNav = [
+  { to: '/agenda-do-dia', label: 'Agenda do dia' }, { to: '/chat-equipe', label: 'Chat da equipe' },
+  { to: '/minhas-comissoes', label: 'Minhas comissões' },
+  { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
+  { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
+  { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' },
+  { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
+  { to: '/conexao-whatsapp', label: 'WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
+  { to: '/suporte', label: 'Suporte técnico' }, { to: '/salao', label: 'Todas as pastas' },
+];
+export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {
+  const { data } = useSuspenseQuery(salonContextOptions);
+  const nav = data.manager ? workspaceNav : workspaceNav.slice(0, 3).concat({ to: '/suporte', label: 'Suporte técnico' });
+  return <Shell role={data.salon?.name || 'Meu salão'} nav={nav}>
+    {!data.salon ? <div><h1 className="text-3xl">Nenhum salão vinculado</h1><Link to="/auth" className="text-gold">Acessar outra conta</Link></div> : manager && !data.manager ? <h1 className="text-3xl">Acesso restrito à administração do salão</h1> : children}
+  </Shell>;
+}
