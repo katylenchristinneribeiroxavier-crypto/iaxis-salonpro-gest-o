@@ -57,6 +57,13 @@
       "when": 1793314311975,
       "tag": "0007_master_access_audit",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793314437298,
+      "tag": "0008_enforce_salon_access_helpers",
+      "breakpoints": true
     }
   ]
 }
