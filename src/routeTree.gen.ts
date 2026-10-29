@@ -36,6 +36,8 @@ import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authe
 import { Route as AuthenticatedTicketsSuporteRouteImport } from './routes/_authenticated/tickets-suporte'
 import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_authenticated/tornar-se-revendedor'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
+import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
+import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
@@ -190,6 +192,16 @@ const AuthenticatedValidarRoute = AuthenticatedValidarRouteImport.update({
   path: '/validar',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiResellerAiLeadRoute = ApiResellerAiLeadRouteImport.update({
+  id: '/api/reseller-ai-lead',
+  path: '/api/reseller-ai-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiResellerAiPlanRoute = ApiResellerAiPlanRouteImport.update({
+  id: '/api/reseller-ai-plan',
+  path: '/api/reseller-ai-plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RCodeRoute = RCodeRouteImport.update({
   id: '/r/$code',
   path: '/r/$code',
@@ -239,6 +251,8 @@ export interface FileRoutesByFullPath {
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -270,6 +284,8 @@ export interface FileRoutesByTo {
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -304,6 +320,8 @@ export interface FileRoutesById {
   '/_authenticated/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/_authenticated/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -338,6 +356,8 @@ export interface FileRouteTypes {
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/revendedor/codigos'
     | '/salao/$pasta'
@@ -369,6 +389,8 @@ export interface FileRouteTypes {
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/revendedor/codigos'
     | '/salao/$pasta'
@@ -402,6 +424,8 @@ export interface FileRouteTypes {
     | '/_authenticated/tickets-suporte'
     | '/_authenticated/tornar-se-revendedor'
     | '/_authenticated/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
@@ -415,6 +439,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
   SuporteRoute: typeof SuporteRoute
+  ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
+  ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
   RCodeRoute: typeof RCodeRoute
 }
 
@@ -609,6 +635,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedValidarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/reseller-ai-lead': {
+      id: '/api/reseller-ai-lead'
+      path: '/api/reseller-ai-lead'
+      fullPath: '/api/reseller-ai-lead'
+      preLoaderRoute: typeof ApiResellerAiLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/reseller-ai-plan': {
+      id: '/api/reseller-ai-plan'
+      path: '/api/reseller-ai-plan'
+      fullPath: '/api/reseller-ai-plan'
+      preLoaderRoute: typeof ApiResellerAiPlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/r/$code': {
       id: '/r/$code'
       path: '/r/$code'
@@ -727,6 +767,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
   SuporteRoute: SuporteRoute,
+  ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
+  ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
   RCodeRoute: RCodeRoute,
 }
 export const routeTree = rootRouteImport
