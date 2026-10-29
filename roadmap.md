@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Analisar e implementar os documentos novos de acesso master e controle total de acesso
 - [ ] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
 - [ ] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
 - [ ] Qualificar novos leads com Lovable AI conforme cliente ideal, resumo e prioridade para ligação
