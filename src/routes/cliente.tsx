@@ -7,7 +7,7 @@ import { Brand, StatusBadge, btnGold } from "@/components/Shell";
 import { brl, useMe, useSignOut } from "@/lib/auth";
 
 export const Route = createFileRoute("/cliente")({
-  validateSearch: (s: Record<string, unknown>): { s?: string } => ({ s: typeof s["s"] === "string" ? s["s"] : undefined }),
+  validateSearch: (s: Record<string, unknown>): { s?: string | undefined } => ({ s: typeof s["s"] === "string" ? s["s"] : undefined }),
   head: () => ({ meta: [
     { title: "Agende seu horário — IAxis SalonPRO" },
     { name: "description", content: "Escolha salão, serviço, profissional e horário e pague o sinal online." },
