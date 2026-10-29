@@ -16,7 +16,7 @@ const preco: Record<string, number> = { Básico: 97, Pro: 197, Premium: 297 };
 
 function Rev() {
   const meus = saloes.filter((s) => s.revendedor === "João Salvador");
-  const total = meus.reduce((a, s) => a + preco[s.plano] * 0.3, 0);
+  const total = meus.reduce((a, s) => a + (preco[s.plano] ?? 0) * 0.3, 0);
   return (
     <Shell role="Sócio Revendedor" nav={[{ to: "/revendedor", label: "Meu Painel" }, { to: "/", label: "Sair" }]}>
       <PageTitle title="Olá, João" sub="Acompanhe seus salões e repasses" />
@@ -37,7 +37,7 @@ function Rev() {
         {meus.map((s) => (
           <div key={s.nome} className="flex items-center justify-between rounded-xl border bg-card p-5">
             <div><p className="font-semibold">{s.nome}</p><p className="text-sm text-muted-foreground">{s.cidade} · {s.plano}</p></div>
-            <div className="text-right"><StatusBadge s={s.status} /><p className="mt-1 text-sm text-gold">R$ {(preco[s.plano] * 0.3).toFixed(2).replace(".", ",")}/mês</p></div>
+            <div className="text-right"><StatusBadge s={s.status} /><p className="mt-1 text-sm text-gold">R$ {((preco[s.plano] ?? 0) * 0.3).toFixed(2).replace(".", ",")}/mês</p></div>
           </div>
         ))}
       </div>
