@@ -22,7 +22,7 @@ export function SalonRecords({ table, brandId }: { table: Table; brandId?: strin
   const spec = recordSpecs[table];
   const { data: rows = [], error } = useQuery({ queryKey: ['records', table, ctx.salon?.id, brandId], enabled: !!ctx.salon, queryFn: async () => {
     if (!ctx.salon) return []; let query = supabase.from(table).select('*').eq('salon_id', ctx.salon.id).order('name');
-    if (table === 'supplier_products' && brandId) query = query.eq('brand_id', brandId);
+    if (table === 'supplier_products' && brandId) { const r = await supabase.from('supplier_products').select('*').eq('salon_id', ctx.salon.id).eq('brand_id', brandId).order('name'); if (r.error) throw r.error; return r.data as unknown as Record<string, unknown>[]; }
     const r = await query; if (r.error) throw r.error; return r.data as unknown as Record<string, unknown>[];
   } });
   const { data: professions = [] } = useQuery({ queryKey: ['professions-select', ctx.salon?.id], enabled: table === 'professionals' && !!ctx.salon, queryFn: async () => { if (!ctx.salon) return []; const r = await supabase.from('professions').select('*').eq('salon_id',ctx.salon.id); return r.data ?? []; } });
@@ -33,7 +33,7 @@ export function SalonRecords({ table, brandId }: { table: Table; brandId?: strin
     if (table === 'supplier_products') patch['brand_id'] = brandId;
     if (table === 'salon_clients') patch['consent'] = form['consent'] === 'true';
     const r = editing ? await supabase.from(table).update(patch as never).eq('id', editing).eq('salon_id',ctx.salon.id) : await supabase.from(table).insert(patch as never);
-    setBusy(false); if (r.error) return toast.error(r.error.message); setForm({}); setEditing(undefined); await qc.invalidateQueries({ queryKey: ['records'] }); toast.success('Cadastro salvo');
+    setBusy(false); if (r.error) return void toast.error(r.error.message); setForm({}); setEditing(undefined); await qc.invalidateQueries({ queryKey: ['records'] }); toast.success('Cadastro salvo');
   };
   const remove = async (id: string) => { if (!ctx.salon || !confirm('Excluir este cadastro?')) return; const r = await supabase.from(table).delete().eq('id',id).eq('salon_id',ctx.salon.id); if (r.error) toast.error('Este cadastro tem vínculos e não pode ser excluído.'); else qc.invalidateQueries({ queryKey: ['records'] }); };
   return <><PageTitle title={spec.title} /><form onSubmit={submit} className="grid max-w-4xl gap-4 border-b pb-6 sm:grid-cols-2">
