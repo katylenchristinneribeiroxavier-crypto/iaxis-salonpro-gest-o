@@ -221,6 +221,67 @@ export type Database = {
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "queue_appointment_tenant"
+            columns: ["salon_id", "appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["salon_id", "id"]
+          },
+          {
+            foreignKeyName: "queue_client_tenant"
+            columns: ["salon_id", "client_id"]
+            isOneToOne: false
+            referencedRelation: "salon_clients"
+            referencedColumns: ["salon_id", "id"]
+          },
+        ]
+      }
+      lead_conversations: {
+        Row: {
+          channel: string
+          contact: string
+          handoff: boolean
+          handoff_reason: string
+          id: string
+          messages: Json
+          paused_reason: string
+          salon_id: string
+          token_hash: string
+          updated_at: string
+        }
+        Insert: {
+          channel?: string
+          contact?: string
+          handoff?: boolean
+          handoff_reason?: string
+          id?: string
+          messages?: Json
+          paused_reason?: string
+          salon_id: string
+          token_hash: string
+          updated_at?: string
+        }
+        Update: {
+          channel?: string
+          contact?: string
+          handoff?: boolean
+          handoff_reason?: string
+          id?: string
+          messages?: Json
+          paused_reason?: string
+          salon_id?: string
+          token_hash?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_conversations_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
         ]
       }
       memoria_ia: {
@@ -373,6 +434,13 @@ export type Database = {
           salon_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "professional_profession_tenant"
+            columns: ["salon_id", "profession_id"]
+            isOneToOne: false
+            referencedRelation: "professions"
+            referencedColumns: ["salon_id", "id"]
+          },
           {
             foreignKeyName: "professionals_profession_id_fkey"
             columns: ["profession_id"]
@@ -700,6 +768,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "member_professional_tenant"
+            columns: ["salon_id", "professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["salon_id", "id"]
+          },
+          {
             foreignKeyName: "salon_members_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
@@ -909,6 +984,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "order_brand_tenant"
+            columns: ["salon_id", "brand_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_brands"
+            referencedColumns: ["salon_id", "id"]
+          },
+          {
             foreignKeyName: "supplier_orders_brand_id_fkey"
             columns: ["brand_id"]
             isOneToOne: false
@@ -944,6 +1026,13 @@ export type Database = {
           salon_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "product_brand_tenant"
+            columns: ["salon_id", "brand_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_brands"
+            referencedColumns: ["salon_id", "id"]
+          },
           {
             foreignKeyName: "supplier_products_brand_id_fkey"
             columns: ["brand_id"]
@@ -1060,6 +1149,90 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_outbound: {
+        Row: {
+          body: string
+          conversation_id: string | null
+          created_at: string
+          error: string
+          id: string
+          inbound_message_id: string | null
+          provider_message_id: string | null
+          recipient: string
+          salon_id: string
+          status: string
+        }
+        Insert: {
+          body: string
+          conversation_id?: string | null
+          created_at?: string
+          error?: string
+          id?: string
+          inbound_message_id?: string | null
+          provider_message_id?: string | null
+          recipient: string
+          salon_id: string
+          status?: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string | null
+          created_at?: string
+          error?: string
+          id?: string
+          inbound_message_id?: string | null
+          provider_message_id?: string | null
+          recipient?: string
+          salon_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_outbound_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "lead_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_outbound_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_webhook_events: {
+        Row: {
+          delivery_id: string
+          event: string
+          id: string
+          payload: Json
+          processed_at: string | null
+          processing_error: string
+          received_at: string
+        }
+        Insert: {
+          delivery_id: string
+          event: string
+          id?: string
+          payload: Json
+          processed_at?: string | null
+          processing_error?: string
+          received_at?: string
+        }
+        Update: {
+          delivery_id?: string
+          event?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          processing_error?: string
+          received_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -1080,6 +1253,26 @@ export type Database = {
       }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
+      public_salon_identity: {
+        Args: { _salon: string }
+        Returns: {
+          brand_color: string
+          genero: string
+          id: string
+          logo_url: string
+          name: string
+          name_article: string
+          nome_agente: string
+        }[]
+      }
+      public_support_contact: {
+        Args: never
+        Returns: {
+          email_master: string
+          nome_suporte: string
+          whatsapp_master: string
+        }[]
+      }
       redeem_sale_code: { Args: { _code: string }; Returns: string }
       save_salon_identity: {
         Args: {

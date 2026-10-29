@@ -48,7 +48,7 @@ function Admin() {
   };
 
   return (
-    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" }, { to: "/salao", label: "Ver painel do salão" }]}>
+    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" }, { to: "/salao", label: "Ver painel do salão" },{to:'/configuracao-suporte',label:'Configurar suporte'},{to:'/tickets-suporte',label:'Tickets de suporte'},{to:'/gestao-revendedores',label:'Gestão de revendas'}]}>
       <PageTitle title="Painel Master" sub="Visão geral de toda a plataforma" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="MRR" value={brl(mrr)} />

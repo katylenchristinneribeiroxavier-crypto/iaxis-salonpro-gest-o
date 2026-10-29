@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Crown, LogOut } from "lucide-react";
+import { Crown, LogOut, Headset } from "lucide-react";
+import { Button } from './ui/button';
 import { useSignOut } from "@/lib/auth";
 
 export type NavItem = { to: string; label: string; params?: Record<string, string> };
@@ -22,7 +23,7 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
   const signOut = useSignOut();
   return (
     <div className="min-h-screen md:flex">
-      <aside className="border-b bg-sidebar p-5 md:min-h-screen md:w-64 md:border-b-0 md:border-r">
+      <aside className="border-b bg-sidebar p-5 md:min-h-screen md:w-64 md:shrink-0 md:border-b-0 md:border-r">
         <Brand />
         <p className="mt-3 text-xs uppercase tracking-widest text-gold">{role}</p>
         <nav className="mt-6 flex gap-1 overflow-x-auto md:flex-col">
@@ -38,12 +39,13 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
               {n.label}
             </Link>
           ))}
-          <button onClick={signOut} className="flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-left text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent">
+          <Button variant="ghost" onClick={signOut} className="justify-start text-sidebar-foreground/80">
             <LogOut className="h-4 w-4" /> Sair
-          </button>
+          </Button>
         </nav>
       </aside>
-      <main className="flex-1 bg-gradient-navy p-6 md:p-10">{children}</main>
+      <main className="min-w-0 flex-1 bg-gradient-navy p-6 pb-24 md:p-10">{children}</main>
+      <Button asChild className="fixed right-5 bottom-5 shadow-gold"><Link to="/suporte"><Headset/>Suporte técnico</Link></Button>
     </div>
   );
 }

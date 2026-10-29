@@ -7,6 +7,7 @@
 - [ ] Agendamento público, secretária com IA e mensagens programadas
 - [ ] Suporte técnico master, tickets e encaminhamento
 - [ ] Revendedores, vendas confirmadas, comissão e notificações
+- [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona
 - [ ] Verificar regras, isolamento entre salões e fluxos completos com contas reais
 - [x] 4 painéis (Admin, Revendedor, Salão, Cliente) com login e dados reais
 - [x] Novos preços mensais/anuais dos planos

@@ -25,7 +25,8 @@ function Painel() {
     queryKey: ["salao"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      const { data: salon } = await supabase.from("salons").select("*").eq("owner_id", user!.id).maybeSingle();
+      if (!user) return null;
+      const { data: salon } = await supabase.from("salons").select("*").eq("owner_id", user.id).maybeSingle();
       if (!salon) return null;
       const start = new Date(); start.setHours(0, 0, 0, 0);
       const end = new Date(start); end.setDate(end.getDate() + 1);
@@ -43,8 +44,7 @@ function Painel() {
   const validos = appts.filter((a) => a.status !== "cancelado");
   const fat = appts.filter((a) => a.status === "finalizado").reduce((s, a) => s + Number(a.price), 0);
   const com = appts.filter((a) => a.status === "finalizado").reduce((s, a) => {
-    const p = pros.find((x) => x.id === a.professional_id);
-    return s + Number(a.price) * Number(p?.commission_pct ?? 0) / 100;
+    return s + Number(a.commission_amount ?? 0);
   }, 0);
   const link = `${window.location.origin}/cliente?s=${salon.slug}`;
 

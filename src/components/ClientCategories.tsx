@@ -1,0 +1,14 @@
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { salonContextOptions } from '@/lib/salon-data';
+import { clientCategory } from '@/lib/salon-rules';
+import { supabase } from '@/integrations/supabase/client';
+import { SalonRecords } from './SalonRecords';
+import { Stat } from './Shell';
+import { Button } from './ui/button';
+const categories=[['assidua','Assíduas'],['pouco_frequente','Indo pouco'],['afastada','Afastadas'],['vip','VIP'],['sem_visita','Sem visita']] as const;
+export function ClientCategories(){const{data:ctx}=useSuspenseQuery(salonContextOptions);const[category,setCategory]=useState('assidua');const{data:rows=[]}=useQuery({queryKey:['records','salon_clients',ctx.salon?.id],enabled:!!ctx.salon,queryFn:async()=>{if(!ctx.salon)return[];const r=await supabase.from('salon_clients').select('*').eq('salon_id',ctx.salon.id).order('name');if(r.error)throw r.error;return r.data;}});
+const enriched=rows.map(c=>{const days=c.last_visit?Math.max(0,Math.floor((Date.now()-new Date(c.last_visit).getTime())/86400000)):null;return{...c,days,category:clientCategory(days,c.total_visits)};});const chart=categories.map(([key,label])=>({name:label,value:enriched.filter(c=>c.category===key).length}));
+return <><SalonRecords table="salon_clients"/><section className="mt-10"><div className="grid gap-4 sm:grid-cols-3">{chart.slice(0,3).map(c=><Stat key={c.name} label={c.name} value={String(c.value)}/>)}</div><div className="mt-6 flex flex-wrap gap-2">{categories.map(([key,label])=><Button key={key} variant={key===category?'default':'outline'} onClick={()=>setCategory(key)}>{label}</Button>)}</div><div className="mt-6 grid gap-6 lg:grid-cols-[1fr_260px]"><div>{enriched.filter(c=>c.category===category).map(c=><article key={c.id} className="flex flex-wrap items-center justify-between gap-3 border-b py-4"><div><h3 className="text-xl">{c.name}</h3><p className="text-sm text-muted-foreground">{c.whatsapp} · {c.days===null?'Ainda não veio':`Sem vir há ${c.days} dias`} · {c.total_visits} visitas</p></div><Button variant="outline" disabled={!c.whatsapp} onClick={()=>window.open(`https://wa.me/${c.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Olá ${c.name}! Aqui é do ${ctx.salon?.name??''}.`)}`,'_blank','noopener,noreferrer')}>WhatsApp</Button></article>)}</div><div className="h-64"><ResponsiveContainer><PieChart><Pie data={chart} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90}>{chart.map((c,i)=><Cell key={c.name} fill={`var(--chart-${i+1})`}/>)}</Pie><Tooltip/></PieChart></ResponsiveContainer></div></div></section></>;
+}
