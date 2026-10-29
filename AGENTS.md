@@ -13,3 +13,4 @@
 - Protect salon modules with database-scoped salon_members and manages_salon; UI gates never grant privileges.
 - Share deterministic salon rules in salon-rules.ts and persist commission snapshots in a transactional appointment trigger.
 - App-internal privileged work uses TanStack server functions; external callbacks use verified /api/public endpoints.
+- Reseller AI uses authenticated streaming server routes with request-local gateway helpers; qualification runs once during lead submission, never on page views, and preserves commission snapshots.
