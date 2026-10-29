@@ -22,6 +22,13 @@
       "when": 1793282067626,
       "tag": "0002_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793311770094,
+      "tag": "0003_salon_modules_dynamic_identity",
+      "breakpoints": true
     }
   ]
 }
