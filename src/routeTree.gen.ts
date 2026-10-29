@@ -15,8 +15,19 @@ import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
+import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
+import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
+import { Route as AuthenticatedConfiguracaoLojaRouteImport } from './routes/_authenticated/configuracao-loja'
+import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/_authenticated/configurar-secretaria'
+import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
+import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
+import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
+import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
+import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
 import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
+import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authenticated/servicos-precos'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
@@ -52,6 +63,64 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAgendaDoDiaRoute =
+  AuthenticatedAgendaDoDiaRouteImport.update({
+    id: '/agenda-do-dia',
+    path: '/agenda-do-dia',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedChatEquipeRoute = AuthenticatedChatEquipeRouteImport.update({
+  id: '/chat-equipe',
+  path: '/chat-equipe',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedClientesCategoriasRoute =
+  AuthenticatedClientesCategoriasRouteImport.update({
+    id: '/clientes-categorias',
+    path: '/clientes-categorias',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedConfiguracaoLojaRoute =
+  AuthenticatedConfiguracaoLojaRouteImport.update({
+    id: '/configuracao-loja',
+    path: '/configuracao-loja',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedConfigurarSecretariaRoute =
+  AuthenticatedConfigurarSecretariaRouteImport.update({
+    id: '/configurar-secretaria',
+    path: '/configurar-secretaria',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceiroComissoesRoute =
+  AuthenticatedFinanceiroComissoesRouteImport.update({
+    id: '/financeiro-comissoes',
+    path: '/financeiro-comissoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFornecedoresParceirosRoute =
+  AuthenticatedFornecedoresParceirosRouteImport.update({
+    id: '/fornecedores-parceiros',
+    path: '/fornecedores-parceiros',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFuncionariosRoute =
+  AuthenticatedFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMinhasComissoesRoute =
+  AuthenticatedMinhasComissoesRouteImport.update({
+    id: '/minhas-comissoes',
+    path: '/minhas-comissoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProfissoesRoute = AuthenticatedProfissoesRouteImport.update({
+  id: '/profissoes',
+  path: '/profissoes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRevendedorRoute = AuthenticatedRevendedorRouteImport.update({
   id: '/revendedor',
   path: '/revendedor',
@@ -62,6 +131,12 @@ const AuthenticatedSalaoRoute = AuthenticatedSalaoRouteImport.update({
   path: '/salao',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedServicosPrecosRoute =
+  AuthenticatedServicosPrecosRouteImport.update({
+    id: '/servicos-precos',
+    path: '/servicos-precos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedValidarRoute = AuthenticatedValidarRouteImport.update({
   id: '/validar',
   path: '/validar',
@@ -95,8 +170,19 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/chat-equipe': typeof AuthenticatedChatEquipeRoute
+  '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
+  '/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/salao': typeof AuthenticatedSalaoRouteWithChildren
+  '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -109,7 +195,18 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/chat-equipe': typeof AuthenticatedChatEquipeRoute
+  '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
+  '/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
+  '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -124,8 +221,19 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
+  '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/_authenticated/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/_authenticated/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
+  '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
+  '/_authenticated/servicos-precos': typeof AuthenticatedServicosPrecosRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -140,8 +248,19 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/admin'
+    | '/agenda-do-dia'
+    | '/chat-equipe'
+    | '/clientes-categorias'
+    | '/configuracao-loja'
+    | '/configurar-secretaria'
+    | '/financeiro-comissoes'
+    | '/fornecedores-parceiros'
+    | '/funcionarios'
+    | '/minhas-comissoes'
+    | '/profissoes'
     | '/revendedor'
     | '/salao'
+    | '/servicos-precos'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -154,7 +273,18 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/admin'
+    | '/agenda-do-dia'
+    | '/chat-equipe'
+    | '/clientes-categorias'
+    | '/configuracao-loja'
+    | '/configurar-secretaria'
+    | '/financeiro-comissoes'
+    | '/fornecedores-parceiros'
+    | '/funcionarios'
+    | '/minhas-comissoes'
+    | '/profissoes'
     | '/revendedor'
+    | '/servicos-precos'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -168,8 +298,19 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/_authenticated/admin'
+    | '/_authenticated/agenda-do-dia'
+    | '/_authenticated/chat-equipe'
+    | '/_authenticated/clientes-categorias'
+    | '/_authenticated/configuracao-loja'
+    | '/_authenticated/configurar-secretaria'
+    | '/_authenticated/financeiro-comissoes'
+    | '/_authenticated/fornecedores-parceiros'
+    | '/_authenticated/funcionarios'
+    | '/_authenticated/minhas-comissoes'
+    | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
     | '/_authenticated/salao'
+    | '/_authenticated/servicos-precos'
     | '/_authenticated/validar'
     | '/r/$code'
     | '/_authenticated/revendedor/codigos'
@@ -230,6 +371,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/agenda-do-dia': {
+      id: '/_authenticated/agenda-do-dia'
+      path: '/agenda-do-dia'
+      fullPath: '/agenda-do-dia'
+      preLoaderRoute: typeof AuthenticatedAgendaDoDiaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/chat-equipe': {
+      id: '/_authenticated/chat-equipe'
+      path: '/chat-equipe'
+      fullPath: '/chat-equipe'
+      preLoaderRoute: typeof AuthenticatedChatEquipeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes-categorias': {
+      id: '/_authenticated/clientes-categorias'
+      path: '/clientes-categorias'
+      fullPath: '/clientes-categorias'
+      preLoaderRoute: typeof AuthenticatedClientesCategoriasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracao-loja': {
+      id: '/_authenticated/configuracao-loja'
+      path: '/configuracao-loja'
+      fullPath: '/configuracao-loja'
+      preLoaderRoute: typeof AuthenticatedConfiguracaoLojaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configurar-secretaria': {
+      id: '/_authenticated/configurar-secretaria'
+      path: '/configurar-secretaria'
+      fullPath: '/configurar-secretaria'
+      preLoaderRoute: typeof AuthenticatedConfigurarSecretariaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/financeiro-comissoes': {
+      id: '/_authenticated/financeiro-comissoes'
+      path: '/financeiro-comissoes'
+      fullPath: '/financeiro-comissoes'
+      preLoaderRoute: typeof AuthenticatedFinanceiroComissoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fornecedores-parceiros': {
+      id: '/_authenticated/fornecedores-parceiros'
+      path: '/fornecedores-parceiros'
+      fullPath: '/fornecedores-parceiros'
+      preLoaderRoute: typeof AuthenticatedFornecedoresParceirosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/funcionarios': {
+      id: '/_authenticated/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/funcionarios'
+      preLoaderRoute: typeof AuthenticatedFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/minhas-comissoes': {
+      id: '/_authenticated/minhas-comissoes'
+      path: '/minhas-comissoes'
+      fullPath: '/minhas-comissoes'
+      preLoaderRoute: typeof AuthenticatedMinhasComissoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profissoes': {
+      id: '/_authenticated/profissoes'
+      path: '/profissoes'
+      fullPath: '/profissoes'
+      preLoaderRoute: typeof AuthenticatedProfissoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/revendedor': {
       id: '/_authenticated/revendedor'
       path: '/revendedor'
@@ -242,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/salao'
       fullPath: '/salao'
       preLoaderRoute: typeof AuthenticatedSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/servicos-precos': {
+      id: '/_authenticated/servicos-precos'
+      path: '/servicos-precos'
+      fullPath: '/servicos-precos'
+      preLoaderRoute: typeof AuthenticatedServicosPrecosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/validar': {
@@ -311,15 +529,39 @@ const AuthenticatedSalaoRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
+  AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
+  AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
+  AuthenticatedConfiguracaoLojaRoute: typeof AuthenticatedConfiguracaoLojaRoute
+  AuthenticatedConfigurarSecretariaRoute: typeof AuthenticatedConfigurarSecretariaRoute
+  AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
+  AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
+  AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
+  AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
+  AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
   AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
+  AuthenticatedServicosPrecosRoute: typeof AuthenticatedServicosPrecosRoute
   AuthenticatedValidarRoute: typeof AuthenticatedValidarRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
+  AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
+  AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
+  AuthenticatedConfiguracaoLojaRoute: AuthenticatedConfiguracaoLojaRoute,
+  AuthenticatedConfigurarSecretariaRoute:
+    AuthenticatedConfigurarSecretariaRoute,
+  AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
+  AuthenticatedFornecedoresParceirosRoute:
+    AuthenticatedFornecedoresParceirosRoute,
+  AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
+  AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
+  AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
   AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,
+  AuthenticatedServicosPrecosRoute: AuthenticatedServicosPrecosRoute,
   AuthenticatedValidarRoute: AuthenticatedValidarRoute,
 }
 
