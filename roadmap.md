@@ -1,4 +1,7 @@
 # Roadmap
+- [ ] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
+- [ ] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
+- [ ] Qualificar novos leads com Lovable AI conforme cliente ideal, resumo e prioridade para ligação
 - [ ] Reorganizar os quatro documentos em módulos funcionais preservando contas, planos, PIX e códigos existentes
 - [ ] Marca do salão e secretária dinâmica com campos iniciais vazios
 - [ ] Profissões, funcionários, serviços, agenda, chegada e chat da equipe
