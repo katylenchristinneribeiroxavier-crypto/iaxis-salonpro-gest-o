@@ -18,7 +18,8 @@ export const resellerLeadSchema = z.object({
 export type ResellerPlanInput = z.infer<typeof resellerPlanSchema>;
 export function salesSummary(rows: {commission: number; status: string}[]) {
   const validated = rows.filter(r => r.status !== 'cancelado');
-  return { count: validated.length, generated: validated.reduce((s,r)=>s+Number(r.commission),0), paid: validated.filter(r=>r.status==='pago').reduce((s,r)=>s+Number(r.commission),0), pending: validated.filter(r=>r.status==='pendente_a_pagar').reduce((s,r)=>s+Number(r.commission),0) };
+  const total=(items:typeof rows)=>Math.round(items.reduce((s,r)=>s+Number(r.commission),0)*100)/100;
+  return { count: validated.length, generated: total(validated), paid: total(validated.filter(r=>r.status==='pago')), pending: total(validated.filter(r=>r.status==='pendente_a_pagar')) };
 }
 export function normalizeQualification(value: {score: number; summary: string; callRecommended: boolean; callReason: string}) {
   if (!Number.isFinite(value.score)) throw new Error('Pontuação inválida');
