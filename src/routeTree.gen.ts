@@ -10,21 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
-import { Route as RevendedorRouteImport } from './routes/revendedor'
-import { Route as SalaoRouteImport } from './routes/salao'
-import { Route as SalaoIndexRouteImport } from './routes/salao.index'
-import { Route as SalaoPastaRouteImport } from './routes/salao.$pasta'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
+import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
+import { Route as RCodeRouteImport } from './routes/r.$code'
+import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
+import { Route as AuthenticatedSalaoPastaRouteImport } from './routes/_authenticated/salao.$pasta'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClienteRoute = ClienteRouteImport.update({
@@ -32,83 +39,113 @@ const ClienteRoute = ClienteRouteImport.update({
   path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RevendedorRoute = RevendedorRouteImport.update({
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRevendedorRoute = AuthenticatedRevendedorRouteImport.update({
   id: '/revendedor',
   path: '/revendedor',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const SalaoRoute = SalaoRouteImport.update({
+const AuthenticatedSalaoRoute = AuthenticatedSalaoRouteImport.update({
   id: '/salao',
   path: '/salao',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const RCodeRoute = RCodeRouteImport.update({
+  id: '/r/$code',
+  path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SalaoIndexRoute = SalaoIndexRouteImport.update({
+const AuthenticatedSalaoIndexRoute = AuthenticatedSalaoIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SalaoRoute,
+  getParentRoute: () => AuthenticatedSalaoRoute,
 } as any)
-const SalaoPastaRoute = SalaoPastaRouteImport.update({
+const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
   id: '/$pasta',
   path: '/$pasta',
-  getParentRoute: () => SalaoRoute,
+  getParentRoute: () => AuthenticatedSalaoRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
-  '/revendedor': typeof RevendedorRoute
-  '/salao': typeof SalaoRouteWithChildren
-  '/salao/$pasta': typeof SalaoPastaRoute
-  '/salao/': typeof SalaoIndexRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/revendedor': typeof AuthenticatedRevendedorRoute
+  '/salao': typeof AuthenticatedSalaoRouteWithChildren
+  '/r/$code': typeof RCodeRoute
+  '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
-  '/revendedor': typeof RevendedorRoute
-  '/salao/$pasta': typeof SalaoPastaRoute
-  '/salao': typeof SalaoIndexRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/revendedor': typeof AuthenticatedRevendedorRoute
+  '/r/$code': typeof RCodeRoute
+  '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/salao': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
-  '/revendedor': typeof RevendedorRoute
-  '/salao': typeof SalaoRouteWithChildren
-  '/salao/$pasta': typeof SalaoPastaRoute
-  '/salao/': typeof SalaoIndexRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/revendedor': typeof AuthenticatedRevendedorRoute
+  '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
+  '/r/$code': typeof RCodeRoute
+  '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
+    | '/auth'
     | '/cliente'
+    | '/admin'
     | '/revendedor'
     | '/salao'
+    | '/r/$code'
     | '/salao/$pasta'
     | '/salao/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/cliente' | '/revendedor' | '/salao/$pasta' | '/salao'
+  to:
+    | '/'
+    | '/auth'
+    | '/cliente'
+    | '/admin'
+    | '/revendedor'
+    | '/r/$code'
+    | '/salao/$pasta'
+    | '/salao'
   id:
     | '__root__'
     | '/'
-    | '/admin'
+    | '/_authenticated'
+    | '/auth'
     | '/cliente'
-    | '/revendedor'
-    | '/salao'
-    | '/salao/$pasta'
-    | '/salao/'
+    | '/_authenticated/admin'
+    | '/_authenticated/revendedor'
+    | '/_authenticated/salao'
+    | '/r/$code'
+    | '/_authenticated/salao/$pasta'
+    | '/_authenticated/salao/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
-  RevendedorRoute: typeof RevendedorRoute
-  SalaoRoute: typeof SalaoRouteWithChildren
+  RCodeRoute: typeof RCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -120,11 +157,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cliente': {
@@ -134,55 +178,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/revendedor': {
-      id: '/revendedor'
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/revendedor': {
+      id: '/_authenticated/revendedor'
       path: '/revendedor'
       fullPath: '/revendedor'
-      preLoaderRoute: typeof RevendedorRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedRevendedorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/salao': {
-      id: '/salao'
+    '/_authenticated/salao': {
+      id: '/_authenticated/salao'
       path: '/salao'
       fullPath: '/salao'
-      preLoaderRoute: typeof SalaoRouteImport
+      preLoaderRoute: typeof AuthenticatedSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/r/$code': {
+      id: '/r/$code'
+      path: '/r/$code'
+      fullPath: '/r/$code'
+      preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/salao/': {
-      id: '/salao/'
+    '/_authenticated/salao/': {
+      id: '/_authenticated/salao/'
       path: '/'
       fullPath: '/salao/'
-      preLoaderRoute: typeof SalaoIndexRouteImport
-      parentRoute: typeof SalaoRoute
+      preLoaderRoute: typeof AuthenticatedSalaoIndexRouteImport
+      parentRoute: typeof AuthenticatedSalaoRoute
     }
-    '/salao/$pasta': {
-      id: '/salao/$pasta'
+    '/_authenticated/salao/$pasta': {
+      id: '/_authenticated/salao/$pasta'
       path: '/$pasta'
       fullPath: '/salao/$pasta'
-      preLoaderRoute: typeof SalaoPastaRouteImport
-      parentRoute: typeof SalaoRoute
+      preLoaderRoute: typeof AuthenticatedSalaoPastaRouteImport
+      parentRoute: typeof AuthenticatedSalaoRoute
     }
   }
 }
 
-interface SalaoRouteChildren {
-  SalaoPastaRoute: typeof SalaoPastaRoute
-  SalaoIndexRoute: typeof SalaoIndexRoute
+interface AuthenticatedSalaoRouteChildren {
+  AuthenticatedSalaoPastaRoute: typeof AuthenticatedSalaoPastaRoute
+  AuthenticatedSalaoIndexRoute: typeof AuthenticatedSalaoIndexRoute
 }
 
-const SalaoRouteChildren: SalaoRouteChildren = {
-  SalaoPastaRoute: SalaoPastaRoute,
-  SalaoIndexRoute: SalaoIndexRoute,
+const AuthenticatedSalaoRouteChildren: AuthenticatedSalaoRouteChildren = {
+  AuthenticatedSalaoPastaRoute: AuthenticatedSalaoPastaRoute,
+  AuthenticatedSalaoIndexRoute: AuthenticatedSalaoIndexRoute,
 }
 
-const SalaoRouteWithChildren = SalaoRoute._addFileChildren(SalaoRouteChildren)
+const AuthenticatedSalaoRouteWithChildren =
+  AuthenticatedSalaoRoute._addFileChildren(AuthenticatedSalaoRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRoute
+  AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedRevendedorRoute: AuthenticatedRevendedorRoute,
+  AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
-  RevendedorRoute: RevendedorRoute,
-  SalaoRoute: SalaoRouteWithChildren,
+  RCodeRoute: RCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

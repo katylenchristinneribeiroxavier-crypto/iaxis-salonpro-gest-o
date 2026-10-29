@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { PageTitle } from "@/components/Shell";
 import { salaoFolders } from "@/lib/modules";
 
-export const Route = createFileRoute("/salao/$pasta")({
+export const Route = createFileRoute("/_authenticated/salao/$pasta")({
   loader: ({ params }) => {
     const folder = salaoFolders.find((f) => f.slug === params.pasta);
     if (!folder) throw notFound();
