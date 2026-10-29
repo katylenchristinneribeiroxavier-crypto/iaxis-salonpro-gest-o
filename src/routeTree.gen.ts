@@ -18,16 +18,20 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
 import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
+import { Route as AuthenticatedConexaoWhatsappRouteImport } from './routes/_authenticated/conexao-whatsapp'
 import { Route as AuthenticatedConfiguracaoLojaRouteImport } from './routes/_authenticated/configuracao-loja'
+import { Route as AuthenticatedConfiguracaoSuporteRouteImport } from './routes/_authenticated/configuracao-suporte'
 import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/_authenticated/configurar-secretaria'
 import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
+import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
 import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
 import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authenticated/servicos-precos'
+import { Route as AuthenticatedTicketsSuporteRouteImport } from './routes/_authenticated/tickets-suporte'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
@@ -80,10 +84,22 @@ const AuthenticatedClientesCategoriasRoute =
     path: '/clientes-categorias',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedConexaoWhatsappRoute =
+  AuthenticatedConexaoWhatsappRouteImport.update({
+    id: '/conexao-whatsapp',
+    path: '/conexao-whatsapp',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedConfiguracaoLojaRoute =
   AuthenticatedConfiguracaoLojaRouteImport.update({
     id: '/configuracao-loja',
     path: '/configuracao-loja',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedConfiguracaoSuporteRoute =
+  AuthenticatedConfiguracaoSuporteRouteImport.update({
+    id: '/configuracao-suporte',
+    path: '/configuracao-suporte',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedConfigurarSecretariaRoute =
@@ -108,6 +124,12 @@ const AuthenticatedFuncionariosRoute =
   AuthenticatedFuncionariosRouteImport.update({
     id: '/funcionarios',
     path: '/funcionarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGestaoRevendedoresRoute =
+  AuthenticatedGestaoRevendedoresRouteImport.update({
+    id: '/gestao-revendedores',
+    path: '/gestao-revendedores',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMinhasComissoesRoute =
@@ -135,6 +157,12 @@ const AuthenticatedServicosPrecosRoute =
   AuthenticatedServicosPrecosRouteImport.update({
     id: '/servicos-precos',
     path: '/servicos-precos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTicketsSuporteRoute =
+  AuthenticatedTicketsSuporteRouteImport.update({
+    id: '/tickets-suporte',
+    path: '/tickets-suporte',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedValidarRoute = AuthenticatedValidarRouteImport.update({
@@ -173,16 +201,20 @@ export interface FileRoutesByFullPath {
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -198,15 +230,19 @@ export interface FileRoutesByTo {
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -224,16 +260,20 @@ export interface FileRoutesById {
   '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/_authenticated/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/_authenticated/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
+  '/_authenticated/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/_authenticated/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
+  '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/_authenticated/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/_authenticated/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -251,16 +291,20 @@ export interface FileRouteTypes {
     | '/agenda-do-dia'
     | '/chat-equipe'
     | '/clientes-categorias'
+    | '/conexao-whatsapp'
     | '/configuracao-loja'
+    | '/configuracao-suporte'
     | '/configurar-secretaria'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
+    | '/gestao-revendedores'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
     | '/salao'
     | '/servicos-precos'
+    | '/tickets-suporte'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -276,15 +320,19 @@ export interface FileRouteTypes {
     | '/agenda-do-dia'
     | '/chat-equipe'
     | '/clientes-categorias'
+    | '/conexao-whatsapp'
     | '/configuracao-loja'
+    | '/configuracao-suporte'
     | '/configurar-secretaria'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
+    | '/gestao-revendedores'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
     | '/servicos-precos'
+    | '/tickets-suporte'
     | '/validar'
     | '/r/$code'
     | '/revendedor/codigos'
@@ -301,16 +349,20 @@ export interface FileRouteTypes {
     | '/_authenticated/agenda-do-dia'
     | '/_authenticated/chat-equipe'
     | '/_authenticated/clientes-categorias'
+    | '/_authenticated/conexao-whatsapp'
     | '/_authenticated/configuracao-loja'
+    | '/_authenticated/configuracao-suporte'
     | '/_authenticated/configurar-secretaria'
     | '/_authenticated/financeiro-comissoes'
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
+    | '/_authenticated/gestao-revendedores'
     | '/_authenticated/minhas-comissoes'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
     | '/_authenticated/salao'
     | '/_authenticated/servicos-precos'
+    | '/_authenticated/tickets-suporte'
     | '/_authenticated/validar'
     | '/r/$code'
     | '/_authenticated/revendedor/codigos'
@@ -392,11 +444,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClientesCategoriasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/conexao-whatsapp': {
+      id: '/_authenticated/conexao-whatsapp'
+      path: '/conexao-whatsapp'
+      fullPath: '/conexao-whatsapp'
+      preLoaderRoute: typeof AuthenticatedConexaoWhatsappRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/configuracao-loja': {
       id: '/_authenticated/configuracao-loja'
       path: '/configuracao-loja'
       fullPath: '/configuracao-loja'
       preLoaderRoute: typeof AuthenticatedConfiguracaoLojaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracao-suporte': {
+      id: '/_authenticated/configuracao-suporte'
+      path: '/configuracao-suporte'
+      fullPath: '/configuracao-suporte'
+      preLoaderRoute: typeof AuthenticatedConfiguracaoSuporteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/configurar-secretaria': {
@@ -425,6 +491,13 @@ declare module '@tanstack/react-router' {
       path: '/funcionarios'
       fullPath: '/funcionarios'
       preLoaderRoute: typeof AuthenticatedFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gestao-revendedores': {
+      id: '/_authenticated/gestao-revendedores'
+      path: '/gestao-revendedores'
+      fullPath: '/gestao-revendedores'
+      preLoaderRoute: typeof AuthenticatedGestaoRevendedoresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/minhas-comissoes': {
@@ -460,6 +533,13 @@ declare module '@tanstack/react-router' {
       path: '/servicos-precos'
       fullPath: '/servicos-precos'
       preLoaderRoute: typeof AuthenticatedServicosPrecosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tickets-suporte': {
+      id: '/_authenticated/tickets-suporte'
+      path: '/tickets-suporte'
+      fullPath: '/tickets-suporte'
+      preLoaderRoute: typeof AuthenticatedTicketsSuporteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/validar': {
@@ -532,16 +612,20 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
   AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
+  AuthenticatedConexaoWhatsappRoute: typeof AuthenticatedConexaoWhatsappRoute
   AuthenticatedConfiguracaoLojaRoute: typeof AuthenticatedConfiguracaoLojaRoute
+  AuthenticatedConfiguracaoSuporteRoute: typeof AuthenticatedConfiguracaoSuporteRoute
   AuthenticatedConfigurarSecretariaRoute: typeof AuthenticatedConfigurarSecretariaRoute
   AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
+  AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
   AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
   AuthenticatedServicosPrecosRoute: typeof AuthenticatedServicosPrecosRoute
+  AuthenticatedTicketsSuporteRoute: typeof AuthenticatedTicketsSuporteRoute
   AuthenticatedValidarRoute: typeof AuthenticatedValidarRoute
 }
 
@@ -550,18 +634,22 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
   AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
+  AuthenticatedConexaoWhatsappRoute: AuthenticatedConexaoWhatsappRoute,
   AuthenticatedConfiguracaoLojaRoute: AuthenticatedConfiguracaoLojaRoute,
+  AuthenticatedConfiguracaoSuporteRoute: AuthenticatedConfiguracaoSuporteRoute,
   AuthenticatedConfigurarSecretariaRoute:
     AuthenticatedConfigurarSecretariaRoute,
   AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
   AuthenticatedFornecedoresParceirosRoute:
     AuthenticatedFornecedoresParceirosRoute,
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
+  AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
   AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,
   AuthenticatedServicosPrecosRoute: AuthenticatedServicosPrecosRoute,
+  AuthenticatedTicketsSuporteRoute: AuthenticatedTicketsSuporteRoute,
   AuthenticatedValidarRoute: AuthenticatedValidarRoute,
 }
 
