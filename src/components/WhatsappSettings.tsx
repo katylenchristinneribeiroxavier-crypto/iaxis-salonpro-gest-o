@@ -1,0 +1,9 @@
+import {useQuery,useSuspenseQuery} from '@tanstack/react-query';
+import {useEffect,useState} from 'react';
+import {Save} from 'lucide-react';
+import {toast} from 'sonner';
+import {supabase} from '@/integrations/supabase/client';
+import {salonContextOptions} from '@/lib/salon-data';
+import {PageTitle,inputCls} from './Shell';
+import {Button} from './ui/button';
+export function WhatsappSettings(){const{data:ctx}=useSuspenseQuery(salonContextOptions);const[url,setUrl]=useState('');const[instance,setInstance]=useState('');const{data}=useQuery({queryKey:['whatsapp-config',ctx.salon?.id],enabled:!!ctx.salon,queryFn:async()=>{if(!ctx.salon)return null;return(await supabase.from('salon_connections').select('*').eq('salon_id',ctx.salon.id).maybeSingle()).data;}});useEffect(()=>{setUrl(data?.evolution_url??'');setInstance(data?.evolution_instance??ctx.salon?.id??'');},[data,ctx.salon?.id]);return <><PageTitle title="Conexão WhatsApp"/><form className="max-w-2xl space-y-5" onSubmit={async e=>{e.preventDefault();if(!ctx.salon)return;const r=await supabase.from('salon_connections').upsert({salon_id:ctx.salon.id,evolution_url:url,evolution_instance:instance},{onConflict:'salon_id'});if(r.error){toast.error(r.error.message);return;}toast.success('Configuração salva');}}><label className="block text-sm">URL Evolution<input required type="url" aria-label="URL Evolution" className={`${inputCls} mt-2`} value={url} onChange={e=>setUrl(e.target.value)}/></label><label className="block text-sm">Instância<input aria-label="Instância" className={`${inputCls} mt-2`} value={instance} onChange={e=>setInstance(e.target.value)}/></label><Button type="submit"><Save/>Salvar conexão</Button></form><p className="mt-6 text-sm text-muted-foreground">Conexão automática pendente da autorização do serviço WhatsApp.</p></>;}
