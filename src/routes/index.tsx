@@ -10,6 +10,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Agenda 24h, financeiro, estoque fracionado, comissões, CRM, notas fiscais e IA para salões de beleza." },
       { property: "og:title", content: "IAxis SalonPRO — Gestão para Salões de Beleza" },
       { property: "og:description", content: "Sistema completo de gestão para negócios de beleza." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

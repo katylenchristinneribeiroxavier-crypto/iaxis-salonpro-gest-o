@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AcessoBloqueadoRouteImport } from './routes/acesso-bloqueado'
 import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
@@ -28,6 +29,7 @@ import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
+import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
@@ -36,6 +38,8 @@ import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authe
 import { Route as AuthenticatedTicketsSuporteRouteImport } from './routes/_authenticated/tickets-suporte'
 import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_authenticated/tornar-se-revendedor'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
+import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
+import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
@@ -48,6 +52,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcessoBloqueadoRoute = AcessoBloqueadoRouteImport.update({
+  id: '/acesso-bloqueado',
+  path: '/acesso-bloqueado',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssinarRoute = AssinarRouteImport.update({
@@ -146,6 +155,12 @@ const AuthenticatedGestaoRevendedoresRoute =
     path: '/gestao-revendedores',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMasterDesenvolvedoraRoute =
+  AuthenticatedMasterDesenvolvedoraRouteImport.update({
+    id: '/master-desenvolvedora',
+    path: '/master-desenvolvedora',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMinhasComissoesRoute =
   AuthenticatedMinhasComissoesRouteImport.update({
     id: '/minhas-comissoes',
@@ -190,6 +205,16 @@ const AuthenticatedValidarRoute = AuthenticatedValidarRouteImport.update({
   path: '/validar',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiResellerAiLeadRoute = ApiResellerAiLeadRouteImport.update({
+  id: '/api/reseller-ai-lead',
+  path: '/api/reseller-ai-lead',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiResellerAiPlanRoute = ApiResellerAiPlanRouteImport.update({
+  id: '/api/reseller-ai-plan',
+  path: '/api/reseller-ai-plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RCodeRoute = RCodeRouteImport.update({
   id: '/r/$code',
   path: '/r/$code',
@@ -214,6 +239,7 @@ const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/acesso-bloqueado': typeof AcessoBloqueadoRoute
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
@@ -231,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -239,6 +266,8 @@ export interface FileRoutesByFullPath {
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -246,6 +275,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/acesso-bloqueado': typeof AcessoBloqueadoRoute
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
@@ -263,6 +293,7 @@ export interface FileRoutesByTo {
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -270,6 +301,8 @@ export interface FileRoutesByTo {
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -279,6 +312,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/acesso-bloqueado': typeof AcessoBloqueadoRoute
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
@@ -296,6 +330,7 @@ export interface FileRoutesById {
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -304,6 +339,8 @@ export interface FileRoutesById {
   '/_authenticated/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/_authenticated/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
+  '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
+  '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
@@ -313,6 +350,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acesso-bloqueado'
     | '/assinar'
     | '/auth'
     | '/cliente'
@@ -330,6 +368,7 @@ export interface FileRouteTypes {
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/master-desenvolvedora'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -338,6 +377,8 @@ export interface FileRouteTypes {
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/revendedor/codigos'
     | '/salao/$pasta'
@@ -345,6 +386,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acesso-bloqueado'
     | '/assinar'
     | '/auth'
     | '/cliente'
@@ -362,6 +404,7 @@ export interface FileRouteTypes {
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/master-desenvolvedora'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -369,6 +412,8 @@ export interface FileRouteTypes {
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/revendedor/codigos'
     | '/salao/$pasta'
@@ -377,6 +422,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/acesso-bloqueado'
     | '/assinar'
     | '/auth'
     | '/cliente'
@@ -394,6 +440,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
+    | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/minhas-comissoes'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
@@ -402,6 +449,8 @@ export interface FileRouteTypes {
     | '/_authenticated/tickets-suporte'
     | '/_authenticated/tornar-se-revendedor'
     | '/_authenticated/validar'
+    | '/api/reseller-ai-lead'
+    | '/api/reseller-ai-plan'
     | '/r/$code'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
@@ -411,10 +460,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AcessoBloqueadoRoute: typeof AcessoBloqueadoRoute
   AssinarRoute: typeof AssinarRoute
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
   SuporteRoute: typeof SuporteRoute
+  ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
+  ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
   RCodeRoute: typeof RCodeRoute
 }
 
@@ -432,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acesso-bloqueado': {
+      id: '/acesso-bloqueado'
+      path: '/acesso-bloqueado'
+      fullPath: '/acesso-bloqueado'
+      preLoaderRoute: typeof AcessoBloqueadoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/assinar': {
@@ -553,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestaoRevendedoresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/master-desenvolvedora': {
+      id: '/_authenticated/master-desenvolvedora'
+      path: '/master-desenvolvedora'
+      fullPath: '/master-desenvolvedora'
+      preLoaderRoute: typeof AuthenticatedMasterDesenvolvedoraRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/minhas-comissoes': {
       id: '/_authenticated/minhas-comissoes'
       path: '/minhas-comissoes'
@@ -608,6 +674,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/validar'
       preLoaderRoute: typeof AuthenticatedValidarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/reseller-ai-lead': {
+      id: '/api/reseller-ai-lead'
+      path: '/api/reseller-ai-lead'
+      fullPath: '/api/reseller-ai-lead'
+      preLoaderRoute: typeof ApiResellerAiLeadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/reseller-ai-plan': {
+      id: '/api/reseller-ai-plan'
+      path: '/api/reseller-ai-plan'
+      fullPath: '/api/reseller-ai-plan'
+      preLoaderRoute: typeof ApiResellerAiPlanRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/r/$code': {
       id: '/r/$code'
@@ -681,6 +761,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
+  AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
@@ -707,6 +788,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedFornecedoresParceirosRoute,
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
+  AuthenticatedMasterDesenvolvedoraRoute:
+    AuthenticatedMasterDesenvolvedoraRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
@@ -723,10 +806,13 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AcessoBloqueadoRoute: AcessoBloqueadoRoute,
   AssinarRoute: AssinarRoute,
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
   SuporteRoute: SuporteRoute,
+  ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
+  ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
   RCodeRoute: RCodeRoute,
 }
 export const routeTree = rootRouteImport

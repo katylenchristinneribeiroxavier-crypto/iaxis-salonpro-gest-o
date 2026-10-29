@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +12,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
     { name: "description", content: "Super Admin: salões, planos, revendedores, MRR e churn." },
     { property: "og:title", content: "Painel Master — IAxis SalonPRO" },
     { property: "og:description", content: "Controle total da plataforma." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ]}),
   component: () => <RoleGate role="super_admin"><Admin /></RoleGate>,
 });
@@ -48,7 +50,7 @@ function Admin() {
   };
 
   return (
-    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" }, { to: "/salao", label: "Ver painel do salão" },{to:'/configuracao-suporte',label:'Configurar suporte'},{to:'/tickets-suporte',label:'Tickets de suporte'},{to:'/gestao-revendedores',label:'Gestão de revendas'}]}>
+    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" },{to:'/master-desenvolvedora',label:'Controle de acesso'}, { to: "/salao", label: "Ver painel do salão" },{to:'/configuracao-suporte',label:'Configurar suporte'},{to:'/tickets-suporte',label:'Tickets de suporte'},{to:'/gestao-revendedores',label:'Gestão de revendas'}]}>
       <PageTitle title="Painel Master" sub="Visão geral de toda a plataforma" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="MRR" value={brl(mrr)} />
@@ -73,7 +75,7 @@ function Admin() {
                 </td>
                 <td className="p-3">{nameOf(s.reseller_id)}</td>
                 <td className="p-3"><StatusBadge s={s.status} /></td>
-                <td className="p-3"><button onClick={() => upd("salons", "id", s.id, { status: s.status === "ativo" ? "bloqueado" : "ativo" })} className="text-gold hover:underline">{s.status === "ativo" ? "Bloquear" : "Liberar"}</button></td>
+                <td className="p-3"><Link to="/master-desenvolvedora" className="text-gold hover:underline">Controlar acesso</Link></td>
               </tr>
             ))}
           </tbody>

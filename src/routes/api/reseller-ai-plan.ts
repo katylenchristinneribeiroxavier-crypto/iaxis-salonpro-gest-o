@@ -1,0 +1,2 @@
+import { createFileRoute } from '@tanstack/react-router';
+export const Route=createFileRoute('/api/reseller-ai-plan')({server:{handlers:{POST:async({request})=>{const {handleResellerAi}=await import('@/lib/reseller-ai.server');return handleResellerAi(request,'plan');}}}});

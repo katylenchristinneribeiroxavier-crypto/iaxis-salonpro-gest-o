@@ -2,6 +2,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Shell } from "@/components/Shell";
 import { RoleGate } from "@/components/RoleGate";
 import { salaoFolders } from "@/lib/modules";
+import {SalonAccessGate} from '@/components/SalonAccessGate';
 
 export const Route = createFileRoute("/_authenticated/salao")({
   component: () => (
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/salao")({
           ...salaoFolders.map((f) => ({ to: "/salao/$pasta", label: f.title, params: { pasta: f.slug } })),
         ]}
       >
-        <Outlet />
+        <SalonAccessGate><Outlet /></SalonAccessGate>
       </Shell>
     </RoleGate>
   ),

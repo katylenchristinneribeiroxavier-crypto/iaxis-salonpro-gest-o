@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageTitle, Shell, Stat, StatusBadge, btnGold } from "@/components/Shell";
 import { RoleGate } from "@/components/RoleGate";
 import { brl } from "@/lib/auth";
+import { ReferralSales } from '@/components/Referrals';
+import { ResellerGrowth } from '@/components/ResellerGrowth';
 
 export const Route = createFileRoute("/_authenticated/revendedor")({
   head: () => ({ meta: [
@@ -12,6 +14,8 @@ export const Route = createFileRoute("/_authenticated/revendedor")({
     { name: "description", content: "Link de afiliado, salões vendidos e repasse mensal." },
     { property: "og:title", content: "Painel do Revendedor — IAxis SalonPRO" },
     { property: "og:description", content: "Revenda e lucre todo mês." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ]}),
   component: () => <RoleGate role="revendedor"><Rev /></RoleGate>,
 });
@@ -21,9 +25,10 @@ function Rev() {
     queryKey: ["revendedor"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Entre na sua conta');
       const [r, s, p] = await Promise.all([
-        supabase.from("resellers").select("*").eq("user_id", user!.id).maybeSingle(),
-        supabase.from("salons").select("*").eq("reseller_id", user!.id),
+        supabase.from("resellers").select("*").eq("user_id", user.id).maybeSingle(),
+        supabase.from("salons").select("*").eq("reseller_id", user.id),
         supabase.from("plans").select("*"),
       ]);
       return { reseller: r.data, salons: s.data ?? [], plans: p.data ?? [] };
@@ -38,8 +43,10 @@ function Rev() {
   const link = `${typeof window !== "undefined" ? window.location.origin : ""}/r/${data.reseller.code}`;
 
   return (
-    <Shell role="Sócio Revendedor" nav={[{ to: "/revendedor", label: "Meu Painel" }, { to: "/revendedor/codigos", label: "Códigos de venda" }]}>
+    <Shell role="Sócio Revendedor" nav={[{ to: "/revendedor", label: "Meu Painel" },{to:'/area-revendedor',label:'Vendas, metas e leads'}, { to: "/revendedor/codigos", label: "Códigos de venda" }]}>
       <PageTitle title="Meu painel de revenda" sub={`Você ganha ${pct}% recorrente de cada salão ativo`} />
+      <ReferralSales reseller/>
+      <ResellerGrowth/>
       <div className="rounded-xl border bg-card p-5">
         <p className="text-xs uppercase tracking-wider text-muted-foreground">Seu link de afiliado</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">

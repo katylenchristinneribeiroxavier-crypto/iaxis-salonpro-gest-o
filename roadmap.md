@@ -1,4 +1,8 @@
 # Roadmap
+- [ ] Controle master implementado; verificar ações com conta super_admin e definir a conta da desenvolvedora (nenhum super_admin confirmado)
+- [x] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
+- [x] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
+- [x] Qualificar novos leads com Lovable AI conforme cliente ideal, resumo e prioridade para ligação
 - [ ] Reorganizar os quatro documentos em módulos funcionais preservando contas, planos, PIX e códigos existentes
 - [ ] Marca do salão e secretária dinâmica com campos iniciais vazios
 - [ ] Profissões, funcionários, serviços, agenda, chegada e chat da equipe

@@ -284,6 +284,44 @@ export type Database = {
           },
         ]
       }
+      log_acoes_master: {
+        Row: {
+          action: string
+          id: string
+          performed_at: string
+          performed_by: string
+          previous_data: Json
+          reason: string
+          salon_id: string
+        }
+        Insert: {
+          action: string
+          id?: string
+          performed_at?: string
+          performed_by: string
+          previous_data: Json
+          reason?: string
+          salon_id: string
+        }
+        Update: {
+          action?: string
+          id?: string
+          performed_at?: string
+          performed_by?: string
+          previous_data?: Json
+          reason?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "log_acoes_master_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memoria_ia: {
         Row: {
           conversation_id: string
@@ -603,6 +641,87 @@ export type Database = {
           },
         ]
       }
+      reseller_ai_settings: {
+        Row: {
+          ideal_customer: string
+          pause_status: number | null
+          paused_reason: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ideal_customer?: string
+          pause_status?: number | null
+          paused_reason?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          ideal_customer?: string
+          pause_status?: number | null
+          paused_reason?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reseller_leads: {
+        Row: {
+          call_reason: string
+          call_recommended: boolean
+          city: string
+          contact_name: string
+          context: string
+          created_at: string
+          id: string
+          ideal_customer_snapshot: string
+          phone: string
+          qualification_error: string
+          qualification_status: string
+          qualified_at: string | null
+          reseller_id: string
+          salon_name: string
+          score: number | null
+          summary: string
+        }
+        Insert: {
+          call_reason?: string
+          call_recommended?: boolean
+          city?: string
+          contact_name?: string
+          context: string
+          created_at?: string
+          id?: string
+          ideal_customer_snapshot?: string
+          phone?: string
+          qualification_error?: string
+          qualification_status?: string
+          qualified_at?: string | null
+          reseller_id: string
+          salon_name: string
+          score?: number | null
+          summary?: string
+        }
+        Update: {
+          call_reason?: string
+          call_recommended?: boolean
+          city?: string
+          contact_name?: string
+          context?: string
+          created_at?: string
+          id?: string
+          ideal_customer_snapshot?: string
+          phone?: string
+          qualification_error?: string
+          qualification_status?: string
+          qualified_at?: string | null
+          reseller_id?: string
+          salon_name?: string
+          score?: number | null
+          summary?: string
+        }
+        Relationships: []
+      }
       resellers: {
         Row: {
           code: string
@@ -792,6 +911,11 @@ export type Database = {
       }
       salons: {
         Row: {
+          access_enabled: boolean
+          archived_at: string | null
+          block_reason: string
+          blocked_at: string | null
+          blocked_by: string | null
           brand_color: string
           city: string | null
           created_at: string
@@ -801,12 +925,20 @@ export type Database = {
           name_article: string
           owner_id: string
           plan_id: string | null
+          released_at: string | null
           reseller_id: string | null
           slug: string
           status: string
+          subscription_due_date: string | null
+          suspended_until: string | null
           timezone: string
         }
         Insert: {
+          access_enabled?: boolean
+          archived_at?: string | null
+          block_reason?: string
+          blocked_at?: string | null
+          blocked_by?: string | null
           brand_color?: string
           city?: string | null
           created_at?: string
@@ -816,12 +948,20 @@ export type Database = {
           name_article?: string
           owner_id: string
           plan_id?: string | null
+          released_at?: string | null
           reseller_id?: string | null
           slug: string
           status?: string
+          subscription_due_date?: string | null
+          suspended_until?: string | null
           timezone?: string
         }
         Update: {
+          access_enabled?: boolean
+          archived_at?: string | null
+          block_reason?: string
+          blocked_at?: string | null
+          blocked_by?: string | null
           brand_color?: string
           city?: string | null
           created_at?: string
@@ -831,9 +971,12 @@ export type Database = {
           name_article?: string
           owner_id?: string
           plan_id?: string | null
+          released_at?: string | null
           reseller_id?: string | null
           slug?: string
           status?: string
+          subscription_due_date?: string | null
+          suspended_until?: string | null
           timezone?: string
         }
         Relationships: [
@@ -1252,7 +1395,17 @@ export type Database = {
         Returns: boolean
       }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
+      master_set_salon_access: {
+        Args: {
+          _action: string
+          _days?: number
+          _reason: string
+          _salon: string
+        }
+        Returns: undefined
+      }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
+      pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
       public_salon_identity: {
         Args: { _salon: string }
         Returns: {
@@ -1274,6 +1427,7 @@ export type Database = {
         }[]
       }
       redeem_sale_code: { Args: { _code: string }; Returns: string }
+      salon_access_allowed: { Args: { _salon: string }; Returns: boolean }
       save_salon_identity: {
         Args: {
           _article: string
