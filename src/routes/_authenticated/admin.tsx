@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -75,7 +75,7 @@ function Admin() {
                 </td>
                 <td className="p-3">{nameOf(s.reseller_id)}</td>
                 <td className="p-3"><StatusBadge s={s.status} /></td>
-                <td className="p-3"><button onClick={() => upd("salons", "id", s.id, { status: s.status === "ativo" ? "bloqueado" : "ativo" })} className="text-gold hover:underline">{s.status === "ativo" ? "Bloquear" : "Liberar"}</button></td>
+                <td className="p-3"><Link to="/master-desenvolvedora" className="text-gold hover:underline">Controlar acesso</Link></td>
               </tr>
             ))}
           </tbody>
