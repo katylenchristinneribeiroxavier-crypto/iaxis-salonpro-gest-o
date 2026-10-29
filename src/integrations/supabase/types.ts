@@ -135,6 +135,132 @@ export type Database = {
           },
         ]
       }
+      config_suporte_master: {
+        Row: {
+          email_master: string
+          id: number
+          nome_suporte: string
+          whatsapp_master: string
+        }
+        Insert: {
+          email_master?: string
+          id?: number
+          nome_suporte?: string
+          whatsapp_master?: string
+        }
+        Update: {
+          email_master?: string
+          id?: number
+          nome_suporte?: string
+          whatsapp_master?: string
+        }
+        Relationships: []
+      }
+      fila_mensagens_ia: {
+        Row: {
+          agendado_para: string
+          appointment_id: string | null
+          attempts: number
+          client_id: string | null
+          cliente_whatsapp: string
+          dedupe_key: string
+          error: string
+          id: string
+          mensagem: string
+          salon_id: string
+          status: string
+          tipo: string
+        }
+        Insert: {
+          agendado_para: string
+          appointment_id?: string | null
+          attempts?: number
+          client_id?: string | null
+          cliente_whatsapp: string
+          dedupe_key: string
+          error?: string
+          id?: string
+          mensagem: string
+          salon_id: string
+          status?: string
+          tipo: string
+        }
+        Update: {
+          agendado_para?: string
+          appointment_id?: string | null
+          attempts?: number
+          client_id?: string | null
+          cliente_whatsapp?: string
+          dedupe_key?: string
+          error?: string
+          id?: string
+          mensagem?: string
+          salon_id?: string
+          status?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fila_mensagens_ia_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fila_mensagens_ia_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "salon_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fila_mensagens_ia_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      memoria_ia: {
+        Row: {
+          conversation_id: string
+          correcao_dona: string
+          created_at: string
+          id: string
+          pergunta: string
+          resposta: string
+          salon_id: string
+        }
+        Insert: {
+          conversation_id: string
+          correcao_dona?: string
+          created_at?: string
+          id?: string
+          pergunta: string
+          resposta?: string
+          salon_id: string
+        }
+        Update: {
+          conversation_id?: string
+          correcao_dona?: string
+          created_at?: string
+          id?: string
+          pergunta?: string
+          resposta?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memoria_ia_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       month_closings: {
         Row: {
           closed_at: string
@@ -309,6 +435,105 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      referral_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          sale_id: string
+          salon_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          sale_id: string
+          salon_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          sale_id?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_notifications_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: true
+            referencedRelation: "referral_sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_notifications_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_sales: {
+        Row: {
+          amount: number
+          applied_pct: number
+          buyer_name: string
+          commission: number
+          created_at: string
+          id: string
+          paid_at: string | null
+          request_id: string
+          reseller_id: string
+          salon_id: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          applied_pct?: number
+          buyer_name?: string
+          commission: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          request_id: string
+          reseller_id: string
+          salon_id: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          applied_pct?: number
+          buyer_name?: string
+          commission?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          request_id?: string
+          reseller_id?: string
+          salon_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_sales_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: true
+            referencedRelation: "subscription_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_sales_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       resellers: {
         Row: {
@@ -770,6 +995,53 @@ export type Database = {
           },
         ]
       }
+      tickets_suporte: {
+        Row: {
+          contato: string
+          created_at: string
+          id: string
+          mensagem: string
+          nome_cliente: string
+          origem: string
+          salon_id: string | null
+          status: string
+          tipo_usuario: string
+          user_id: string
+        }
+        Insert: {
+          contato?: string
+          created_at?: string
+          id?: string
+          mensagem: string
+          nome_cliente?: string
+          origem?: string
+          salon_id?: string | null
+          status?: string
+          tipo_usuario?: string
+          user_id?: string
+        }
+        Update: {
+          contato?: string
+          created_at?: string
+          id?: string
+          mensagem?: string
+          nome_cliente?: string
+          origem?: string
+          salon_id?: string | null
+          status?: string
+          tipo_usuario?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tickets_suporte_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -793,6 +1065,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      become_reseller: { Args: never; Returns: string }
       belongs_salon: { Args: { _salon: string }; Returns: boolean }
       booked_slots: {
         Args: { _day: string; _professional: string }
