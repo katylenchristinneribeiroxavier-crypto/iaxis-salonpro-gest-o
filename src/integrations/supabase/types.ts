@@ -14,16 +14,285 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          client_id: string | null
+          client_name: string
+          created_at: string
+          deposit: number
+          id: string
+          price: number
+          professional_id: string
+          salon_id: string
+          service_id: string | null
+          starts_at: string
+          status: string
+        }
+        Insert: {
+          client_id?: string | null
+          client_name: string
+          created_at?: string
+          deposit?: number
+          id?: string
+          price?: number
+          professional_id: string
+          salon_id: string
+          service_id?: string | null
+          starts_at: string
+          status?: string
+        }
+        Update: {
+          client_id?: string | null
+          client_name?: string
+          created_at?: string
+          deposit?: number
+          id?: string
+          price?: number
+          professional_id?: string
+          salon_id?: string
+          service_id?: string | null
+          starts_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plans: {
+        Row: {
+          id: string
+          name: string
+          online_fee_pct: number
+          price: number
+          sort: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          online_fee_pct?: number
+          price: number
+          sort?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          online_fee_pct?: number
+          price?: number
+          sort?: number
+        }
+        Relationships: []
+      }
+      professionals: {
+        Row: {
+          commission_pct: number
+          id: string
+          name: string
+          salon_id: string
+        }
+        Insert: {
+          commission_pct?: number
+          id?: string
+          name: string
+          salon_id: string
+        }
+        Update: {
+          commission_pct?: number
+          id?: string
+          name?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professionals_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      resellers: {
+        Row: {
+          code: string
+          commission_pct: number
+          created_at: string
+          pix_key: string | null
+          user_id: string
+        }
+        Insert: {
+          code: string
+          commission_pct?: number
+          created_at?: string
+          pix_key?: string | null
+          user_id: string
+        }
+        Update: {
+          code?: string
+          commission_pct?: number
+          created_at?: string
+          pix_key?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      salons: {
+        Row: {
+          brand_color: string
+          city: string | null
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+          plan_id: string | null
+          reseller_id: string | null
+          slug: string
+          status: string
+        }
+        Insert: {
+          brand_color?: string
+          city?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          owner_id: string
+          plan_id?: string | null
+          reseller_id?: string | null
+          slug: string
+          status?: string
+        }
+        Update: {
+          brand_color?: string
+          city?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          plan_id?: string | null
+          reseller_id?: string | null
+          slug?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salons_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          duration_min: number
+          id: string
+          name: string
+          price: number
+          salon_id: string
+        }
+        Insert: {
+          duration_min?: number
+          id?: string
+          name: string
+          price?: number
+          salon_id: string
+        }
+        Update: {
+          duration_min?: number
+          id?: string
+          name?: string
+          price?: number
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      booked_slots: {
+        Args: { _day: string; _professional: string }
+        Returns: string[]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      owns_salon: { Args: { _salon: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "super_admin" | "revendedor" | "dono_salao" | "cliente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +419,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["super_admin", "revendedor", "dono_salao", "cliente"],
+    },
   },
 } as const
