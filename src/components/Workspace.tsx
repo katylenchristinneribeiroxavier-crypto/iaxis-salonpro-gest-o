@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { salonContextOptions } from '@/lib/salon-data';
 import { Shell } from './Shell';
+import { SalonAccessGate } from './SalonAccessGate';
 export const workspaceNav = [
   { to: '/agenda-do-dia', label: 'Agenda do dia' }, { to: '/chat-equipe', label: 'Chat da equipe' },
   { to: '/minhas-comissoes', label: 'Minhas comissões' },
@@ -17,6 +18,6 @@ export function Workspace({ children, manager = false }: { children: ReactNode; 
   const { data } = useSuspenseQuery(salonContextOptions);
   const nav = data.manager ? workspaceNav : workspaceNav.slice(0, 3).concat({ to: '/suporte', label: 'Suporte técnico' });
   return <Shell role={data.salon?.name || 'Meu salão'} nav={nav}>
-    {!data.salon ? <div><h1 className="text-3xl">Nenhum salão vinculado</h1><Link to="/auth" className="text-gold">Acessar outra conta</Link></div> : manager && !data.manager ? <h1 className="text-3xl">Acesso restrito à administração do salão</h1> : children}
+    <SalonAccessGate>{!data.salon ? <div><h1 className="text-3xl">Nenhum salão vinculado</h1><Link to="/auth" className="text-gold">Acessar outra conta</Link></div> : manager && !data.manager ? <h1 className="text-3xl">Acesso restrito à administração do salão</h1> : children}</SalonAccessGate>
   </Shell>;
 }
