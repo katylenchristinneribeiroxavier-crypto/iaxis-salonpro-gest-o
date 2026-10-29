@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Crown, Handshake, Store, UserRound } from "lucide-react";
 import { Brand } from "@/components/Shell";
-import { planos } from "@/lib/modules";
+import { PlansSection } from "@/components/PlansSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,19 +47,7 @@ function Index() {
           </Link>
         ))}
       </section>
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-center text-4xl font-semibold">Planos</h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {planos.map((p, i) => (
-            <div key={p.nome} className={`rounded-2xl border bg-card p-8 ${i === 1 ? "shadow-gold border-primary" : ""}`}>
-              <h3 className="text-2xl">{p.nome}</h3>
-              <p className="mt-2 font-display text-4xl text-gold">R$ {p.preco}<span className="text-base text-muted-foreground">/mês</span></p>
-              <ul className="mt-4 space-y-1 text-sm text-muted-foreground">{p.recursos.map((r) => <li key={r}>✦ {r}</li>)}</ul>
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 text-center text-xs text-muted-foreground">+ 2% sobre cada agendamento pago online</p>
-      </section>
+      <PlansSection />
     </div>
   );
 }
