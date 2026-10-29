@@ -18,6 +18,6 @@ export function SalonAccessGate({children}:{children:ReactNode}){
  if(isPending)return <p className="p-8 text-muted-foreground">Verificando acesso…</p>;
  if(error)return <p role="alert" className="p-8 text-destructive">Não foi possível verificar seu acesso.</p>;
  if(data&&!accessOpen(data))return <section className="p-8"><h1 className="text-3xl">Acesso temporariamente bloqueado</h1><p className="mt-3">{data.name}</p><p className="mt-2 text-muted-foreground">{data.block_reason}</p><Button asChild className="mt-5"><Link to="/acesso-bloqueado">Falar com suporte técnico</Link></Button></section>;
- if(data&&data.status!=='ativo')return <section className="p-8"><h1 className="text-3xl">Assinatura pendente</h1><Button asChild className="mt-5"><Link to="/pagamento">Regularizar pagamento</Link></Button></section>;
+ if(data&&data.status!=='ativo')return <section className="p-8"><h1 className="text-3xl">Assinatura pendente</h1><Button asChild className="mt-5"><Link to="/assinar">Regularizar pagamento</Link></Button></section>;
  return children;
 }
