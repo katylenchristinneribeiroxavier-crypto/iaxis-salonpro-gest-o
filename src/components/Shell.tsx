@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Crown } from "lucide-react";
+import { Crown, LogOut } from "lucide-react";
+import { useSignOut } from "@/lib/auth";
 
 export type NavItem = { to: string; label: string; params?: Record<string, string> };
 
@@ -18,6 +19,7 @@ export function Brand() {
 }
 
 export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; children: ReactNode }) {
+  const signOut = useSignOut();
   return (
     <div className="min-h-screen md:flex">
       <aside className="border-b bg-sidebar p-5 md:min-h-screen md:w-64 md:border-b-0 md:border-r">
@@ -36,6 +38,9 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
               {n.label}
             </Link>
           ))}
+          <button onClick={signOut} className="flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-left text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent">
+            <LogOut className="h-4 w-4" /> Sair
+          </button>
         </nav>
       </aside>
       <main className="flex-1 bg-gradient-navy p-6 md:p-10">{children}</main>
@@ -63,9 +68,13 @@ export function Stat({ label, value, hint }: { label: string; value: string; hin
 }
 
 export function StatusBadge({ s }: { s: string }) {
+  const v = s.toLowerCase();
   const tone =
-    s === "Ativo" || s === "Finalizado" ? "bg-success/15 text-success" :
-    s === "Bloqueado" || s === "Inadimplente" ? "bg-destructive/15 text-destructive" :
+    v === "ativo" || v === "finalizado" ? "bg-success/15 text-success" :
+    v === "bloqueado" || v === "inadimplente" || v === "cancelado" ? "bg-destructive/15 text-destructive" :
     "bg-primary/15 text-gold";
-  return <span className={`rounded-full px-2.5 py-0.5 text-xs ${tone}`}>{s}</span>;
+  return <span className={`rounded-full px-2.5 py-0.5 text-xs capitalize ${tone}`}>{s}</span>;
 }
+
+export const inputCls = "w-full rounded-md border bg-input/10 px-3 py-2 text-sm outline-none focus:border-primary";
+export const btnGold = "rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-40";
