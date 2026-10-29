@@ -21,13 +21,15 @@ function Admin() {
   const { data } = useQuery({
     queryKey: ["admin"],
     queryFn: async () => {
-      const [s, p, r, pr] = await Promise.all([
+      const [s, p, r, pr, st, rq] = await Promise.all([
         supabase.from("salons").select("*").order("created_at", { ascending: false }),
         supabase.from("plans").select("*").order("sort"),
         supabase.from("resellers").select("*"),
         supabase.from("profiles").select("id, full_name, email"),
+        supabase.from("platform_settings").select("*").eq("id", 1).maybeSingle(),
+        supabase.from("subscription_requests").select("*, plans(name)").order("created_at", { ascending: false }),
       ]);
-      return { salons: s.data ?? [], plans: p.data ?? [], resellers: r.data ?? [], profiles: pr.data ?? [] };
+      return { salons: s.data ?? [], plans: p.data ?? [], resellers: r.data ?? [], profiles: pr.data ?? [], pix: st.data, reqs: rq.data ?? [] };
     },
   });
   const salons = data?.salons ?? [];
@@ -40,7 +42,7 @@ function Admin() {
   const churn = salons.length ? ((salons.length - ativos.length) / salons.length) * 100 : 0;
   const refresh = () => qc.invalidateQueries({ queryKey: ["admin"] });
 
-  const upd = async (table: "salons" | "plans" | "resellers", key: string, id: string, patch: Record<string, unknown>) => {
+  const upd = async (table: "salons" | "plans" | "resellers" | "platform_settings" | "subscription_requests", key: string, id: string, patch: Record<string, unknown>) => {
     const { error } = await supabase.from(table).update(patch as never).eq(key, id);
     if (error) toast.error(error.message); else { toast.success("Salvo"); refresh(); }
   };
@@ -81,11 +83,13 @@ function Admin() {
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         <div className="rounded-xl border bg-card p-6">
           <h3 className="text-2xl">Planos</h3>
+          <p className="text-xs text-muted-foreground">Mensal · anual (valor por mês) · taxa online</p>
           {plans.map((p) => (
             <div key={p.id} className="mt-3 flex items-center justify-between gap-3 border-t pt-3">
               <span>{p.name}</span>
               <div className="flex items-center gap-2 text-sm">R$
-                <input type="number" defaultValue={Number(p.price)} className={`${inputCls} w-24`} onBlur={(e) => upd("plans", "id", p.id, { price: +e.target.value })} />
+                <input type="number" step="0.01" title="Mensal" defaultValue={Number(p.price)} className={`${inputCls} w-24`} onBlur={(e) => upd("plans", "id", p.id, { price: +e.target.value })} />
+                <input type="number" step="0.01" title="Anual (valor/mês)" defaultValue={Number(p.annual_monthly_price)} className={`${inputCls} w-24`} onBlur={(e) => upd("plans", "id", p.id, { annual_monthly_price: +e.target.value })} />anual
                 <input type="number" defaultValue={Number(p.online_fee_pct)} className={`${inputCls} w-16`} onBlur={(e) => upd("plans", "id", p.id, { online_fee_pct: +e.target.value })} />% online
               </div>
             </div>
@@ -106,6 +110,33 @@ function Admin() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="rounded-xl border bg-card p-6">
+          <h3 className="text-2xl">Dados do PIX da empresa</h3>
+          <p className="mt-1 text-xs text-muted-foreground">Aparecem na tela de assinatura para quem adquirir o app.</p>
+          {data?.pix && (["pix_key:Chave PIX", "pix_holder:Favorecido", "pix_cnpj:CNPJ/CPF", "pix_bank:Banco"] as const).map((x) => {
+            const [k, l] = x.split(":") as [string, string];
+            return (
+              <label key={k} className="mt-3 block text-sm">{l}
+                <input defaultValue={(data.pix as Record<string, unknown>)[k] as string} className={`${inputCls} mt-1`} onBlur={(e) => upd("platform_settings", "id", "1", { [k]: e.target.value })} />
+              </label>
+            );
+          })}
+        </div>
+        <div className="rounded-xl border bg-card p-6">
+          <h3 className="text-2xl">Pagamentos PIX recebidos</h3>
+          {(data?.reqs.length ?? 0) === 0 && <p className="mt-3 text-sm text-muted-foreground">Nenhum pedido ainda.</p>}
+          {data?.reqs.map((q) => (
+            <div key={q.id} className="mt-3 flex items-center justify-between gap-3 border-t pt-3 text-sm">
+              <div><p>{q.name} · {q.email}</p><p className="text-xs text-muted-foreground">{(q.plans as { name: string } | null)?.name} {q.billing} · {brl(Number(q.amount))}</p></div>
+              {q.status === "aguardando"
+                ? <button className="text-gold hover:underline" onClick={() => upd("subscription_requests", "id", q.id, { status: "confirmado" })}>Confirmar</button>
+                : <StatusBadge s={q.status} />}
+            </div>
+          ))}
         </div>
       </div>
     </Shell>

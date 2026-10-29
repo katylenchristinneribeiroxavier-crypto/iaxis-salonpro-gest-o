@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssinarRoute = AssinarRouteImport.update({
+  id: '/assinar',
+  path: '/assinar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -72,6 +78,7 @@ const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assinar'
     | '/auth'
     | '/cliente'
     | '/admin'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/assinar'
     | '/auth'
     | '/cliente'
     | '/admin'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/assinar'
     | '/auth'
     | '/cliente'
     | '/_authenticated/admin'
@@ -143,6 +155,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AssinarRoute: typeof AssinarRoute
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
   RCodeRoute: typeof RCodeRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assinar': {
+      id: '/assinar'
+      path: '/assinar'
+      fullPath: '/assinar'
+      preLoaderRoute: typeof AssinarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -254,6 +274,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AssinarRoute: AssinarRoute,
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
   RCodeRoute: RCodeRoute,
