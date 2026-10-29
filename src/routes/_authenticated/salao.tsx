@@ -11,6 +11,11 @@ export const Route = createFileRoute("/_authenticated/salao")({
         nav={[
           { to: "/salao", label: "Início" },
           { to: "/validar", label: "Código do revendedor" },
+          { to: "/configuracao-loja", label: "Meu salão" },
+          { to: "/configurar-secretaria", label: "Secretária virtual" },
+          { to: "/agenda-do-dia", label: "Agenda do dia" },
+          { to: "/funcionarios", label: "Funcionários" },
+          { to: "/financeiro-comissoes", label: "Financeiro e comissões" },
           ...salaoFolders.map((f) => ({ to: "/salao/$pasta", label: f.title, params: { pasta: f.slug } })),
         ]}
       >
