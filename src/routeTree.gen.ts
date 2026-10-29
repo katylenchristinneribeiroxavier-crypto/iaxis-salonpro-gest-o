@@ -10,33 +10,105 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ClienteRouteImport } from './routes/cliente'
+import { Route as RevendedorRouteImport } from './routes/revendedor'
+import { Route as SalaoRouteImport } from './routes/salao'
+import { Route as SalaoIndexRouteImport } from './routes/salao.index'
+import { Route as SalaoPastaRouteImport } from './routes/salao.$pasta'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteRoute = ClienteRouteImport.update({
+  id: '/cliente',
+  path: '/cliente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RevendedorRoute = RevendedorRouteImport.update({
+  id: '/revendedor',
+  path: '/revendedor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalaoRoute = SalaoRouteImport.update({
+  id: '/salao',
+  path: '/salao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalaoIndexRoute = SalaoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SalaoRoute,
+} as any)
+const SalaoPastaRoute = SalaoPastaRouteImport.update({
+  id: '/$pasta',
+  path: '/$pasta',
+  getParentRoute: () => SalaoRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/cliente': typeof ClienteRoute
+  '/revendedor': typeof RevendedorRoute
+  '/salao': typeof SalaoRouteWithChildren
+  '/salao/$pasta': typeof SalaoPastaRoute
+  '/salao/': typeof SalaoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/cliente': typeof ClienteRoute
+  '/revendedor': typeof RevendedorRoute
+  '/salao/$pasta': typeof SalaoPastaRoute
+  '/salao': typeof SalaoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/cliente': typeof ClienteRoute
+  '/revendedor': typeof RevendedorRoute
+  '/salao': typeof SalaoRouteWithChildren
+  '/salao/$pasta': typeof SalaoPastaRoute
+  '/salao/': typeof SalaoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/cliente'
+    | '/revendedor'
+    | '/salao'
+    | '/salao/$pasta'
+    | '/salao/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/admin' | '/cliente' | '/revendedor' | '/salao/$pasta' | '/salao'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/cliente'
+    | '/revendedor'
+    | '/salao'
+    | '/salao/$pasta'
+    | '/salao/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  ClienteRoute: typeof ClienteRoute
+  RevendedorRoute: typeof RevendedorRoute
+  SalaoRoute: typeof SalaoRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +120,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente': {
+      id: '/cliente'
+      path: '/cliente'
+      fullPath: '/cliente'
+      preLoaderRoute: typeof ClienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/revendedor': {
+      id: '/revendedor'
+      path: '/revendedor'
+      fullPath: '/revendedor'
+      preLoaderRoute: typeof RevendedorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salao': {
+      id: '/salao'
+      path: '/salao'
+      fullPath: '/salao'
+      preLoaderRoute: typeof SalaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salao/': {
+      id: '/salao/'
+      path: '/'
+      fullPath: '/salao/'
+      preLoaderRoute: typeof SalaoIndexRouteImport
+      parentRoute: typeof SalaoRoute
+    }
+    '/salao/$pasta': {
+      id: '/salao/$pasta'
+      path: '/$pasta'
+      fullPath: '/salao/$pasta'
+      preLoaderRoute: typeof SalaoPastaRouteImport
+      parentRoute: typeof SalaoRoute
+    }
   }
 }
 
+interface SalaoRouteChildren {
+  SalaoPastaRoute: typeof SalaoPastaRoute
+  SalaoIndexRoute: typeof SalaoIndexRoute
+}
+
+const SalaoRouteChildren: SalaoRouteChildren = {
+  SalaoPastaRoute: SalaoPastaRoute,
+  SalaoIndexRoute: SalaoIndexRoute,
+}
+
+const SalaoRouteWithChildren = SalaoRoute._addFileChildren(SalaoRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  ClienteRoute: ClienteRoute,
+  RevendedorRoute: RevendedorRoute,
+  SalaoRoute: SalaoRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
