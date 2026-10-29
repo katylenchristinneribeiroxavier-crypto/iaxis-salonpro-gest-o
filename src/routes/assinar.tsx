@@ -47,7 +47,7 @@ function Assinar() {
       user_id: user?.id ?? null, name: f.name, email: f.email, phone: f.phone,
       plan_id: plan.id, billing: ciclo, amount: valor,
     });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setSent(true);
   };
 
