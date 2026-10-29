@@ -1,4 +1,13 @@
 # Roadmap
+- [ ] Reorganizar os quatro documentos em módulos funcionais preservando contas, planos, PIX e códigos existentes
+- [ ] Marca do salão e secretária dinâmica com campos iniciais vazios
+- [ ] Profissões, funcionários, serviços, agenda, chegada e chat da equipe
+- [ ] Comissões por profissional e fechamento mensal
+- [ ] Fornecedores, clientes por categoria e conexão WhatsApp
+- [ ] Agendamento público, secretária com IA e mensagens programadas
+- [ ] Suporte técnico master, tickets e encaminhamento
+- [ ] Revendedores, vendas confirmadas, comissão e notificações
+- [ ] Verificar regras, isolamento entre salões e fluxos completos com contas reais
 - [x] 4 painéis (Admin, Revendedor, Salão, Cliente) com login e dados reais
 - [x] Novos preços mensais/anuais dos planos
 - [x] Área de pagamento via PIX com dados da empresa do criador (chave editável no Painel Master)
