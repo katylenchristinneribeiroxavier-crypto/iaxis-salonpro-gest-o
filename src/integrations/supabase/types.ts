@@ -603,6 +603,87 @@ export type Database = {
           },
         ]
       }
+      reseller_ai_settings: {
+        Row: {
+          ideal_customer: string
+          pause_status: number | null
+          paused_reason: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ideal_customer?: string
+          pause_status?: number | null
+          paused_reason?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          ideal_customer?: string
+          pause_status?: number | null
+          paused_reason?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reseller_leads: {
+        Row: {
+          call_reason: string
+          call_recommended: boolean
+          city: string
+          contact_name: string
+          context: string
+          created_at: string
+          id: string
+          ideal_customer_snapshot: string
+          phone: string
+          qualification_error: string
+          qualification_status: string
+          qualified_at: string | null
+          reseller_id: string
+          salon_name: string
+          score: number | null
+          summary: string
+        }
+        Insert: {
+          call_reason?: string
+          call_recommended?: boolean
+          city?: string
+          contact_name?: string
+          context: string
+          created_at?: string
+          id?: string
+          ideal_customer_snapshot?: string
+          phone?: string
+          qualification_error?: string
+          qualification_status?: string
+          qualified_at?: string | null
+          reseller_id: string
+          salon_name: string
+          score?: number | null
+          summary?: string
+        }
+        Update: {
+          call_reason?: string
+          call_recommended?: boolean
+          city?: string
+          contact_name?: string
+          context?: string
+          created_at?: string
+          id?: string
+          ideal_customer_snapshot?: string
+          phone?: string
+          qualification_error?: string
+          qualification_status?: string
+          qualified_at?: string | null
+          reseller_id?: string
+          salon_name?: string
+          score?: number | null
+          summary?: string
+        }
+        Relationships: []
+      }
       resellers: {
         Row: {
           code: string
@@ -1253,6 +1334,7 @@ export type Database = {
       }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
+      pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
       public_salon_identity: {
         Args: { _salon: string }
         Returns: {

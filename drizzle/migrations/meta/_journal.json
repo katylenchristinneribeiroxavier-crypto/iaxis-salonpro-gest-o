@@ -43,6 +43,13 @@
       "when": 1793312940885,
       "tag": "0005_tenant_links_and_safe_public_support",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793313942272,
+      "tag": "0006_reseller_sales_ai_leads",
+      "breakpoints": true
     }
   ]
 }
