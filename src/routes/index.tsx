@@ -27,7 +27,7 @@ function Index() {
     <div className="min-h-screen bg-gradient-navy">
       <header className="mx-auto flex max-w-6xl items-center justify-between p-6">
         <Brand />
-        <Link to="/auth" search={{ ref: undefined, role: undefined }} className="rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground">Entrar</Link>
+        <Link to="/auth" className="rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground">Entrar</Link>
       </header>
       <section className="mx-auto max-w-6xl px-6 py-16 text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-gold">Gestão de beleza com inteligência</p>

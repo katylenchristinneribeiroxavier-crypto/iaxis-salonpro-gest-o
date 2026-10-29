@@ -7,9 +7,9 @@ import { Brand, btnGold, inputCls } from "@/components/Shell";
 import { homeFor, type Role } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    ref: typeof s.ref === "string" ? s.ref : undefined,
-    role: typeof s.role === "string" ? s.role : undefined,
+  validateSearch: (s: Record<string, unknown>): { ref?: string; role?: string } => ({
+    ref: typeof s["ref"] === "string" ? s["ref"] : undefined,
+    role: typeof s["role"] === "string" ? s["role"] : undefined,
   }),
   head: () => ({ meta: [
     { title: "Entrar — IAxis SalonPRO" },

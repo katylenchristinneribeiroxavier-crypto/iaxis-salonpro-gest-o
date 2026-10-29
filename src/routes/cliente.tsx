@@ -7,7 +7,7 @@ import { Brand, StatusBadge, btnGold } from "@/components/Shell";
 import { brl, useMe, useSignOut } from "@/lib/auth";
 
 export const Route = createFileRoute("/cliente")({
-  validateSearch: (s: Record<string, unknown>) => ({ s: typeof s.s === "string" ? s.s : undefined }),
+  validateSearch: (s: Record<string, unknown>): { s?: string } => ({ s: typeof s["s"] === "string" ? s["s"] : undefined }),
   head: () => ({ meta: [
     { title: "Agende seu horário — IAxis SalonPRO" },
     { name: "description", content: "Escolha salão, serviço, profissional e horário e pague o sinal online." },
@@ -68,12 +68,12 @@ function Cliente() {
   const opt = (sel: boolean, dis = false) => `rounded-xl border p-3 text-sm transition ${dis ? "opacity-30 line-through" : sel ? "border-primary bg-primary/15 text-gold" : "bg-card hover:border-primary/60"}`;
 
   const book = async () => {
-    if (!me.data) return navigate({ to: "/auth", search: { role: "cliente", ref: undefined } });
+    if (!me.data) return navigate({ to: "/auth", search: { role: "cliente" } });
     if (!salon || !service || !pro || !hora) return;
     const starts = new Date(`${day}T${hora}:00`);
     const { error } = await supabase.from("appointments").insert({
       salon_id: salon.id, client_id: me.data.user.id,
-      client_name: (me.data.user.user_metadata?.full_name as string) || me.data.user.email || "Cliente",
+      client_name: (me.data.user.user_metadata?.["full_name"] as string) || me.data.user.email || "Cliente",
       service_id: service.id, professional_id: pro, starts_at: starts.toISOString(),
       price: Number(service.price), deposit: Math.round(Number(service.price) * 30) / 100,
     });
@@ -89,7 +89,7 @@ function Cliente() {
       <div className="mx-auto max-w-2xl p-6">
         <div className="flex items-center justify-between">
           <Brand />
-          {me.data ? <button onClick={signOut} className="text-sm text-gold">Sair</button> : <Link to="/auth" search={{ role: "cliente", ref: undefined }} className="text-sm text-gold">Entrar</Link>}
+          {me.data ? <button onClick={signOut} className="text-sm text-gold">Sair</button> : <Link to="/auth" search={{ role: "cliente" }} className="text-sm text-gold">Entrar</Link>}
         </div>
 
         {!salon ? (
