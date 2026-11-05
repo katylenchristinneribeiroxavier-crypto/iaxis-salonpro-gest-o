@@ -1,0 +1,2 @@
+ALTER TABLE public.evolution_webhook_events ADD COLUMN retry_at timestamptz NOT NULL DEFAULT now();
+CREATE INDEX evolution_pending_retry ON public.evolution_webhook_events(salon_id,retry_at) WHERE processed_at IS NULL;

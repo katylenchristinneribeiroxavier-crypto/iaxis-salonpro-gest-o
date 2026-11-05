@@ -280,6 +280,7 @@ export type Database = {
           processed_at: string | null
           processing_error: string
           received_at: string
+          retry_at: string
           salon_id: string
         }
         Insert: {
@@ -290,6 +291,7 @@ export type Database = {
           processed_at?: string | null
           processing_error?: string
           received_at?: string
+          retry_at?: string
           salon_id: string
         }
         Update: {
@@ -300,6 +302,7 @@ export type Database = {
           processed_at?: string | null
           processing_error?: string
           received_at?: string
+          retry_at?: string
           salon_id?: string
         }
         Relationships: [

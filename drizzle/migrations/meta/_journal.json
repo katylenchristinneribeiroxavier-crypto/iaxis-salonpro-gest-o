@@ -113,6 +113,13 @@
       "when": 1793896147629,
       "tag": "0015_evolution_salon_messages",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1793896361526,
+      "tag": "0016_evolution_inbox_retry_schedule",
+      "breakpoints": true
     }
   ]
 }
