@@ -53,6 +53,7 @@ import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
 import { Route as AuthenticatedSalaoPastaRouteImport } from './routes/_authenticated/salao.$pasta'
+import { Route as ApiPublicEvolutionSalonIdRouteImport } from './routes/api/public/evolution/$salonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -297,6 +298,12 @@ const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
   path: '/$pasta',
   getParentRoute: () => AuthenticatedSalaoRoute,
 } as any)
+const ApiPublicEvolutionSalonIdRoute =
+  ApiPublicEvolutionSalonIdRouteImport.update({
+    id: '/api/public/evolution/$salonId',
+    path: '/api/public/evolution/$salonId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -342,6 +349,7 @@ export interface FileRoutesByFullPath {
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -385,6 +393,7 @@ export interface FileRoutesByTo {
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -432,6 +441,7 @@ export interface FileRoutesById {
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -479,6 +489,7 @@ export interface FileRouteTypes {
     | '/salao/$pasta'
     | '/configuracoes/'
     | '/salao/'
+    | '/api/public/evolution/$salonId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -522,6 +533,7 @@ export interface FileRouteTypes {
     | '/salao/$pasta'
     | '/configuracoes'
     | '/salao'
+    | '/api/public/evolution/$salonId'
   id:
     | '__root__'
     | '/'
@@ -568,6 +580,7 @@ export interface FileRouteTypes {
     | '/_authenticated/salao/$pasta'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
+    | '/api/public/evolution/$salonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -581,6 +594,7 @@ export interface RootRouteChildren {
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
   RCodeRoute: typeof RCodeRoute
+  ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -893,6 +907,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalaoPastaRouteImport
       parentRoute: typeof AuthenticatedSalaoRoute
     }
+    '/api/public/evolution/$salonId': {
+      id: '/api/public/evolution/$salonId'
+      path: '/api/public/evolution/$salonId'
+      fullPath: '/api/public/evolution/$salonId'
+      preLoaderRoute: typeof ApiPublicEvolutionSalonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1021,6 +1042,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
   RCodeRoute: RCodeRoute,
+  ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

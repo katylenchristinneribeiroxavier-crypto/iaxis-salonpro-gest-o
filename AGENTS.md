@@ -17,3 +17,4 @@
 - Master access reuses protected user_roles rather than a parallel email-based role table; salon suspension is separate from billing and enforced by restrictive RLS with audited changes.
 - Compose the unified salon page from existing operational modules; show subscription requests as owner-account history because they have no salon identifier.
 - Resolve booking WhatsApp through the selected salon's owner-scoped configuracoes_salao row; expose only name and contact through a safe public function, never Evolution credentials.
+- Evolution sends run in authenticated server functions; tenant webhooks authenticate a derived header token, persist sanitized events, and recover pending events on callbacks, sends, and inbox refresh.
