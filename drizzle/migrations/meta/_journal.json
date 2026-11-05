@@ -78,6 +78,13 @@
       "when": 1793891273033,
       "tag": "0010_salon_pix_key_for_deposit",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793891739617,
+      "tag": "0011_master_cash_box",
+      "breakpoints": true
     }
   ]
 }
