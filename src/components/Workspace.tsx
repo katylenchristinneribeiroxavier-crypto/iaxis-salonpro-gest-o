@@ -10,7 +10,7 @@ export const workspaceNav = [
   { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
   { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' },
-  { to: '/sinais', label: 'Sinais' },
+  { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
   { to: '/configuracoes/whatsapp', label: 'WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
   { to: '/suporte', label: 'Suporte técnico' }, { to: '/salao', label: 'Todas as pastas' },
