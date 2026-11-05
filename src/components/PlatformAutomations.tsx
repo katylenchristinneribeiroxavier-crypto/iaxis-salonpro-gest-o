@@ -54,7 +54,7 @@ export function PlatformAutomations() {
           <Button disabled={busy} type="submit"><Save />{busy ? 'Validando…' : 'Salvar e testar central'}</Button>
         </form>
       </section>
-      <section className="mt-8 border-t pt-6"><h2 className="mb-4 text-xl">Serviços</h2><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt>Mensagens WhatsApp</dt><dd className="text-muted-foreground">{data?.config?.enabled ? 'Disponíveis após confirmação de cada número' : 'Aguardando Evolution central'}</dd></div><div><dt>Planos e qualificação de leads com IA</dt><dd className="text-muted-foreground">Disponíveis no painel do revendedor</dd></div><div><dt>Recebimentos PIX</dt><dd className="text-muted-foreground">Confirmação manual pela dona do salão</dd></div><div><dt>Assistente WhatsApp 24h e lembretes</dt><dd className="text-muted-foreground">Ainda não ativados</dd></div></dl></section>
+      <section className="mt-8 border-t pt-6"><h2 className="mb-4 text-xl">Serviços</h2><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt>Mensagens WhatsApp</dt><dd className="text-muted-foreground">{data?.config?.enabled ? 'Disponíveis após confirmação de cada número' : 'Aguardando Evolution central'}</dd></div><div><dt>Planos e qualificação de leads com IA</dt><dd className="text-muted-foreground">Disponíveis no painel do revendedor</dd></div><div><dt>Recebimentos PIX</dt><dd className="text-muted-foreground">Confirmação manual pela dona do salão</dd></div><div><dt>Agendamento e lembretes</dt><dd className="text-muted-foreground">Assistente no app disponível; WhatsApp aguardando ativação</dd></div></dl></section>
       </TabsContent>
       <TabsContent value="evolution">
       <section className="mt-8 border-t pt-6">
