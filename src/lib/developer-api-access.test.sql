@@ -5,3 +5,4 @@ SELECT 1 / CASE WHEN has_column_privilege('authenticated', 'public.configuracoes
 SELECT 1 / CASE WHEN NOT has_table_privilege('authenticated', 'public.platform_evolution_settings', 'SELECT') AND NOT has_table_privilege('anon', 'public.platform_evolution_settings', 'SELECT') THEN 1 ELSE 0 END AS platform_credentials_private;
 SELECT 1 / CASE WHEN NOT has_column_privilege('authenticated', 'public.salon_connections', 'api_token', 'SELECT') THEN 1 ELSE 0 END AS legacy_credentials_private;
 SELECT 1 / CASE WHEN EXISTS (SELECT 1 FROM pg_indexes WHERE schemaname = 'public' AND indexname = 'user_roles_single_developer' AND indexdef LIKE 'CREATE UNIQUE INDEX%') THEN 1 ELSE 0 END AS single_developer_enforced;
+SELECT 1 / CASE WHEN pg_get_functiondef('public.handle_new_user()'::regprocedure) NOT LIKE '%super_admin%' THEN 1 ELSE 0 END AS signup_never_grants_master;
