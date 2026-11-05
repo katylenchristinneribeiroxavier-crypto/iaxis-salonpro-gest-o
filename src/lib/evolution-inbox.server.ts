@@ -3,7 +3,9 @@ import { advanceMessageStatus, evolutionStatus, parseEvolutionMessage } from './
 
 export const processEvolutionEvents = createServerOnlyFn(async (salonId: string) => {
   const { supabaseAdmin: db } = await import('@/integrations/supabase/client.server');
-  const pending = await db.from('evolution_webhook_events').select('*').eq('salon_id', salonId).is('processed_at', null).order('received_at', { ascending: false }).limit(30);
+  const access = await db.rpc('salon_access_allowed', { _salon: salonId });
+  if (access.error || !access.data) throw new Error('Salão sem acesso às mensagens.');
+  const pending = await db.from('evolution_webhook_events').select('*').eq('salon_id', salonId).is('processed_at', null).lte('retry_at', new Date().toISOString()).order('retry_at').limit(15);
   if (pending.error) throw new Error('Não foi possível recuperar mensagens pendentes.');
   for (const event of pending.data) {
     try {
@@ -36,9 +38,12 @@ export const processEvolutionEvents = createServerOnlyFn(async (salonId: string)
       if (!unmatched) {
         const done = await db.from('evolution_webhook_events').update({ processed_at: new Date().toISOString(), processing_error: '' }).eq('id', event.id);
         if (done.error) throw done.error;
+      } else {
+        const deferred = await db.from('evolution_webhook_events').update({ retry_at: new Date(Date.now() + 15000).toISOString() }).eq('id', event.id);
+        if (deferred.error) throw deferred.error;
       }
     } catch {
-      const failure = await db.from('evolution_webhook_events').update({ processing_error: 'Processamento pendente; será retomado nas próximas mensagens ou atualização da caixa.' }).eq('id', event.id);
+      const failure = await db.from('evolution_webhook_events').update({ retry_at: new Date(Date.now() + 30000).toISOString(), processing_error: 'Processamento pendente; será retomado nas próximas mensagens ou atualização da caixa.' }).eq('id', event.id);
       if (failure.error) throw new Error('Falha ao persistir processamento.');
     }
   }
