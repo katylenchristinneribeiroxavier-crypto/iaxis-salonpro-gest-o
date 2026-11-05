@@ -7,9 +7,13 @@ import { freeSlots } from '@/lib/salon-rules';
 import { PageTitle, inputCls } from './Shell';
 import { Button } from './ui/button';
 
-const OPEN_HOUR = 9;
-const CLOSE_HOUR = 18;
-const SLOTS_PER_DAY = CLOSE_HOUR - OPEN_HOUR; // horários de 1h: 09h às 17h
+const DEFAULT_OPEN = 9;
+const DEFAULT_CLOSE = 18;
+
+function hourOf(time: string | null | undefined, fallback: number) {
+  const h = Number(time?.slice(0, 2));
+  return Number.isFinite(h) && h >= 0 && h <= 23 ? h : fallback;
+}
 
 type Appt = { id: string; starts_at: string; status: string; client_name: string };
 
@@ -41,6 +45,10 @@ export function SalonMonthCalendar() {
       return (r.data ?? []) as Appt[];
     },
   });
+
+  const openHour = hourOf(ctx.salon?.opening_time, DEFAULT_OPEN);
+  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE), openHour + 1);
+  const slotsPerDay = closeHour - openHour;
 
   const days = useMemo(() => {
     const { start, end } = monthRange(month);
