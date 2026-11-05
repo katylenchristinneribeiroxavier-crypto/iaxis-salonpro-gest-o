@@ -17,6 +17,8 @@ export const Route = createFileRoute("/auth")({
     { name: "description", content: "Acesse ou crie sua conta no IAxis SalonPRO." },
     { property: "og:title", content: "Entrar — IAxis SalonPRO" },
     { property: "og:description", content: "Acesse sua conta." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ]}),
   component: Auth,
 });
