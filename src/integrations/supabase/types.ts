@@ -986,12 +986,14 @@ export type Database = {
           blocked_by: string | null
           brand_color: string
           city: string | null
+          closing_time: string
           cobrar_sinal: boolean
           created_at: string
           id: string
           logo_url: string
           name: string
           name_article: string
+          opening_time: string
           owner_id: string
           pix_city: string
           pix_holder: string
@@ -1015,12 +1017,14 @@ export type Database = {
           blocked_by?: string | null
           brand_color?: string
           city?: string | null
+          closing_time?: string
           cobrar_sinal?: boolean
           created_at?: string
           id?: string
           logo_url?: string
           name?: string
           name_article?: string
+          opening_time?: string
           owner_id: string
           pix_city?: string
           pix_holder?: string
@@ -1044,12 +1048,14 @@ export type Database = {
           blocked_by?: string | null
           brand_color?: string
           city?: string | null
+          closing_time?: string
           cobrar_sinal?: boolean
           created_at?: string
           id?: string
           logo_url?: string
           name?: string
           name_article?: string
+          opening_time?: string
           owner_id?: string
           pix_city?: string
           pix_holder?: string
