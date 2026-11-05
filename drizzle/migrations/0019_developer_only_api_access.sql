@@ -1,0 +1,11 @@
+REVOKE ALL ON public.configuracoes_salao FROM PUBLIC, anon, authenticated;
+GRANT SELECT (id, user_id, salon_id, whatsapp_salao, nome_salao) ON public.configuracoes_salao TO authenticated;
+GRANT INSERT (user_id, salon_id, whatsapp_salao, nome_salao) ON public.configuracoes_salao TO authenticated;
+GRANT UPDATE (whatsapp_salao, nome_salao) ON public.configuracoes_salao TO authenticated;
+GRANT ALL ON public.configuracoes_salao TO service_role;
+REVOKE ALL ON public.salon_connections FROM PUBLIC, anon, authenticated;
+GRANT ALL ON public.salon_connections TO service_role;
+COMMENT ON TABLE public.salon_connections IS 'DEPRECATED: replaced by developer-only platform_evolution_settings and managed per-salon pairing; legacy credentials retained but not accessible to salon users.';
+COMMENT ON COLUMN public.configuracoes_salao.evolution_api_key IS 'DEPRECATED: replaced by private platform_evolution_settings; retained legacy data, not exposed to salon users.';
+COMMENT ON COLUMN public.configuracoes_salao.evolution_api_url IS 'DEPRECATED: replaced by developer-managed platform_evolution_settings.';
+CREATE UNIQUE INDEX user_roles_single_developer ON public.user_roles ((role)) WHERE role = 'super_admin';
