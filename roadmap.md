@@ -11,8 +11,8 @@
 - [ ] Agendamento público, secretária com IA e mensagens programadas
 - [ ] Suporte técnico master, tickets e encaminhamento
 - [ ] Revendedores, vendas confirmadas, comissão e notificações
-- [ ] Ícone PWA oficial iAxis dourado + manifest azul-marinho + splash de 2s (logo iAxis para equipe, logo do salão para cliente)
-- [ ] WhatsApp manual: tela /configuracoes/whatsapp com API URL + token (Evolution), salvar e testar conexão
+- [x] Ícone PWA oficial iAxis dourado + manifest azul-marinho + splash de 2s (logo iAxis para equipe, logo do salão para cliente) — logo gerada; trocar se a dona enviar o arquivo oficial
+- [x] WhatsApp manual: tela /configuracoes/whatsapp com API URL + token (Evolution), salvar e testar conexão
 - [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona (depende da configuração manual)
 - [ ] Marca da desenvolvedora em todo o app — pedido do documento "Coloque minha marca de desenvolvedora"
 - [ ] Verificar regras, isolamento entre salões e fluxos completos com contas reais
