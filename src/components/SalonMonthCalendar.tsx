@@ -62,7 +62,7 @@ export function SalonMonthCalendar() {
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       const key = d.toLocaleDateString('en-CA');
       const dayAppts = byDay.get(key) ?? [];
-      const free = freeSlots(dayAppts.map((a) => new Date(a.starts_at).getHours()), OPEN_HOUR, CLOSE_HOUR);
+      const free = freeSlots(dayAppts.map((a) => new Date(a.starts_at).getHours()), openHour, closeHour);
       list.push({
         date: new Date(d),
         key,
@@ -138,7 +138,7 @@ export function SalonMonthCalendar() {
           ))}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Ocupação calculada sobre {SLOTS_PER_DAY} horários por dia ({String(OPEN_HOUR).padStart(2, '0')}h às {CLOSE_HOUR}h). Agendamentos cancelados não contam.
+          Ocupação calculada sobre {slotsPerDay} horários por dia ({String(openHour).padStart(2, '0')}h às {String(closeHour).padStart(2, '0')}h, conforme o horário de funcionamento do seu salão). Agendamentos cancelados não contam.
         </p>
       </section>
 
