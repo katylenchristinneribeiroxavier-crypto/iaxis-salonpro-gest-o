@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Conectar Evolution por salão com teste seguro, recebimento persistido e tela de mensagens para responder agendamentos e sinais
 - [x] WhatsApp por dona: configuracoes_salao com acesso exclusivo da dona, formulário /configuracoes e contato dinâmico no agendamento; nenhuma conexão WhatsApp global encontrada
 - [x] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
 - [ ] Validar novas páginas e agendamento com dados reais — bloqueado: não há salões cadastrados; envio automático WhatsApp ainda depende de integração de mensagens
