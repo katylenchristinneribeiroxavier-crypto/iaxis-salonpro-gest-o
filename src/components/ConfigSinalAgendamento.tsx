@@ -20,6 +20,9 @@ export function ConfigSinalAgendamento() {
   const [cobrar, setCobrar] = useState(false);
   const [tipo, setTipo] = useState<'porcentagem' | 'fixo'>('porcentagem');
   const [valor, setValor] = useState('0');
+  const [pixKey, setPixKey] = useState('');
+  const [pixHolder, setPixHolder] = useState('');
+  const [pixCity, setPixCity] = useState('');
   const [busy, setBusy] = useState(false);
 
   const { data: config } = useQuery({
@@ -27,7 +30,7 @@ export function ConfigSinalAgendamento() {
     enabled: !!salon,
     queryFn: async () => {
       if (!salon) return null;
-      const r = await supabase.from('salons').select('cobrar_sinal, tipo_sinal, valor_sinal').eq('id', salon.id).single();
+      const r = await supabase.from('salons').select('cobrar_sinal, tipo_sinal, valor_sinal, pix_key, pix_holder, pix_city').eq('id', salon.id).single();
       if (r.error) throw r.error;
       return r.data;
     },
@@ -38,6 +41,7 @@ export function ConfigSinalAgendamento() {
     setCobrar(config.cobrar_sinal);
     setTipo(config.tipo_sinal === 'fixo' ? 'fixo' : 'porcentagem');
     setValor(String(config.valor_sinal));
+    setPixKey(config.pix_key); setPixHolder(config.pix_holder); setPixCity(config.pix_city);
   }, [config]);
 
   const valorNum = Number(valor) || 0;
@@ -49,8 +53,9 @@ export function ConfigSinalAgendamento() {
       toast.error(tipo === 'porcentagem' ? 'Informe uma porcentagem entre 1 e 100.' : 'Informe um valor maior que zero.');
       return;
     }
+    if (cobrar && !pixKey.trim()) { toast.error('Informe a chave PIX que receberá o sinal.'); return; }
     setBusy(true);
-    const r = await supabase.from('salons').update({ cobrar_sinal: cobrar, tipo_sinal: tipo, valor_sinal: valorNum }).eq('id', salon.id);
+    const r = await supabase.from('salons').update({ cobrar_sinal: cobrar, tipo_sinal: tipo, valor_sinal: valorNum, pix_key: pixKey.trim(), pix_holder: pixHolder.trim(), pix_city: pixCity.trim() }).eq('id', salon.id);
     setBusy(false);
     if (r.error) { toast.error(r.error.message); return; }
     await qc.invalidateQueries({ queryKey: ['deposit-config'] });
@@ -82,6 +87,15 @@ export function ConfigSinalAgendamento() {
             <p className="rounded bg-muted p-2 text-sm text-muted-foreground">
               Ex.: serviço de {brl(300)} com {valorNum}{tipo === 'porcentagem' ? '%' : ' reais'} = sinal de {brl(exemplo)}
             </p>
+            <fieldset className="space-y-3 border-t pt-4">
+              <legend className="text-sm font-medium">PIX que recebe o sinal</legend>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="space-y-1"><Label htmlFor="pix-key">Chave PIX</Label><Input id="pix-key" value={pixKey} onChange={(e) => setPixKey(e.target.value)} placeholder="CPF, e-mail, telefone ou aleatória" /></div>
+                <div className="space-y-1"><Label htmlFor="pix-holder">Nome do titular</Label><Input id="pix-holder" value={pixHolder} onChange={(e) => setPixHolder(e.target.value)} maxLength={25} /></div>
+                <div className="space-y-1"><Label htmlFor="pix-city">Cidade</Label><Input id="pix-city" value={pixCity} onChange={(e) => setPixCity(e.target.value)} maxLength={15} /></div>
+              </div>
+              <p className="text-sm text-muted-foreground">O cliente paga o sinal direto nesta chave, por QR Code ou copia e cola. Você confirma o recebimento na tela Sinais.</p>
+            </fieldset>
             <Button onClick={salvar} disabled={busy}><Save />{busy ? 'Salvando…' : 'Salvar configuração'}</Button>
           </div>
         )}
