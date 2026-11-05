@@ -12,7 +12,7 @@ export const workspaceNav = [
   { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' },
   { to: '/sinais', label: 'Sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
-  { to: '/conexao-whatsapp', label: 'WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
+  { to: '/configuracoes/whatsapp', label: 'WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
   { to: '/suporte', label: 'Suporte técnico' }, { to: '/salao', label: 'Todas as pastas' },
 ];
 export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {
