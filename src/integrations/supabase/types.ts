@@ -898,18 +898,21 @@ export type Database = {
       }
       salon_connections: {
         Row: {
+          api_token: string
           evolution_instance: string
           evolution_url: string
           id: string
           salon_id: string
         }
         Insert: {
+          api_token?: string
           evolution_instance?: string
           evolution_url?: string
           id?: string
           salon_id: string
         }
         Update: {
+          api_token?: string
           evolution_instance?: string
           evolution_url?: string
           id?: string
