@@ -7,13 +7,14 @@ import { SalonAccessGate } from './SalonAccessGate';
 export const workspaceNav = [
   { to: '/agenda-do-dia', label: 'Agenda do dia' }, { to: '/agenda-mes', label: 'Agenda do mês' },
   { to: '/chat-equipe', label: 'Chat da equipe' },
+  { to: '/gestao-salao', label: 'Gestão integrada' },
   { to: '/minhas-comissoes', label: 'Minhas comissões' },
   { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
   { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' },
   { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
-  { to: '/configuracoes/whatsapp', label: 'WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
+  { to: '/configuracoes', label: 'Configurações e WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
   { to: '/suporte', label: 'Suporte técnico' }, { to: '/salao', label: 'Todas as pastas' },
 ];
 export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {

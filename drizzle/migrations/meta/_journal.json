@@ -99,6 +99,13 @@
       "when": 1793893318713,
       "tag": "0013_salon_opening_hours",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1793895726972,
+      "tag": "0014_salon_owner_whatsapp_settings",
+      "breakpoints": true
     }
   ]
 }

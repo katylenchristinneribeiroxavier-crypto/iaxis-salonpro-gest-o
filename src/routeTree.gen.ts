@@ -33,6 +33,7 @@ import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
+import { Route as AuthenticatedGestaoSalaoRouteImport } from './routes/_authenticated/gestao-salao'
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
@@ -47,6 +48,7 @@ import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticate
 import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
 import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
 import { Route as RCodeRouteImport } from './routes/r.$code'
+import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes.index'
 import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes/_authenticated/configuracoes.whatsapp'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
@@ -185,6 +187,12 @@ const AuthenticatedGestaoRevendedoresRoute =
     path: '/gestao-revendedores',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedGestaoSalaoRoute =
+  AuthenticatedGestaoSalaoRouteImport.update({
+    id: '/gestao-salao',
+    path: '/gestao-salao',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMasterDesenvolvedoraRoute =
   AuthenticatedMasterDesenvolvedoraRouteImport.update({
     id: '/master-desenvolvedora',
@@ -261,6 +269,12 @@ const RCodeRoute = RCodeRouteImport.update({
   path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedConfiguracoesIndexRoute =
+  AuthenticatedConfiguracoesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 const AuthenticatedConfiguracoesWhatsappRoute =
   AuthenticatedConfiguracoesWhatsappRouteImport.update({
     id: '/whatsapp',
@@ -308,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -325,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -345,12 +361,12 @@ export interface FileRoutesByTo {
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -367,6 +383,7 @@ export interface FileRoutesByTo {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesById {
@@ -395,6 +412,7 @@ export interface FileRoutesById {
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/_authenticated/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -412,6 +430,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRouteTypes {
@@ -440,6 +459,7 @@ export interface FileRouteTypes {
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/minhas-comissoes'
@@ -457,6 +477,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/configuracoes/'
     | '/salao/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -477,12 +498,12 @@ export interface FileRouteTypes {
     | '/conexao-whatsapp'
     | '/configuracao-loja'
     | '/configuracao-suporte'
-    | '/configuracoes'
     | '/configurar-secretaria'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/minhas-comissoes'
@@ -499,6 +520,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/configuracoes'
     | '/salao'
   id:
     | '__root__'
@@ -526,6 +548,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
+    | '/_authenticated/gestao-salao'
     | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/master-financeiro'
     | '/_authenticated/minhas-comissoes'
@@ -543,6 +566,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/whatsapp'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
+    | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
   fileRoutesById: FileRoutesById
 }
@@ -729,6 +753,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestaoRevendedoresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/gestao-salao': {
+      id: '/_authenticated/gestao-salao'
+      path: '/gestao-salao'
+      fullPath: '/gestao-salao'
+      preLoaderRoute: typeof AuthenticatedGestaoSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/master-desenvolvedora': {
       id: '/_authenticated/master-desenvolvedora'
       path: '/master-desenvolvedora'
@@ -827,6 +858,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/configuracoes/': {
+      id: '/_authenticated/configuracoes/'
+      path: '/'
+      fullPath: '/configuracoes/'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIndexRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
     '/_authenticated/configuracoes/whatsapp': {
       id: '/_authenticated/configuracoes/whatsapp'
       path: '/whatsapp'
@@ -860,12 +898,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedConfiguracoesRouteChildren {
   AuthenticatedConfiguracoesWhatsappRoute: typeof AuthenticatedConfiguracoesWhatsappRoute
+  AuthenticatedConfiguracoesIndexRoute: typeof AuthenticatedConfiguracoesIndexRoute
 }
 
 const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteChildren =
   {
     AuthenticatedConfiguracoesWhatsappRoute:
       AuthenticatedConfiguracoesWhatsappRoute,
+    AuthenticatedConfiguracoesIndexRoute: AuthenticatedConfiguracoesIndexRoute,
   }
 
 const AuthenticatedConfiguracoesRouteWithChildren =
@@ -918,6 +958,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
+  AuthenticatedGestaoSalaoRoute: typeof AuthenticatedGestaoSalaoRoute
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
@@ -951,6 +992,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedFornecedoresParceirosRoute,
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
+  AuthenticatedGestaoSalaoRoute: AuthenticatedGestaoSalaoRoute,
   AuthenticatedMasterDesenvolvedoraRoute:
     AuthenticatedMasterDesenvolvedoraRoute,
   AuthenticatedMasterFinanceiroRoute: AuthenticatedMasterFinanceiroRoute,
