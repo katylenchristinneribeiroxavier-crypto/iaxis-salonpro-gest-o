@@ -32,12 +32,10 @@ export const resolveEvolutionConfig = createServerOnlyFn(async (salonId: string)
   const result = await db.from('configuracoes_salao').select('*').eq('salon_id', salonId).single();
   if (result.error || !result.data) throw new Error('Configure o WhatsApp do salão primeiro.');
   const c = result.data;
-  if (c.evolution_managed) {
-    const platform = await db.from('platform_evolution_settings').select('*').eq('id', true).single();
-    if (platform.error || !platform.data?.enabled || !platform.data.verified_at) throw new Error('A conexão central ainda não foi ativada pela desenvolvedora.');
-    return { ...c, evolution_api_url: platform.data.api_url, evolution_api_key: platform.data.api_key, callback_origin: platform.data.callback_origin };
-  }
-  return { ...c, callback_origin: '' };
+  if (!c.evolution_managed) throw new Error('Conecte seu número pela conexão central do aplicativo.');
+  const platform = await db.from('platform_evolution_settings').select('*').eq('id', true).single();
+  if (platform.error || !platform.data?.enabled || !platform.data.verified_at) throw new Error('A conexão central ainda não foi ativada pela desenvolvedora.');
+  return { ...c, evolution_api_url: platform.data.api_url, evolution_api_key: platform.data.api_key, callback_origin: platform.data.callback_origin };
 });
 export const setupEvolutionWebhook = createServerOnlyFn(async (base: string, key: string, instance: string, salonId: string, origin: string) => {
   const secret = process.env['EVOLUTION_WEBHOOK_SIGNING_KEY'];
