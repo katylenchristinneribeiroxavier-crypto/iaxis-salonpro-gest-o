@@ -24,3 +24,4 @@
 - [x] Caixa master da dona do app (caixa_master_saas, tela /master-financeiro, lançamento automático ao confirmar assinatura)
 - [x] Marca da desenvolvedora Katylen Ribeiro em rodapé, menu, login e Sobre o sistema
 - [ ] Futuro: WhatsApp, cobrança automática, notas fiscais, estoque/financeiro completos
+- [x] Agenda mensal do salão (/agenda-mes): gráfico de ocupação por dia e dias com horários livres

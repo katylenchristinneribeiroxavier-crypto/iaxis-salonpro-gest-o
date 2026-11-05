@@ -5,7 +5,8 @@ import { salonContextOptions } from '@/lib/salon-data';
 import { Shell } from './Shell';
 import { SalonAccessGate } from './SalonAccessGate';
 export const workspaceNav = [
-  { to: '/agenda-do-dia', label: 'Agenda do dia' }, { to: '/chat-equipe', label: 'Chat da equipe' },
+  { to: '/agenda-do-dia', label: 'Agenda do dia' }, { to: '/agenda-mes', label: 'Agenda do mês' },
+  { to: '/chat-equipe', label: 'Chat da equipe' },
   { to: '/minhas-comissoes', label: 'Minhas comissões' },
   { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },

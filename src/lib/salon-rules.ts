@@ -39,6 +39,14 @@ export function buildPixPayload(key: string, holder: string, city: string, amoun
   const body = emv('00', '01') + emv('26', gui) + emv('52', '0000') + emv('53', '986') + emv('54', amount.toFixed(2)) + emv('58', 'BR') + emv('59', clean(holder, 25)) + emv('60', clean(city, 15)) + emv('62', emv('05', tx)) + '6304';
   return body + crc16(body);
 }
+export function freeSlots(bookedHours: number[], openHour = 9, closeHour = 18) {
+  const taken = new Set(bookedHours);
+  const free: string[] = [];
+  for (let h = openHour; h < closeHour; h++) {
+    if (!taken.has(h)) free.push(`${String(h).padStart(2, '0')}:00`);
+  }
+  return free;
+}
 export function clientCategory(days: number | null, visits: number) {
   if (visits > 10) return 'vip';
   if (days === null) return 'sem_visita';
