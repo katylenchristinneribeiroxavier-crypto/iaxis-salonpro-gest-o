@@ -21,6 +21,7 @@ import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAgendaMesRouteImport } from './routes/_authenticated/agenda-mes'
 import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authenticated/area-revendedor'
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
+import { Route as AuthenticatedAssistenteAgendamentoRouteImport } from './routes/_authenticated/assistente-agendamento'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
 import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
 import { Route as AuthenticatedClientesSinaisRouteImport } from './routes/_authenticated/clientes-sinais'
@@ -34,6 +35,7 @@ import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
 import { Route as AuthenticatedGestaoSalaoRouteImport } from './routes/_authenticated/gestao-salao'
+import { Route as AuthenticatedLembretesRouteImport } from './routes/_authenticated/lembretes'
 import { Route as AuthenticatedMasterAutomacoesRouteImport } from './routes/_authenticated/master-automacoes'
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
@@ -121,6 +123,12 @@ const AuthenticatedAssinaturasRoute =
     path: '/assinaturas',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAssistenteAgendamentoRoute =
+  AuthenticatedAssistenteAgendamentoRouteImport.update({
+    id: '/assistente-agendamento',
+    path: '/assistente-agendamento',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedChatEquipeRoute = AuthenticatedChatEquipeRouteImport.update({
   id: '/chat-equipe',
   path: '/chat-equipe',
@@ -198,6 +206,11 @@ const AuthenticatedGestaoSalaoRoute =
     path: '/gestao-salao',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLembretesRoute = AuthenticatedLembretesRouteImport.update({
+  id: '/lembretes',
+  path: '/lembretes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMasterAutomacoesRoute =
   AuthenticatedMasterAutomacoesRouteImport.update({
     id: '/master-automacoes',
@@ -344,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
+  '/assistente-agendamento': typeof AuthenticatedAssistenteAgendamentoRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
@@ -357,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/lembretes': typeof AuthenticatedLembretesRoute
   '/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
@@ -394,6 +409,7 @@ export interface FileRoutesByTo {
   '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
+  '/assistente-agendamento': typeof AuthenticatedAssistenteAgendamentoRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
@@ -406,6 +422,7 @@ export interface FileRoutesByTo {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/lembretes': typeof AuthenticatedLembretesRoute
   '/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
@@ -444,6 +461,7 @@ export interface FileRoutesById {
   '/_authenticated/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/_authenticated/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
+  '/_authenticated/assistente-agendamento': typeof AuthenticatedAssistenteAgendamentoRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/_authenticated/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
@@ -457,6 +475,7 @@ export interface FileRoutesById {
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/_authenticated/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/_authenticated/lembretes': typeof AuthenticatedLembretesRoute
   '/_authenticated/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
@@ -496,6 +515,7 @@ export interface FileRouteTypes {
     | '/agenda-mes'
     | '/area-revendedor'
     | '/assinaturas'
+    | '/assistente-agendamento'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/clientes-sinais'
@@ -509,6 +529,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/gestao-revendedores'
     | '/gestao-salao'
+    | '/lembretes'
     | '/master-automacoes'
     | '/master-desenvolvedora'
     | '/master-financeiro'
@@ -546,6 +567,7 @@ export interface FileRouteTypes {
     | '/agenda-mes'
     | '/area-revendedor'
     | '/assinaturas'
+    | '/assistente-agendamento'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/clientes-sinais'
@@ -558,6 +580,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/gestao-revendedores'
     | '/gestao-salao'
+    | '/lembretes'
     | '/master-automacoes'
     | '/master-desenvolvedora'
     | '/master-financeiro'
@@ -595,6 +618,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agenda-mes'
     | '/_authenticated/area-revendedor'
     | '/_authenticated/assinaturas'
+    | '/_authenticated/assistente-agendamento'
     | '/_authenticated/chat-equipe'
     | '/_authenticated/clientes-categorias'
     | '/_authenticated/clientes-sinais'
@@ -608,6 +632,7 @@ export interface FileRouteTypes {
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
     | '/_authenticated/gestao-salao'
+    | '/_authenticated/lembretes'
     | '/_authenticated/master-automacoes'
     | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/master-financeiro'
@@ -735,6 +760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAssinaturasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/assistente-agendamento': {
+      id: '/_authenticated/assistente-agendamento'
+      path: '/assistente-agendamento'
+      fullPath: '/assistente-agendamento'
+      preLoaderRoute: typeof AuthenticatedAssistenteAgendamentoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/chat-equipe': {
       id: '/_authenticated/chat-equipe'
       path: '/chat-equipe'
@@ -824,6 +856,13 @@ declare module '@tanstack/react-router' {
       path: '/gestao-salao'
       fullPath: '/gestao-salao'
       preLoaderRoute: typeof AuthenticatedGestaoSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/lembretes': {
+      id: '/_authenticated/lembretes'
+      path: '/lembretes'
+      fullPath: '/lembretes'
+      preLoaderRoute: typeof AuthenticatedLembretesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/master-automacoes': {
@@ -1047,6 +1086,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaMesRoute: typeof AuthenticatedAgendaMesRoute
   AuthenticatedAreaRevendedorRoute: typeof AuthenticatedAreaRevendedorRoute
   AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
+  AuthenticatedAssistenteAgendamentoRoute: typeof AuthenticatedAssistenteAgendamentoRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
   AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
   AuthenticatedClientesSinaisRoute: typeof AuthenticatedClientesSinaisRoute
@@ -1060,6 +1100,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
   AuthenticatedGestaoSalaoRoute: typeof AuthenticatedGestaoSalaoRoute
+  AuthenticatedLembretesRoute: typeof AuthenticatedLembretesRoute
   AuthenticatedMasterAutomacoesRoute: typeof AuthenticatedMasterAutomacoesRoute
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
@@ -1082,6 +1123,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaMesRoute: AuthenticatedAgendaMesRoute,
   AuthenticatedAreaRevendedorRoute: AuthenticatedAreaRevendedorRoute,
   AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
+  AuthenticatedAssistenteAgendamentoRoute:
+    AuthenticatedAssistenteAgendamentoRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
   AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
   AuthenticatedClientesSinaisRoute: AuthenticatedClientesSinaisRoute,
@@ -1097,6 +1140,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
   AuthenticatedGestaoSalaoRoute: AuthenticatedGestaoSalaoRoute,
+  AuthenticatedLembretesRoute: AuthenticatedLembretesRoute,
   AuthenticatedMasterAutomacoesRoute: AuthenticatedMasterAutomacoesRoute,
   AuthenticatedMasterDesenvolvedoraRoute:
     AuthenticatedMasterDesenvolvedoraRoute,
