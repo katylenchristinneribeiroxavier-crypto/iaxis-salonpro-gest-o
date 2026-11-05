@@ -57,6 +57,7 @@ import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_au
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
 import { Route as AuthenticatedSalaoPastaRouteImport } from './routes/_authenticated/salao.$pasta'
 import { Route as ApiPublicEvolutionSalonIdRouteImport } from './routes/api/public/evolution/$salonId'
+import { Route as ApiPublicJobsSalonRemindersRouteImport } from './routes/api/public/jobs/salon-reminders'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -324,6 +325,12 @@ const ApiPublicEvolutionSalonIdRoute =
     path: '/api/public/evolution/$salonId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicJobsSalonRemindersRoute =
+  ApiPublicJobsSalonRemindersRouteImport.update({
+    id: '/api/public/jobs/salon-reminders',
+    path: '/api/public/jobs/salon-reminders',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -373,6 +380,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
+  '/api/public/jobs/salon-reminders': typeof ApiPublicJobsSalonRemindersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -420,6 +428,7 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
+  '/api/public/jobs/salon-reminders': typeof ApiPublicJobsSalonRemindersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -471,6 +480,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
+  '/api/public/jobs/salon-reminders': typeof ApiPublicJobsSalonRemindersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -522,6 +532,7 @@ export interface FileRouteTypes {
     | '/configuracoes/'
     | '/salao/'
     | '/api/public/evolution/$salonId'
+    | '/api/public/jobs/salon-reminders'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -569,6 +580,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/salao'
     | '/api/public/evolution/$salonId'
+    | '/api/public/jobs/salon-reminders'
   id:
     | '__root__'
     | '/'
@@ -619,6 +631,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
     | '/api/public/evolution/$salonId'
+    | '/api/public/jobs/salon-reminders'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -633,6 +646,7 @@ export interface RootRouteChildren {
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
   RCodeRoute: typeof RCodeRoute
   ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
+  ApiPublicJobsSalonRemindersRoute: typeof ApiPublicJobsSalonRemindersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -973,6 +987,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicEvolutionSalonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/jobs/salon-reminders': {
+      id: '/api/public/jobs/salon-reminders'
+      path: '/api/public/jobs/salon-reminders'
+      fullPath: '/api/public/jobs/salon-reminders'
+      preLoaderRoute: typeof ApiPublicJobsSalonRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1108,6 +1129,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
   RCodeRoute: RCodeRoute,
   ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,
+  ApiPublicJobsSalonRemindersRoute: ApiPublicJobsSalonRemindersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
