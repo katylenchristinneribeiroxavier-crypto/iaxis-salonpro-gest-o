@@ -36,7 +36,7 @@ function Cliente() {
 
   const salons = useQuery({
     queryKey: ["salons-public"],
-    queryFn: async () => (await supabase.from("salons").select("id, name, slug, city, cobrar_sinal, tipo_sinal, valor_sinal, pix_key, pix_holder, pix_city").eq("status", "ativo").order("name")).data ?? [],
+    queryFn: async () => (await supabase.from("salons").select("id, name, slug, city, logo_url, cobrar_sinal, tipo_sinal, valor_sinal, pix_key, pix_holder, pix_city").eq("status", "ativo").order("name")).data ?? [],
   });
   const salon = salons.data?.find((x) => x.slug === slug);
 
@@ -103,7 +103,11 @@ function Cliente() {
     <div className="min-h-screen bg-gradient-navy">
       <div className="mx-auto max-w-2xl p-6">
         <div className="flex items-center justify-between">
-          <Brand />
+          {salon ? (
+            salon.logo_url
+              ? <img src={salon.logo_url} alt={`Logo de ${salon.name}`} className="h-12 w-auto rounded-lg object-contain" />
+              : <span className="font-display text-2xl font-semibold">{salon.name}</span>
+          ) : <Brand />}
           {me.data ? <button onClick={signOut} className="text-sm text-gold">Sair</button> : <Link to="/auth" search={{ role: "cliente" }} className="text-sm text-gold">Entrar</Link>}
         </div>
 
