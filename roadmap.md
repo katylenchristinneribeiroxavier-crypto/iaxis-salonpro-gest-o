@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Restringir APIs e campos técnicos à desenvolvedora, manter configuração pessoal por salão e impedir criação automática de administradores
+- [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
 - [x] Central Evolution em /master-automacoes e conexão individual por número + QR; credenciais centrais sem acesso pelo navegador, instâncias exclusivas e histórico master
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
 - [ ] Ativar e verificar conexão Evolution real — bloqueado: sem salões, conta super_admin, URL/chave central ou endereço publicado; Evolution v2 deve estar hospedada e suportar cabeçalhos de webhook. Testes de isolamento e bloqueio de acesso passaram, pareamento real não verificado
