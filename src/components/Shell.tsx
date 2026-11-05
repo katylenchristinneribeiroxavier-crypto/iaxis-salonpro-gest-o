@@ -24,7 +24,7 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
   const signOut = useSignOut();
   return (
     <div className="min-h-screen md:flex">
-      <aside className="border-b bg-sidebar p-5 md:min-h-screen md:w-64 md:shrink-0 md:border-b-0 md:border-r">
+      <aside className="border-b bg-sidebar p-5 md:flex md:min-h-screen md:w-64 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <Brand />
         <p className="mt-3 text-xs uppercase tracking-widest text-gold">{role}</p>
         <nav className="mt-6 flex gap-1 overflow-x-auto md:flex-col">
