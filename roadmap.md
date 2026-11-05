@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Centralizar Evolution no painel da desenvolvedora e permitir conexão individual por número + QR, com credenciais privadas e recebimento automático por salão
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
 - [ ] Ativar e verificar conexão Evolution real — bloqueado: nenhum salão, URL, instância ou chave cadastrados; recebimento precisa de aplicativo publicado e Evolution com cabeçalhos de webhook
 - [x] WhatsApp por dona: configuracoes_salao com acesso exclusivo da dona, formulário /configuracoes e contato dinâmico no agendamento; nenhuma conexão WhatsApp global encontrada
