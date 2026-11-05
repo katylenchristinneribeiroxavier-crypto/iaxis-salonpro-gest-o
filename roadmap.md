@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Continuar desenvolvimento: concluir respostas, histórico e acompanhamento do suporte master sem alterar a gestão dos salões
 - [x] Conta da solicitante identificada por sessão própria, acesso super_admin liberado e auditado; abas APIs, Evolution e regras verificadas com a conta real
 - [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas
 - [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
