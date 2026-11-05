@@ -931,6 +931,9 @@ export type Database = {
           name: string
           name_article: string
           owner_id: string
+          pix_city: string
+          pix_holder: string
+          pix_key: string
           plan_id: string | null
           released_at: string | null
           reseller_id: string | null
@@ -957,6 +960,9 @@ export type Database = {
           name?: string
           name_article?: string
           owner_id: string
+          pix_city?: string
+          pix_holder?: string
+          pix_key?: string
           plan_id?: string | null
           released_at?: string | null
           reseller_id?: string | null
@@ -983,6 +989,9 @@ export type Database = {
           name?: string
           name_article?: string
           owner_id?: string
+          pix_city?: string
+          pix_holder?: string
+          pix_key?: string
           plan_id?: string | null
           released_at?: string | null
           reseller_id?: string | null

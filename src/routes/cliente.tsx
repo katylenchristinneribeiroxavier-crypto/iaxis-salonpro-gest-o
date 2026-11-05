@@ -2,10 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
+import QRCode from "qrcode";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand, StatusBadge, btnGold } from "@/components/Shell";
 import { brl, useMe, useSignOut } from "@/lib/auth";
-import { depositAmount } from "@/lib/salon-rules";
+import { buildPixPayload, depositAmount } from "@/lib/salon-rules";
 
 export const Route = createFileRoute("/cliente")({
   validateSearch: (s: Record<string, unknown>): { s?: string | undefined } => ({ s: typeof s["s"] === "string" ? s["s"] : undefined }),
@@ -31,10 +32,11 @@ function Cliente() {
   const [pro, setPro] = useState<string>();
   const [day, setDay] = useState(amanha());
   const [hora, setHora] = useState<string>();
+  const [pagamento, setPagamento] = useState<{ payload: string; qr: string; valor: number } | null>(null);
 
   const salons = useQuery({
     queryKey: ["salons-public"],
-    queryFn: async () => (await supabase.from("salons").select("id, name, slug, city, cobrar_sinal, tipo_sinal, valor_sinal").eq("status", "ativo").order("name")).data ?? [],
+    queryFn: async () => (await supabase.from("salons").select("id, name, slug, city, cobrar_sinal, tipo_sinal, valor_sinal, pix_key, pix_holder, pix_city").eq("status", "ativo").order("name")).data ?? [],
   });
   const salon = salons.data?.find((x) => x.slug === slug);
 
@@ -74,16 +76,24 @@ function Cliente() {
   const book = async () => {
     if (!me.data) return navigate({ to: "/auth", search: { role: "cliente" } });
     if (!salon || !service || !pro || !hora) return;
+    if (wantsDeposit && !salon.pix_key) return toast.error("Este salão ainda não configurou o PIX para receber o sinal.");
     const starts = new Date(`${day}T${hora}:00`);
-    const { error } = await supabase.from("appointments").insert({
+    const { data: appt, error } = await supabase.from("appointments").insert({
       salon_id: salon.id, client_id: me.data.user.id,
       client_name: (me.data.user.user_metadata?.["full_name"] as string) || me.data.user.email || "Cliente",
       service_id: service.id, professional_id: pro, starts_at: starts.toISOString(),
       price: servicePrice, deposit: sinal,
-      valor_sinal_pago: sinal, status_sinal: wantsDeposit ? "pago" : "isento",
-    });
+      valor_sinal_pago: sinal, status_sinal: wantsDeposit ? "pendente" : "isento",
+    }).select("id").single();
     if (error) return toast.error(error.code === "23505" ? "Esse horário acabou de ser reservado. Escolha outro." : error.message);
-    toast.success("Agendado! Você receberá a confirmação.");
+    if (wantsDeposit && appt) {
+      const payload = buildPixPayload(salon.pix_key, salon.pix_holder || salon.name, salon.pix_city || salon.city || "BRASIL", sinal, appt.id.replaceAll("-", "").slice(0, 20));
+      const qr = await QRCode.toDataURL(payload, { width: 260, margin: 1 });
+      setPagamento({ payload, qr, valor: sinal });
+      toast.success("Horário reservado! Pague o sinal para confirmar.");
+    } else {
+      toast.success("Agendado! Você receberá a confirmação.");
+    }
     setHora(undefined);
     qc.invalidateQueries({ queryKey: ["booked"] });
     qc.invalidateQueries({ queryKey: ["my-appts"] });
@@ -125,8 +135,20 @@ function Cliente() {
               </p>
             )}
             <button disabled={!svc || !pro || !hora} onClick={book} className={`${btnGold} mt-8 w-full p-4`}>
-              {!me.data ? "Entrar para agendar" : wantsDeposit ? `Pagar sinal de ${brl(sinal)} e confirmar` : "Confirmar agendamento"}
+              {!me.data ? "Entrar para agendar" : wantsDeposit ? `Reservar e pagar sinal de ${brl(sinal)}` : "Confirmar agendamento"}
             </button>
+            {pagamento && (
+              <section className="mt-6 rounded-xl border bg-card p-5 text-center" aria-live="polite">
+                <h2 className="text-2xl">Pague o sinal via PIX</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Escaneie o QR Code ou copie o código. O salão confirma seu horário assim que o pagamento de {brl(pagamento.valor)} cair.</p>
+                <img src={pagamento.qr} alt={`QR Code PIX de ${brl(pagamento.valor)}`} className="mx-auto mt-4 rounded-lg" width={260} height={260} />
+                <div className="mt-4 flex gap-2">
+                  <input readOnly aria-label="Código PIX copia e cola" className="w-full truncate rounded-md border bg-background px-3 py-2 text-xs" value={pagamento.payload} onFocus={(e) => e.target.select()} />
+                  <button className={btnGold} onClick={async () => { await navigator.clipboard.writeText(pagamento.payload); toast.success("Código PIX copiado"); }}>Copiar</button>
+                </div>
+                <button className="mt-3 text-sm text-muted-foreground underline" onClick={() => setPagamento(null)}>Já paguei, fechar</button>
+              </section>
+            )}
           </>
         )}
 

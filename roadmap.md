@@ -11,11 +11,13 @@
 - [ ] Agendamento público, secretária com IA e mensagens programadas
 - [ ] Suporte técnico master, tickets e encaminhamento
 - [ ] Revendedores, vendas confirmadas, comissão e notificações
-- [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona
+- [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona (ativar conexão com o número da dona)
+- [ ] Marca da desenvolvedora em todo o app — pedido do documento "Coloque minha marca de desenvolvedora"
 - [ ] Verificar regras, isolamento entre salões e fluxos completos com contas reais
 - [x] 4 painéis (Admin, Revendedor, Salão, Cliente) com login e dados reais
 - [x] Novos preços mensais/anuais dos planos
 - [x] Área de pagamento via PIX com dados da empresa do criador (chave editável no Painel Master)
 - [x] Sinal de agendamento: configuração por salão (% ou valor fixo) e cobrança no agendamento online (pagamento simulado, pronto para Asaas)
+- [ ] Pagamento real do sinal via PIX do salão (QR Code + copia e cola; confirmação manual pela dona até integrar Asaas)
 - [ ] Caixa master da dona do app (caixa_master_saas, tela /master-financeiro, lançamento automático de assinaturas) — pedido do documento "Correção crítica de caixa"
 - [ ] Futuro: WhatsApp, cobrança automática, notas fiscais, estoque/financeiro completos
