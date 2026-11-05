@@ -37,7 +37,7 @@ export function SupportInbox({ master = false }: { master?: boolean }) {
     if (!ticket || !body.trim() || busy) return;
     setBusy(true);
     try {
-      const result = await supabase.rpc('reply_support_ticket', { _ticket: ticket.id, _body: body.trim(), _status: master ? nextStatus : undefined });
+      const result = await supabase.rpc('reply_support_ticket', { _ticket: ticket.id, _body: body.trim(), ...(master ? { _status: nextStatus } : {}) });
       if (result.error) throw result.error;
       setBody('');
       await refresh();
