@@ -109,6 +109,65 @@ export type Database = {
           },
         ]
       }
+      caixa_master_saas: {
+        Row: {
+          created_at: string
+          criado_por: string | null
+          data_recebimento: string
+          descricao: string
+          forma_pagamento: string
+          id: string
+          mes_referencia: string
+          nome_salao: string
+          salon_id: string | null
+          status: string
+          taxa: number
+          tipo: string
+          valor: number
+          valor_liquido: number
+        }
+        Insert: {
+          created_at?: string
+          criado_por?: string | null
+          data_recebimento?: string
+          descricao?: string
+          forma_pagamento?: string
+          id?: string
+          mes_referencia?: string
+          nome_salao?: string
+          salon_id?: string | null
+          status?: string
+          taxa?: number
+          tipo?: string
+          valor?: number
+          valor_liquido?: number
+        }
+        Update: {
+          created_at?: string
+          criado_por?: string | null
+          data_recebimento?: string
+          descricao?: string
+          forma_pagamento?: string
+          id?: string
+          mes_referencia?: string
+          nome_salao?: string
+          salon_id?: string | null
+          status?: string
+          taxa?: number
+          tipo?: string
+          valor?: number
+          valor_liquido?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caixa_master_saas_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       config_agente_secretario: {
         Row: {
           genero: string

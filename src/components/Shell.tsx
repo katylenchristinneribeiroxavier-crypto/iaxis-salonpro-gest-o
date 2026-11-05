@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Crown, LogOut, Headset } from "lucide-react";
 import { Button } from './ui/button';
 import { useSignOut } from "@/lib/auth";
+import { BRANDING } from "@/constants/branding";
 
 export type NavItem = { to: string; label: string; params?: Record<string, string> };
 
@@ -23,7 +24,7 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
   const signOut = useSignOut();
   return (
     <div className="min-h-screen md:flex">
-      <aside className="border-b bg-sidebar p-5 md:min-h-screen md:w-64 md:shrink-0 md:border-b-0 md:border-r">
+      <aside className="border-b bg-sidebar p-5 md:flex md:min-h-screen md:w-64 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <Brand />
         <p className="mt-3 text-xs uppercase tracking-widest text-gold">{role}</p>
         <nav className="mt-6 flex gap-1 overflow-x-auto md:flex-col">
@@ -43,8 +44,19 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
             <LogOut className="h-4 w-4" /> Sair
           </Button>
         </nav>
+        <div className="mt-6 border-t pt-4 md:mt-auto">
+          <p className="text-center text-[11px] text-muted-foreground">
+            Desenvolvido por<br />
+            <span className="text-sm font-bold text-foreground">{BRANDING.devName}</span>
+          </p>
+        </div>
       </aside>
-      <main className="min-w-0 flex-1 bg-gradient-navy p-6 pb-24 md:p-10">{children}</main>
+      <main className="min-w-0 flex-1 bg-gradient-navy p-6 pb-24 md:p-10">
+        {children}
+        <footer className="mt-10 w-full border-t py-3 text-center text-xs text-muted-foreground">
+          {BRANDING.copyright} | Todos os direitos reservados
+        </footer>
+      </main>
       <Button asChild className="fixed right-5 bottom-5 shadow-gold"><Link to="/suporte"><Headset/>Suporte técnico</Link></Button>
     </div>
   );
