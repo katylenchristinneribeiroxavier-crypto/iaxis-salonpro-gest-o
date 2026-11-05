@@ -7,9 +7,13 @@ import { freeSlots } from '@/lib/salon-rules';
 import { PageTitle, inputCls } from './Shell';
 import { Button } from './ui/button';
 
-const OPEN_HOUR = 9;
-const CLOSE_HOUR = 18;
-const SLOTS_PER_DAY = CLOSE_HOUR - OPEN_HOUR; // horários de 1h: 09h às 17h
+const DEFAULT_OPEN = 9;
+const DEFAULT_CLOSE = 18;
+
+function hourOf(time: string | null | undefined, fallback: number) {
+  const h = Number(time?.slice(0, 2));
+  return Number.isFinite(h) && h >= 0 && h <= 23 ? h : fallback;
+}
 
 type Appt = { id: string; starts_at: string; status: string; client_name: string };
 
@@ -42,6 +46,10 @@ export function SalonMonthCalendar() {
     },
   });
 
+  const openHour = hourOf(ctx.salon?.opening_time, DEFAULT_OPEN);
+  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE), openHour + 1);
+  const slotsPerDay = closeHour - openHour;
+
   const days = useMemo(() => {
     const { start, end } = monthRange(month);
     const active = (data ?? []).filter((a) => a.status !== 'cancelado');
@@ -54,17 +62,17 @@ export function SalonMonthCalendar() {
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       const key = d.toLocaleDateString('en-CA');
       const dayAppts = byDay.get(key) ?? [];
-      const free = freeSlots(dayAppts.map((a) => new Date(a.starts_at).getHours()), OPEN_HOUR, CLOSE_HOUR);
+      const free = freeSlots(dayAppts.map((a) => new Date(a.starts_at).getHours()), openHour, closeHour);
       list.push({
         date: new Date(d),
         key,
         booked: dayAppts.length,
         free,
-        occupancy: Math.min(100, Math.round((dayAppts.length / SLOTS_PER_DAY) * 100)),
+        occupancy: Math.min(100, Math.round((dayAppts.length / slotsPerDay) * 100)),
       });
     }
     return list;
-  }, [data, month]);
+  }, [data, month, openHour, closeHour, slotsPerDay]);
 
   const totalBooked = days.reduce((s, d) => s + d.booked, 0);
   const avgOccupancy = days.length ? Math.round(days.reduce((s, d) => s + d.occupancy, 0) / days.length) : 0;
@@ -130,7 +138,7 @@ export function SalonMonthCalendar() {
           ))}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Ocupação calculada sobre {SLOTS_PER_DAY} horários por dia ({String(OPEN_HOUR).padStart(2, '0')}h às {CLOSE_HOUR}h). Agendamentos cancelados não contam.
+          Ocupação calculada sobre {slotsPerDay} horários por dia ({String(openHour).padStart(2, '0')}h às {String(closeHour).padStart(2, '0')}h, conforme o horário de funcionamento do seu salão). Agendamentos cancelados não contam.
         </p>
       </section>
 

@@ -28,3 +28,9 @@ describe('Horários livres da agenda mensal', () => {
     expect(freeSlots([9, 10, 11, 12, 13, 14, 15, 16, 17])).toEqual([]);
   });
 });
+
+describe('Horário de funcionamento personalizado', () => {
+  it('respeita abertura e fechamento definidos pelo dono', () => {
+    expect(freeSlots([], 8, 12)).toEqual(['08:00', '09:00', '10:00', '11:00']);
+  });
+});
