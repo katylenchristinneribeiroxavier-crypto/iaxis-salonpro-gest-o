@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { CalendarRange, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
+import { freeSlots } from '@/lib/salon-rules';
 import { PageTitle, inputCls } from './Shell';
 import { Button } from './ui/button';
 
