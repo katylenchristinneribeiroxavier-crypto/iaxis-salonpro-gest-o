@@ -49,9 +49,9 @@ function Admin() {
     if (error) toast.error(error.message); else { toast.success("Salvo"); refresh(); }
   };
 
-  const confirmarPagamento = async (q: { id: string; name: string; amount: number; billing: string; plans: unknown }) => {
+  const confirmarPagamento = async (q: { id: string; name: string; amount: number; billing: string; plans: unknown }): Promise<void> => {
     const { error } = await supabase.from("subscription_requests").update({ status: "confirmado" }).eq("id", q.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     const plano = (q.plans as { name: string } | null)?.name ?? "Plano";
     const { data: u } = await supabase.auth.getUser();
     const r = await supabase.from("caixa_master_saas").insert({
