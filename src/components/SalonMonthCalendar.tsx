@@ -68,11 +68,11 @@ export function SalonMonthCalendar() {
         key,
         booked: dayAppts.length,
         free,
-        occupancy: Math.min(100, Math.round((dayAppts.length / SLOTS_PER_DAY) * 100)),
+        occupancy: Math.min(100, Math.round((dayAppts.length / slotsPerDay) * 100)),
       });
     }
     return list;
-  }, [data, month]);
+  }, [data, month, openHour, closeHour, slotsPerDay]);
 
   const totalBooked = days.reduce((s, d) => s + d.booked, 0);
   const avgOccupancy = days.length ? Math.round(days.reduce((s, d) => s + d.occupancy, 0) / days.length) : 0;
