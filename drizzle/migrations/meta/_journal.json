@@ -169,6 +169,13 @@
       "when": 1793898469942,
       "tag": "0023_purchase_only_salon_and_single_free_test",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793898595506,
+      "tag": "0024_seven_day_purchase_trial",
+      "breakpoints": true
     }
   ]
 }

@@ -1470,6 +1470,7 @@ export type Database = {
         Row: {
           amount: number
           billing: string
+          confirmed_at: string | null
           created_at: string
           email: string
           id: string
@@ -1478,11 +1479,13 @@ export type Database = {
           phone: string | null
           plan_id: string | null
           status: string
+          trial_ends_at: string | null
           user_id: string | null
         }
         Insert: {
           amount: number
           billing?: string
+          confirmed_at?: string | null
           created_at?: string
           email: string
           id?: string
@@ -1491,11 +1494,13 @@ export type Database = {
           phone?: string | null
           plan_id?: string | null
           status?: string
+          trial_ends_at?: string | null
           user_id?: string | null
         }
         Update: {
           amount?: number
           billing?: string
+          confirmed_at?: string | null
           created_at?: string
           email?: string
           id?: string
@@ -1504,6 +1509,7 @@ export type Database = {
           phone?: string | null
           plan_id?: string | null
           status?: string
+          trial_ends_at?: string | null
           user_id?: string | null
         }
         Relationships: [
