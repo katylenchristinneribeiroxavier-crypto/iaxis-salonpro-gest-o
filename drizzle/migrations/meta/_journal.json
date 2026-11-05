@@ -64,6 +64,13 @@
       "when": 1793314437298,
       "tag": "0008_enforce_salon_access_helpers",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793890938716,
+      "tag": "0009_deposit_config_and_appointment_deposit",
+      "breakpoints": true
     }
   ]
 }
