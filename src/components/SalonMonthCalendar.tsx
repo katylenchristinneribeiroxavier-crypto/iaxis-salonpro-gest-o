@@ -48,7 +48,7 @@ export function SalonMonthCalendar() {
   });
 
   const openHour = hourOf(ctx.salon?.opening_time, DEFAULT_OPEN);
-  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE), openHour + 1);
+  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE, true), openHour + 1);
   const slotsPerDay = closeHour - openHour;
 
   const days = useMemo(() => {
