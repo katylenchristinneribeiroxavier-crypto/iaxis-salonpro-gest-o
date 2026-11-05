@@ -10,7 +10,8 @@ import { Button } from './ui/button';
 const DEFAULT_OPEN = 9;
 const DEFAULT_CLOSE = 18;
 
-function hourOf(time: string | null | undefined, fallback: number) {
+function hourOf(time: string | null | undefined, fallback: number, isClosing = false) {
+  if (isClosing && time?.slice(0, 5) === '00:00') return 24; // meia-noite = fim do dia
   const h = Number(time?.slice(0, 2));
   return Number.isFinite(h) && h >= 0 && h <= 23 ? h : fallback;
 }
@@ -47,7 +48,7 @@ export function SalonMonthCalendar() {
   });
 
   const openHour = hourOf(ctx.salon?.opening_time, DEFAULT_OPEN);
-  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE), openHour + 1);
+  const closeHour = Math.max(hourOf(ctx.salon?.closing_time, DEFAULT_CLOSE, true), openHour + 1);
   const slotsPerDay = closeHour - openHour;
 
   const days = useMemo(() => {

@@ -34,3 +34,12 @@ describe('Horário de funcionamento personalizado', () => {
     expect(freeSlots([], 8, 12)).toEqual(['08:00', '09:00', '10:00', '11:00']);
   });
 });
+
+describe('Funcionamento até meia-noite', () => {
+  it('gera horários das 08h às 23h quando o fechamento é 00:00 (24h)', () => {
+    const slots = freeSlots([], 8, 24);
+    expect(slots[0]).toBe('08:00');
+    expect(slots[slots.length - 1]).toBe('23:00');
+    expect(slots).toHaveLength(16);
+  });
+});

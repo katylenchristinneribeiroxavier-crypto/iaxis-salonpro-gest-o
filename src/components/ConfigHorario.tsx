@@ -36,8 +36,8 @@ export function ConfigHorario() {
 
   const salvar = async (): Promise<void> => {
     if (!salon || !ctx.manager) return;
-    if (abertura >= fechamento) {
-      toast.error('A abertura precisa ser antes do fechamento.');
+    if (fechamento !== '00:00' && abertura >= fechamento) {
+      toast.error('A abertura precisa ser antes do fechamento (00:00 vale como meia-noite, fim do dia).');
       return;
     }
     setBusy(true);
