@@ -727,6 +727,45 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_test_purchase: {
+        Row: {
+          id: boolean
+          redeemed_at: string
+          redeemed_by: string
+          request_id: string
+          salon_id: string
+        }
+        Insert: {
+          id?: boolean
+          redeemed_at?: string
+          redeemed_by: string
+          request_id: string
+          salon_id: string
+        }
+        Update: {
+          id?: boolean
+          redeemed_at?: string
+          redeemed_by?: string
+          request_id?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_test_purchase_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: true
+            referencedRelation: "subscription_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_test_purchase_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professionals: {
         Row: {
           commission_pct: number
@@ -1434,6 +1473,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          is_test_purchase: boolean
           name: string
           phone: string | null
           plan_id: string | null
@@ -1446,6 +1486,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          is_test_purchase?: boolean
           name: string
           phone?: string | null
           plan_id?: string | null
@@ -1458,6 +1499,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          is_test_purchase?: boolean
           name?: string
           phone?: string | null
           plan_id?: string | null
@@ -1912,6 +1954,10 @@ export type Database = {
         }[]
       }
       redeem_sale_code: { Args: { _code: string }; Returns: string }
+      redeem_single_test_purchase: {
+        Args: { _city?: string; _name: string }
+        Returns: string
+      }
       reply_support_ticket: {
         Args: { _body: string; _status?: string; _ticket: string }
         Returns: string

@@ -162,6 +162,13 @@
       "when": 1793898372864,
       "tag": "0022_salon_reminders_and_booking_assistant",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1793898469942,
+      "tag": "0023_purchase_only_salon_and_single_free_test",
+      "breakpoints": true
     }
   ]
 }
