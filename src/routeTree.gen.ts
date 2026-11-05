@@ -18,6 +18,7 @@ import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
+import { Route as AuthenticatedAgendaMesRouteImport } from './routes/_authenticated/agenda-mes'
 import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authenticated/area-revendedor'
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
@@ -96,6 +97,11 @@ const AuthenticatedAgendaDoDiaRoute =
     path: '/agenda-do-dia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAgendaMesRoute = AuthenticatedAgendaMesRouteImport.update({
+  id: '/agenda-mes',
+  path: '/agenda-mes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAreaRevendedorRoute =
   AuthenticatedAreaRevendedorRouteImport.update({
     id: '/area-revendedor',
@@ -287,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
@@ -329,6 +336,7 @@ export interface FileRoutesByTo {
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
@@ -372,6 +380,7 @@ export interface FileRoutesById {
   '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
+  '/_authenticated/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/_authenticated/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
   '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
@@ -416,6 +425,7 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/admin'
     | '/agenda-do-dia'
+    | '/agenda-mes'
     | '/area-revendedor'
     | '/assinaturas'
     | '/chat-equipe'
@@ -458,6 +468,7 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/admin'
     | '/agenda-do-dia'
+    | '/agenda-mes'
     | '/area-revendedor'
     | '/assinaturas'
     | '/chat-equipe'
@@ -500,6 +511,7 @@ export interface FileRouteTypes {
     | '/suporte'
     | '/_authenticated/admin'
     | '/_authenticated/agenda-do-dia'
+    | '/_authenticated/agenda-mes'
     | '/_authenticated/area-revendedor'
     | '/_authenticated/assinaturas'
     | '/_authenticated/chat-equipe'
@@ -610,6 +622,13 @@ declare module '@tanstack/react-router' {
       path: '/agenda-do-dia'
       fullPath: '/agenda-do-dia'
       preLoaderRoute: typeof AuthenticatedAgendaDoDiaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/agenda-mes': {
+      id: '/_authenticated/agenda-mes'
+      path: '/agenda-mes'
+      fullPath: '/agenda-mes'
+      preLoaderRoute: typeof AuthenticatedAgendaMesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/area-revendedor': {
@@ -884,6 +903,7 @@ const AuthenticatedSalaoRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
+  AuthenticatedAgendaMesRoute: typeof AuthenticatedAgendaMesRoute
   AuthenticatedAreaRevendedorRoute: typeof AuthenticatedAreaRevendedorRoute
   AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
@@ -914,6 +934,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
+  AuthenticatedAgendaMesRoute: AuthenticatedAgendaMesRoute,
   AuthenticatedAreaRevendedorRoute: AuthenticatedAreaRevendedorRoute,
   AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
