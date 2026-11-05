@@ -221,6 +221,44 @@ export type Database = {
         }
         Relationships: []
       }
+      configuracoes_salao: {
+        Row: {
+          evolution_api_key: string | null
+          evolution_api_url: string | null
+          id: string
+          nome_salao: string
+          salon_id: string
+          user_id: string
+          whatsapp_salao: string
+        }
+        Insert: {
+          evolution_api_key?: string | null
+          evolution_api_url?: string | null
+          id?: string
+          nome_salao?: string
+          salon_id: string
+          user_id: string
+          whatsapp_salao?: string
+        }
+        Update: {
+          evolution_api_key?: string | null
+          evolution_api_url?: string | null
+          id?: string
+          nome_salao?: string
+          salon_id?: string
+          user_id?: string
+          whatsapp_salao?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "configuracoes_salao_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fila_mensagens_ia: {
         Row: {
           agendado_para: string
@@ -1498,6 +1536,13 @@ export type Database = {
       }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
+      public_salon_booking_contact: {
+        Args: { _salon: string }
+        Returns: {
+          nome_salao: string
+          whatsapp_salao: string
+        }[]
+      }
       public_salon_identity: {
         Args: { _salon: string }
         Returns: {
