@@ -33,6 +33,7 @@ import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
+import { Route as AuthenticatedGestaoSalaoRouteImport } from './routes/_authenticated/gestao-salao'
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
@@ -185,6 +186,12 @@ const AuthenticatedGestaoRevendedoresRoute =
     path: '/gestao-revendedores',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedGestaoSalaoRoute =
+  AuthenticatedGestaoSalaoRouteImport.update({
+    id: '/gestao-salao',
+    path: '/gestao-salao',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMasterDesenvolvedoraRoute =
   AuthenticatedMasterDesenvolvedoraRouteImport.update({
     id: '/master-desenvolvedora',
@@ -308,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -351,6 +359,7 @@ export interface FileRoutesByTo {
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -395,6 +404,7 @@ export interface FileRoutesById {
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
+  '/_authenticated/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
@@ -440,6 +450,7 @@ export interface FileRouteTypes {
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/minhas-comissoes'
@@ -483,6 +494,7 @@ export interface FileRouteTypes {
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
+    | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/minhas-comissoes'
@@ -526,6 +538,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
+    | '/_authenticated/gestao-salao'
     | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/master-financeiro'
     | '/_authenticated/minhas-comissoes'
@@ -729,6 +742,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestaoRevendedoresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/gestao-salao': {
+      id: '/_authenticated/gestao-salao'
+      path: '/gestao-salao'
+      fullPath: '/gestao-salao'
+      preLoaderRoute: typeof AuthenticatedGestaoSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/master-desenvolvedora': {
       id: '/_authenticated/master-desenvolvedora'
       path: '/master-desenvolvedora'
@@ -918,6 +938,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
+  AuthenticatedGestaoSalaoRoute: typeof AuthenticatedGestaoSalaoRoute
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
@@ -951,6 +972,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedFornecedoresParceirosRoute,
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
+  AuthenticatedGestaoSalaoRoute: AuthenticatedGestaoSalaoRoute,
   AuthenticatedMasterDesenvolvedoraRoute:
     AuthenticatedMasterDesenvolvedoraRoute,
   AuthenticatedMasterFinanceiroRoute: AuthenticatedMasterFinanceiroRoute,
