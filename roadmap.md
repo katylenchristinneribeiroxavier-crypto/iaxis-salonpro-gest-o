@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] WhatsApp por dona: configuracoes_salao, formulário /configuracoes, número dinâmico no agendamento e remoção de vínculo fixo
 - [ ] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
 - [ ] Controle master implementado; verificar ações com conta super_admin e definir a conta da desenvolvedora (nenhum super_admin confirmado)
 - [x] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
