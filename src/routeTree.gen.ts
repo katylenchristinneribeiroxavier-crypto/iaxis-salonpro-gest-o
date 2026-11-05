@@ -48,6 +48,7 @@ import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticate
 import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
 import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
 import { Route as RCodeRouteImport } from './routes/r.$code'
+import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes.index'
 import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes/_authenticated/configuracoes.whatsapp'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
@@ -268,6 +269,12 @@ const RCodeRoute = RCodeRouteImport.update({
   path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedConfiguracoesIndexRoute =
+  AuthenticatedConfiguracoesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 const AuthenticatedConfiguracoesWhatsappRoute =
   AuthenticatedConfiguracoesWhatsappRouteImport.update({
     id: '/whatsapp',
@@ -333,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -353,7 +361,6 @@ export interface FileRoutesByTo {
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
@@ -376,6 +383,7 @@ export interface FileRoutesByTo {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRoutesById {
@@ -422,6 +430,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
 }
 export interface FileRouteTypes {
@@ -468,6 +477,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/configuracoes/'
     | '/salao/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -488,7 +498,6 @@ export interface FileRouteTypes {
     | '/conexao-whatsapp'
     | '/configuracao-loja'
     | '/configuracao-suporte'
-    | '/configuracoes'
     | '/configurar-secretaria'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
@@ -511,6 +520,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/configuracoes'
     | '/salao'
   id:
     | '__root__'
@@ -556,6 +566,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/whatsapp'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
+    | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
   fileRoutesById: FileRoutesById
 }
@@ -847,6 +858,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/configuracoes/': {
+      id: '/_authenticated/configuracoes/'
+      path: '/'
+      fullPath: '/configuracoes/'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIndexRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
     '/_authenticated/configuracoes/whatsapp': {
       id: '/_authenticated/configuracoes/whatsapp'
       path: '/whatsapp'
@@ -880,12 +898,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedConfiguracoesRouteChildren {
   AuthenticatedConfiguracoesWhatsappRoute: typeof AuthenticatedConfiguracoesWhatsappRoute
+  AuthenticatedConfiguracoesIndexRoute: typeof AuthenticatedConfiguracoesIndexRoute
 }
 
 const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteChildren =
   {
     AuthenticatedConfiguracoesWhatsappRoute:
       AuthenticatedConfiguracoesWhatsappRoute,
+    AuthenticatedConfiguracoesIndexRoute: AuthenticatedConfiguracoesIndexRoute,
   }
 
 const AuthenticatedConfiguracoesRouteWithChildren =
