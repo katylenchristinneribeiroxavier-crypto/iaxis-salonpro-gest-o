@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Brand, btnGold, inputCls } from "@/components/Shell";
 import { homeFor, type Role } from "@/lib/auth";
+import { BRANDING } from "@/constants/branding";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { ref?: string | undefined; role?: string | undefined } => ({
@@ -102,6 +103,9 @@ function Auth() {
         <button onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-sm text-gold hover:underline">
           {mode === "in" ? "Não tem conta? Cadastre-se" : "Já tenho conta"}
         </button>
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          Desenvolvido por <span className="font-semibold text-foreground">{BRANDING.devName}</span>
+        </p>
       </div>
     </div>
   );
