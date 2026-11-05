@@ -15,3 +15,4 @@
 - App-internal privileged work uses TanStack server functions; external callbacks use verified /api/public endpoints.
 - Reseller AI uses authenticated streaming server routes with request-local gateway helpers; qualification runs once during lead submission, never on page views, and preserves commission snapshots.
 - Master access reuses protected user_roles rather than a parallel email-based role table; salon suspension is separate from billing and enforced by restrictive RLS with audited changes.
+- Compose the unified salon page from existing operational modules; show subscription requests as owner-account history because they have no salon identifier.
