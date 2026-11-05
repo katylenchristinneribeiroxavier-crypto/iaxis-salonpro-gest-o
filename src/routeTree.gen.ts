@@ -19,6 +19,7 @@ import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
 import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authenticated/area-revendedor'
+import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
 import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
 import { Route as AuthenticatedConexaoWhatsappRouteImport } from './routes/_authenticated/conexao-whatsapp'
@@ -98,6 +99,12 @@ const AuthenticatedAreaRevendedorRoute =
   AuthenticatedAreaRevendedorRouteImport.update({
     id: '/area-revendedor',
     path: '/area-revendedor',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAssinaturasRoute =
+  AuthenticatedAssinaturasRouteImport.update({
+    id: '/assinaturas',
+    path: '/assinaturas',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedChatEquipeRoute = AuthenticatedChatEquipeRouteImport.update({
@@ -274,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
+  '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -314,6 +322,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
+  '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -355,6 +364,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/_authenticated/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
+  '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
   '/_authenticated/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agenda-do-dia'
     | '/area-revendedor'
+    | '/assinaturas'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/conexao-whatsapp'
@@ -437,6 +448,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agenda-do-dia'
     | '/area-revendedor'
+    | '/assinaturas'
     | '/chat-equipe'
     | '/clientes-categorias'
     | '/conexao-whatsapp'
@@ -477,6 +489,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/agenda-do-dia'
     | '/_authenticated/area-revendedor'
+    | '/_authenticated/assinaturas'
     | '/_authenticated/chat-equipe'
     | '/_authenticated/clientes-categorias'
     | '/_authenticated/conexao-whatsapp'
@@ -591,6 +604,13 @@ declare module '@tanstack/react-router' {
       path: '/area-revendedor'
       fullPath: '/area-revendedor'
       preLoaderRoute: typeof AuthenticatedAreaRevendedorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/assinaturas': {
+      id: '/_authenticated/assinaturas'
+      path: '/assinaturas'
+      fullPath: '/assinaturas'
+      preLoaderRoute: typeof AuthenticatedAssinaturasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/chat-equipe': {
@@ -845,6 +865,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
   AuthenticatedAreaRevendedorRoute: typeof AuthenticatedAreaRevendedorRoute
+  AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
   AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
   AuthenticatedConexaoWhatsappRoute: typeof AuthenticatedConexaoWhatsappRoute
@@ -873,6 +894,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
   AuthenticatedAreaRevendedorRoute: AuthenticatedAreaRevendedorRoute,
+  AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
   AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
   AuthenticatedConexaoWhatsappRoute: AuthenticatedConexaoWhatsappRoute,
