@@ -10,7 +10,8 @@ import { Button } from './ui/button';
 const DEFAULT_OPEN = 9;
 const DEFAULT_CLOSE = 18;
 
-function hourOf(time: string | null | undefined, fallback: number) {
+function hourOf(time: string | null | undefined, fallback: number, isClosing = false) {
+  if (isClosing && time?.slice(0, 5) === '00:00') return 24; // meia-noite = fim do dia
   const h = Number(time?.slice(0, 2));
   return Number.isFinite(h) && h >= 0 && h <= 23 ? h : fallback;
 }
