@@ -20,3 +20,4 @@
 - Evolution sends run in authenticated server functions; tenant webhooks authenticate a derived header token, persist sanitized events, and recover pending events on callbacks, sends, and inbox refresh.
 - Central Evolution credentials are service-role-only after super_admin checks; provision stable salon-scoped instances through owner-authorized functions and resolve managed credentials only server-side to prevent cross-tenant access.
 - Salon users have column-scoped access only to personal contact settings, never API credentials or instance controls; keep one super_admin enforced by a partial unique index and never grant it through self-signup.
+- Support conversations reuse existing tickets; an authenticated transactional database function assigns authorship and developer status, and only the requester or super_admin may read the immutable history.

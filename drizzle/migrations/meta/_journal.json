@@ -141,6 +141,20 @@
       "when": 1793897320825,
       "tag": "0019_developer_only_api_access",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793897763037,
+      "tag": "0020_support_conversation_history",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1793897977819,
+      "tag": "0021_restrict_support_history_grants",
+      "breakpoints": true
     }
   ]
 }

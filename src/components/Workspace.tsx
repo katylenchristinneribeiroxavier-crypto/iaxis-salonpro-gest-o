@@ -16,11 +16,11 @@ export const workspaceNav = [
   { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
   { to: '/configuracoes', label: 'Configurações e WhatsApp' }, { to: '/gestao-revendedores', label: 'Revendas' },
-  { to: '/suporte', label: 'Suporte técnico' }, { to: '/salao', label: 'Todas as pastas' },
+  { to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' }, { to: '/salao', label: 'Todas as pastas' },
 ];
 export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {
   const { data } = useSuspenseQuery(salonContextOptions);
-  const nav = data.manager ? workspaceNav : workspaceNav.slice(0, 3).concat({ to: '/suporte', label: 'Suporte técnico' });
+  const nav = data.manager ? workspaceNav : workspaceNav.slice(0, 3).concat({ to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' });
   return <Shell role={data.salon?.name || 'Meu salão'} nav={nav}>
     <SalonAccessGate>{!data.salon ? <div><h1 className="text-3xl">Nenhum salão vinculado</h1><Link to="/auth" className="text-gold">Acessar outra conta</Link></div> : manager && !data.manager ? <h1 className="text-3xl">Acesso restrito à administração do salão</h1> : children}</SalonAccessGate>
   </Shell>;

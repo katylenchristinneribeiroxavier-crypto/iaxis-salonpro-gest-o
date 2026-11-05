@@ -1,0 +1,7 @@
+-- Read-only regression checks; division by zero fails any broken access rule.
+SELECT 1 / CASE WHEN EXISTS (SELECT 1 FROM pg_class WHERE oid='public.support_ticket_messages'::regclass AND relrowsecurity) THEN 1 ELSE 0 END AS history_rls_enabled;
+SELECT 1 / CASE WHEN EXISTS (SELECT 1 FROM pg_policies WHERE schemaname='public' AND tablename='support_ticket_messages' AND cmd='SELECT' AND qual LIKE '%user_id = auth.uid()%' AND qual LIKE '%has_role%super_admin%') THEN 1 ELSE 0 END AS history_scoped_to_requester_and_developer;
+SELECT 1 / CASE WHEN pg_get_functiondef('public.reply_support_ticket(uuid,text,text)'::regprocedure) LIKE '%NOT _admin AND _owner<>auth.uid()%' THEN 1 ELSE 0 END AS reply_scoped_to_requester_and_developer;
+SELECT 1 / CASE WHEN NOT has_table_privilege('authenticated','public.support_ticket_messages','INSERT') AND NOT has_table_privilege('authenticated','public.support_ticket_messages','UPDATE') AND NOT has_table_privilege('authenticated','public.support_ticket_messages','DELETE') THEN 1 ELSE 0 END AS history_is_immutable;
+SELECT 1 / CASE WHEN NOT has_function_privilege('anon','public.reply_support_ticket(uuid,text,text)','EXECUTE') THEN 1 ELSE 0 END AS anonymous_reply_denied;
+SELECT 1 / CASE WHEN pg_get_functiondef('public.reply_support_ticket(uuid,text,text)'::regprocedure) LIKE '%auth.uid(),_admin,btrim(_body)%' THEN 1 ELSE 0 END AS authorship_assigned_by_database;
