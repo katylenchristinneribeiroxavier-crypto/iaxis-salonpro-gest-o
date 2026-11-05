@@ -54,11 +54,7 @@ export function SalonMonthCalendar() {
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       const key = d.toLocaleDateString('en-CA');
       const dayAppts = byDay.get(key) ?? [];
-      const taken = new Set(dayAppts.map((a) => new Date(a.starts_at).getHours()));
-      const free: string[] = [];
-      for (let h = OPEN_HOUR; h < CLOSE_HOUR; h++) {
-        if (!taken.has(h)) free.push(`${String(h).padStart(2, '0')}:00`);
-      }
+      const free = freeSlots(dayAppts.map((a) => new Date(a.starts_at).getHours()), OPEN_HOUR, CLOSE_HOUR);
       list.push({
         date: new Date(d),
         key,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { introduction, splitCommission, clientCategory, depositAmount, buildPixPayload } from './salon-rules';
+import { introduction, splitCommission, clientCategory, depositAmount, buildPixPayload , freeSlots } from './salon-rules';
 describe('Personalização e regras do salão', () => {
   it('usa nome masculino digitado e tratamento do salão', () => expect(introduction('Júlio', 'Studio Ana', 'masculino', 'do')).toBe('Oi, eu sou o Júlio, eu sou o secretário do Studio Ana'));
   it('usa nome feminino digitado e tratamento do salão', () => expect(introduction('Júlia', 'Espaço Jéssica', 'feminino', 'do')).toBe('Oi, eu sou a Júlia, eu sou a secretária do Espaço Jéssica'));
@@ -16,4 +16,15 @@ describe('Personalização e regras do salão', () => {
   it('rejeita sinal com valores inválidos', () => { expect(() => depositAmount(300, 'porcentagem', 101)).toThrow(); expect(() => depositAmount(-1, 'fixo', 10)).toThrow(); });
   it('gera payload PIX válido com valor e chave do salão', () => { const p = buildPixPayload('11999990000', 'Studio Ana', 'São Paulo', 90, 'abc123'); expect(p).toContain('BR.GOV.BCB.PIX'); expect(p).toContain('11999990000'); expect(p).toContain('540590.00'); expect(p).toContain('STUDIO ANA'); expect(p.slice(-4)).toMatch(/^[0-9A-F]{4}$/); });
   it('rejeita payload PIX sem chave ou sem valor', () => { expect(() => buildPixPayload('', 'Ana', 'SP', 10, 'x')).toThrow(); expect(() => buildPixPayload('11999990000', 'Ana', 'SP', 0, 'x')).toThrow(); });
+});
+describe('Horários livres da agenda mensal', () => {
+  it('lista os horários das 09h às 17h quando não há agendamentos', () => {
+    expect(freeSlots([])).toEqual(['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']);
+  });
+  it('remove as horas já agendadas', () => {
+    expect(freeSlots([9, 14])).toEqual(['10:00', '11:00', '12:00', '13:00', '15:00', '16:00', '17:00']);
+  });
+  it('retorna vazio quando o dia está lotado', () => {
+    expect(freeSlots([9, 10, 11, 12, 13, 14, 15, 16, 17])).toEqual([]);
+  });
 });
