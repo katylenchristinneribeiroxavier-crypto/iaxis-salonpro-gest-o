@@ -15,9 +15,9 @@ export function SalonDeposits() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
 
-  const confirmar = async (id: string) => {
+  const confirmar = async (id: string): Promise<void> => {
     const r = await supabase.from('appointments').update({ status_sinal: 'pago' }).eq('id', id);
-    if (r.error) return toast.error(r.error.message);
+    if (r.error) { toast.error(r.error.message); return; }
     toast.success('Sinal confirmado');
     await qc.invalidateQueries({ queryKey: ['deposits'] });
   };
