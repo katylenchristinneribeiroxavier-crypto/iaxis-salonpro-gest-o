@@ -35,6 +35,7 @@ import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authentic
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
 import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
 import { Route as AuthenticatedServicosPrecosRouteImport } from './routes/_authenticated/servicos-precos'
+import { Route as AuthenticatedSinaisRouteImport } from './routes/_authenticated/sinais'
 import { Route as AuthenticatedTicketsSuporteRouteImport } from './routes/_authenticated/tickets-suporte'
 import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_authenticated/tornar-se-revendedor'
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
@@ -188,6 +189,11 @@ const AuthenticatedServicosPrecosRoute =
     path: '/servicos-precos',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSinaisRoute = AuthenticatedSinaisRouteImport.update({
+  id: '/sinais',
+  path: '/sinais',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTicketsSuporteRoute =
   AuthenticatedTicketsSuporteRouteImport.update({
     id: '/tickets-suporte',
@@ -263,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/sinais': typeof AuthenticatedSinaisRoute
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
@@ -298,6 +305,7 @@ export interface FileRoutesByTo {
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/sinais': typeof AuthenticatedSinaisRoute
   '/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/validar': typeof AuthenticatedValidarRoute
@@ -336,6 +344,7 @@ export interface FileRoutesById {
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
   '/_authenticated/servicos-precos': typeof AuthenticatedServicosPrecosRoute
+  '/_authenticated/sinais': typeof AuthenticatedSinaisRoute
   '/_authenticated/tickets-suporte': typeof AuthenticatedTicketsSuporteRoute
   '/_authenticated/tornar-se-revendedor': typeof AuthenticatedTornarSeRevendedorRoute
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
@@ -374,6 +383,7 @@ export interface FileRouteTypes {
     | '/revendedor'
     | '/salao'
     | '/servicos-precos'
+    | '/sinais'
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
@@ -409,6 +419,7 @@ export interface FileRouteTypes {
     | '/profissoes'
     | '/revendedor'
     | '/servicos-precos'
+    | '/sinais'
     | '/tickets-suporte'
     | '/tornar-se-revendedor'
     | '/validar'
@@ -446,6 +457,7 @@ export interface FileRouteTypes {
     | '/_authenticated/revendedor'
     | '/_authenticated/salao'
     | '/_authenticated/servicos-precos'
+    | '/_authenticated/sinais'
     | '/_authenticated/tickets-suporte'
     | '/_authenticated/tornar-se-revendedor'
     | '/_authenticated/validar'
@@ -654,6 +666,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedServicosPrecosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/sinais': {
+      id: '/_authenticated/sinais'
+      path: '/sinais'
+      fullPath: '/sinais'
+      preLoaderRoute: typeof AuthenticatedSinaisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tickets-suporte': {
       id: '/_authenticated/tickets-suporte'
       path: '/tickets-suporte'
@@ -767,6 +786,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
   AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
   AuthenticatedServicosPrecosRoute: typeof AuthenticatedServicosPrecosRoute
+  AuthenticatedSinaisRoute: typeof AuthenticatedSinaisRoute
   AuthenticatedTicketsSuporteRoute: typeof AuthenticatedTicketsSuporteRoute
   AuthenticatedTornarSeRevendedorRoute: typeof AuthenticatedTornarSeRevendedorRoute
   AuthenticatedValidarRoute: typeof AuthenticatedValidarRoute
@@ -795,6 +815,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
   AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,
   AuthenticatedServicosPrecosRoute: AuthenticatedServicosPrecosRoute,
+  AuthenticatedSinaisRoute: AuthenticatedSinaisRoute,
   AuthenticatedTicketsSuporteRoute: AuthenticatedTicketsSuporteRoute,
   AuthenticatedTornarSeRevendedorRoute: AuthenticatedTornarSeRevendedorRoute,
   AuthenticatedValidarRoute: AuthenticatedValidarRoute,
