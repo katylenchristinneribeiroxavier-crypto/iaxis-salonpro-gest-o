@@ -22,6 +22,7 @@ import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authe
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedChatEquipeRouteImport } from './routes/_authenticated/chat-equipe'
 import { Route as AuthenticatedClientesCategoriasRouteImport } from './routes/_authenticated/clientes-categorias'
+import { Route as AuthenticatedClientesSinaisRouteImport } from './routes/_authenticated/clientes-sinais'
 import { Route as AuthenticatedConexaoWhatsappRouteImport } from './routes/_authenticated/conexao-whatsapp'
 import { Route as AuthenticatedConfiguracaoLojaRouteImport } from './routes/_authenticated/configuracao-loja'
 import { Route as AuthenticatedConfiguracaoSuporteRouteImport } from './routes/_authenticated/configuracao-suporte'
@@ -116,6 +117,12 @@ const AuthenticatedClientesCategoriasRoute =
   AuthenticatedClientesCategoriasRouteImport.update({
     id: '/clientes-categorias',
     path: '/clientes-categorias',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedClientesSinaisRoute =
+  AuthenticatedClientesSinaisRouteImport.update({
+    id: '/clientes-sinais',
+    path: '/clientes-sinais',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedConexaoWhatsappRoute =
@@ -284,6 +291,7 @@ export interface FileRoutesByFullPath {
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
@@ -325,6 +333,7 @@ export interface FileRoutesByTo {
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
   '/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
@@ -367,6 +376,7 @@ export interface FileRoutesById {
   '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/_authenticated/chat-equipe': typeof AuthenticatedChatEquipeRoute
   '/_authenticated/clientes-categorias': typeof AuthenticatedClientesCategoriasRoute
+  '/_authenticated/clientes-sinais': typeof AuthenticatedClientesSinaisRoute
   '/_authenticated/conexao-whatsapp': typeof AuthenticatedConexaoWhatsappRoute
   '/_authenticated/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/_authenticated/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
@@ -410,6 +420,7 @@ export interface FileRouteTypes {
     | '/assinaturas'
     | '/chat-equipe'
     | '/clientes-categorias'
+    | '/clientes-sinais'
     | '/conexao-whatsapp'
     | '/configuracao-loja'
     | '/configuracao-suporte'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/assinaturas'
     | '/chat-equipe'
     | '/clientes-categorias'
+    | '/clientes-sinais'
     | '/conexao-whatsapp'
     | '/configuracao-loja'
     | '/configuracao-suporte'
@@ -492,6 +504,7 @@ export interface FileRouteTypes {
     | '/_authenticated/assinaturas'
     | '/_authenticated/chat-equipe'
     | '/_authenticated/clientes-categorias'
+    | '/_authenticated/clientes-sinais'
     | '/_authenticated/conexao-whatsapp'
     | '/_authenticated/configuracao-loja'
     | '/_authenticated/configuracao-suporte'
@@ -625,6 +638,13 @@ declare module '@tanstack/react-router' {
       path: '/clientes-categorias'
       fullPath: '/clientes-categorias'
       preLoaderRoute: typeof AuthenticatedClientesCategoriasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes-sinais': {
+      id: '/_authenticated/clientes-sinais'
+      path: '/clientes-sinais'
+      fullPath: '/clientes-sinais'
+      preLoaderRoute: typeof AuthenticatedClientesSinaisRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/conexao-whatsapp': {
@@ -868,6 +888,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
   AuthenticatedChatEquipeRoute: typeof AuthenticatedChatEquipeRoute
   AuthenticatedClientesCategoriasRoute: typeof AuthenticatedClientesCategoriasRoute
+  AuthenticatedClientesSinaisRoute: typeof AuthenticatedClientesSinaisRoute
   AuthenticatedConexaoWhatsappRoute: typeof AuthenticatedConexaoWhatsappRoute
   AuthenticatedConfiguracaoLojaRoute: typeof AuthenticatedConfiguracaoLojaRoute
   AuthenticatedConfiguracaoSuporteRoute: typeof AuthenticatedConfiguracaoSuporteRoute
@@ -897,6 +918,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
   AuthenticatedChatEquipeRoute: AuthenticatedChatEquipeRoute,
   AuthenticatedClientesCategoriasRoute: AuthenticatedClientesCategoriasRoute,
+  AuthenticatedClientesSinaisRoute: AuthenticatedClientesSinaisRoute,
   AuthenticatedConexaoWhatsappRoute: AuthenticatedConexaoWhatsappRoute,
   AuthenticatedConfiguracaoLojaRoute: AuthenticatedConfiguracaoLojaRoute,
   AuthenticatedConfiguracaoSuporteRoute: AuthenticatedConfiguracaoSuporteRoute,
