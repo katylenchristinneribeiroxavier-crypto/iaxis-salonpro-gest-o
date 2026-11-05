@@ -106,6 +106,13 @@
       "when": 1793895726972,
       "tag": "0014_salon_owner_whatsapp_settings",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1793896147629,
+      "tag": "0015_evolution_salon_messages",
+      "breakpoints": true
     }
   ]
 }

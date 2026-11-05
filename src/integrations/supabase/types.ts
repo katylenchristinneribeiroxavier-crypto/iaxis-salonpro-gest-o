@@ -225,6 +225,10 @@ export type Database = {
         Row: {
           evolution_api_key: string | null
           evolution_api_url: string | null
+          evolution_connection_state: string
+          evolution_instance: string
+          evolution_last_received_at: string | null
+          evolution_webhook_enabled: boolean
           id: string
           nome_salao: string
           salon_id: string
@@ -234,6 +238,10 @@ export type Database = {
         Insert: {
           evolution_api_key?: string | null
           evolution_api_url?: string | null
+          evolution_connection_state?: string
+          evolution_instance?: string
+          evolution_last_received_at?: string | null
+          evolution_webhook_enabled?: boolean
           id?: string
           nome_salao?: string
           salon_id: string
@@ -243,6 +251,10 @@ export type Database = {
         Update: {
           evolution_api_key?: string | null
           evolution_api_url?: string | null
+          evolution_connection_state?: string
+          evolution_instance?: string
+          evolution_last_received_at?: string | null
+          evolution_webhook_enabled?: boolean
           id?: string
           nome_salao?: string
           salon_id?: string
@@ -254,6 +266,47 @@ export type Database = {
             foreignKeyName: "configuracoes_salao_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evolution_webhook_events: {
+        Row: {
+          event: string
+          event_key: string
+          id: string
+          payload: Json
+          processed_at: string | null
+          processing_error: string
+          received_at: string
+          salon_id: string
+        }
+        Insert: {
+          event: string
+          event_key: string
+          id?: string
+          payload: Json
+          processed_at?: string | null
+          processing_error?: string
+          received_at?: string
+          salon_id: string
+        }
+        Update: {
+          event?: string
+          event_key?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          processing_error?: string
+          received_at?: string
+          salon_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evolution_webhook_events_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -1008,6 +1061,69 @@ export type Database = {
           },
           {
             foreignKeyName: "salon_members_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_messages: {
+        Row: {
+          appointment_id: string | null
+          body: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          created_by: string | null
+          direction: string
+          error: string
+          id: string
+          provider_message_id: string | null
+          provider_timestamp: string | null
+          salon_id: string
+          status: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          body: string
+          contact_name?: string
+          contact_phone: string
+          created_at?: string
+          created_by?: string | null
+          direction: string
+          error?: string
+          id?: string
+          provider_message_id?: string | null
+          provider_timestamp?: string | null
+          salon_id: string
+          status?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          body?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          created_by?: string | null
+          direction?: string
+          error?: string
+          id?: string
+          provider_message_id?: string | null
+          provider_timestamp?: string | null
+          salon_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_messages_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "salon_messages_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
