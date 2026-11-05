@@ -1,13 +1,14 @@
 # Roadmap
+- [x] Conta da solicitante identificada por sessão própria, acesso super_admin liberado e auditado; abas APIs, Evolution e regras verificadas com a conta real
 - [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas
 - [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
 - [x] Central Evolution em /master-automacoes e conexão individual por número + QR; credenciais centrais sem acesso pelo navegador, instâncias exclusivas e histórico master
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
-- [ ] Ativar e verificar conexão Evolution real — bloqueado: sem salões, conta super_admin, URL/chave central ou endereço publicado; Evolution v2 deve estar hospedada e suportar cabeçalhos de webhook. Testes de isolamento e bloqueio de acesso passaram, pareamento real não verificado
+- [ ] Ativar e verificar conexão Evolution real — bloqueado: sem salões, URL/chave central ou endereço publicado; conta master liberada. Evolution v2 deve estar hospedada e suportar cabeçalhos de webhook; pareamento real não verificado
 - [x] WhatsApp por dona: configuracoes_salao com acesso exclusivo da dona, formulário /configuracoes e contato dinâmico no agendamento; nenhuma conexão WhatsApp global encontrada
 - [x] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
 - [ ] Validar novas páginas e agendamento com dados reais — bloqueado: não há salões cadastrados; envio automático WhatsApp ainda depende de integração de mensagens
-- [ ] Controle master implementado; verificar ações com conta super_admin e definir a conta da desenvolvedora (nenhum super_admin confirmado)
+- [ ] Verificar bloqueio/liberação de salões com conta master — bloqueado: nenhum salão cadastrado; conta da desenvolvedora definida e central verificada
 - [x] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
 - [x] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
 - [x] Qualificar novos leads com Lovable AI conforme cliente ideal, resumo e prioridade para ligação
