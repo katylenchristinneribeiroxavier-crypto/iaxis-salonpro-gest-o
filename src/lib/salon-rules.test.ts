@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { introduction, splitCommission, clientCategory } from './salon-rules';
+import { introduction, splitCommission, clientCategory, depositAmount } from './salon-rules';
 describe('Personalização e regras do salão', () => {
   it('usa nome masculino digitado e tratamento do salão', () => expect(introduction('Júlio', 'Studio Ana', 'masculino', 'do')).toBe('Oi, eu sou o Júlio, eu sou o secretário do Studio Ana'));
   it('usa nome feminino digitado e tratamento do salão', () => expect(introduction('Júlia', 'Espaço Jéssica', 'feminino', 'do')).toBe('Oi, eu sou a Júlia, eu sou a secretária do Espaço Jéssica'));
@@ -11,4 +11,7 @@ describe('Personalização e regras do salão', () => {
   it('classifica 31 até 60 dias como pouco frequente', () => { expect(clientCategory(31, 1)).toBe('pouco_frequente'); expect(clientCategory(60, 1)).toBe('pouco_frequente'); });
   it('classifica acima de 60 dias como afastada', () => expect(clientCategory(61, 1)).toBe('afastada'));
   it('classifica mais de 10 visitas como VIP', () => { expect(clientCategory(20, 10)).toBe('assidua'); expect(clientCategory(90, 11)).toBe('vip'); });
+  it('calcula sinal de 30% sobre serviço de 300', () => expect(depositAmount(300, 'porcentagem', 30)).toBe(90));
+  it('calcula sinal de valor fixo sem ultrapassar o preço do serviço', () => { expect(depositAmount(300, 'fixo', 50)).toBe(50); expect(depositAmount(100, 'fixo', 150)).toBe(100); });
+  it('rejeita sinal com valores inválidos', () => { expect(() => depositAmount(300, 'porcentagem', 101)).toThrow(); expect(() => depositAmount(-1, 'fixo', 10)).toThrow(); });
 });
