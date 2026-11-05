@@ -17,6 +17,8 @@ export const Route = createFileRoute("/assinar")({
     { name: "description", content: "Pague sua assinatura do IAxis SalonPRO via PIX." },
     { property: "og:title", content: "Assinar via PIX — IAxis SalonPRO" },
     { property: "og:description", content: "Assinatura mensal ou anual via PIX." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ]}),
   component: Assinar,
 });
@@ -69,6 +71,7 @@ function Assinar() {
             </div>
             <p className="mt-4 text-sm text-muted-foreground">Plano {plan.name} · {ciclo === "mensal" ? "mensal, sem fidelidade" : `anual (${brl(Number(plan.annual_monthly_price))}/mês)`}</p>
             <p className="font-display text-5xl text-gold">{brl(valor)}</p>
+            <p className="mt-3 text-sm text-muted-foreground">Toda compra inclui 7 dias para teste, a partir da confirmação do pagamento.</p>
           </div>
         )}
 

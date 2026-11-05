@@ -152,7 +152,7 @@ function Admin() {
           {data?.reqs.map((q) => (
             <div key={q.id} className="mt-3 flex items-center justify-between gap-3 border-t pt-3 text-sm">
               <div><p>{q.name} · {q.email}</p><p className="text-xs text-muted-foreground">{(q.plans as { name: string } | null)?.name} {q.billing} · {brl(Number(q.amount))}</p></div>
-              {q.status === "aguardando"
+              {q.is_test_purchase ? <StatusBadge s="Teste grátis · 7 dias" /> : q.status === "aguardando"
                 ? <button className="text-gold hover:underline" onClick={() => confirmarPagamento(q)}>Confirmar</button>
                 : <StatusBadge s={q.status} />}
             </div>

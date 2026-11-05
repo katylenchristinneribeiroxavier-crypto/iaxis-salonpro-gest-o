@@ -10,6 +10,7 @@ import { buildPixPayload, depositAmount } from "@/lib/salon-rules";
 import { salonWhatsappLink } from '@/lib/salon-whatsapp';
 import { Button } from '@/components/ui/button';
 import { MessageCircle } from 'lucide-react';
+import { BookingAssistant } from '@/components/BookingAssistant';
 
 export const Route = createFileRoute("/cliente")({
   validateSearch: (s: Record<string, unknown>): { s?: string | undefined } => ({ s: typeof s["s"] === "string" ? s["s"] : undefined }),
@@ -150,7 +151,8 @@ function Cliente() {
             <h1 className="mt-8 text-4xl font-semibold">{salonName}</h1>
             <p className="mt-3 text-sm text-muted-foreground">Agendando no {salonName} - você receberá confirmação no WhatsApp</p>
             {!contact.isPending && !contact.data?.whatsapp_salao && <p className="mt-2 text-sm text-muted-foreground">O salão ainda não cadastrou o WhatsApp para confirmações.</p>}
-            <h2 className="mt-6 mb-3 text-2xl">1. Serviço</h2>
+            <div className="mt-8"><BookingAssistant salonId={salon.id} /></div>
+            <div className="hidden"><h2 className="mt-6 mb-3 text-2xl">1. Serviço</h2>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">{catalog.data?.services.map((x) => <button key={x.id} onClick={() => setSvc(x.id)} className={opt(svc === x.id)}>{x.name}<br /><span className="text-muted-foreground">{brl(Number(x.price))}</span></button>)}</div>
             <h2 className="mt-6 mb-3 text-2xl">2. Profissional</h2>
             <div className="grid grid-cols-3 gap-2">{catalog.data?.pros.map((x) => <button key={x.id} onClick={() => { setPro(x.id); setHora(undefined); }} className={opt(pro === x.id)}>{x.name}</button>)}</div>
@@ -161,7 +163,7 @@ function Cliente() {
               <p className="mt-6 rounded-lg bg-muted p-3 text-sm text-muted-foreground">
                 Para confirmar, pague {brl(sinal)} de sinal. Restante {brl(servicePrice - sinal)} no salão.
               </p>
-            )}
+            )}</div>
             <button disabled={!svc || !pro || !hora} onClick={book} className={`${btnGold} mt-8 w-full p-4`}>
               {!me.data ? "Entrar para agendar" : wantsDeposit ? `Reservar e pagar sinal de ${brl(sinal)}` : "Confirmar agendamento"}
             </button>

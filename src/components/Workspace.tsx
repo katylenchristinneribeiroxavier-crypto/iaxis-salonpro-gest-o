@@ -22,7 +22,7 @@ export const workspaceNav = [
 ];
 export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {
   const { data } = useSuspenseQuery(salonContextOptions);
-  const nav = data.manager ? workspaceNav : workspaceNav.slice(0, 3).concat({ to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' });
+  const nav = data.manager ? workspaceNav : workspaceNav.filter(n=>['/agenda-do-dia','/agenda-mes','/chat-equipe','/minhas-comissoes','/suporte','/meus-chamados'].includes(n.to));
   return <Shell role={data.salon?.name || 'Meu salão'} nav={nav}>
     <SalonAccessGate>{!data.salon ? <div><h1 className="text-3xl">Aguardando sua compra</h1><p className="my-4 text-muted-foreground">Seu salão será criado após a confirmação da compra do app.</p><Button asChild><Link to="/assinar">Adquirir o app</Link></Button></div> : manager && !data.manager ? <h1 className="text-3xl">Acesso restrito à administração do salão</h1> : children}</SalonAccessGate>
   </Shell>;
