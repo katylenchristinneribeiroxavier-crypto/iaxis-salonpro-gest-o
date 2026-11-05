@@ -43,7 +43,7 @@ export function ConfigSinalAgendamento() {
   const valorNum = Number(valor) || 0;
   const exemplo = depositAmount(300, tipo, valorNum);
 
-  const salvar = async () => {
+  const salvar = async (): Promise<void> => {
     if (!salon || !ctx.manager) return;
     if (cobrar && (valorNum <= 0 || (tipo === 'porcentagem' && valorNum > 100))) {
       toast.error(tipo === 'porcentagem' ? 'Informe uma porcentagem entre 1 e 100.' : 'Informe um valor maior que zero.');
@@ -52,7 +52,7 @@ export function ConfigSinalAgendamento() {
     setBusy(true);
     const r = await supabase.from('salons').update({ cobrar_sinal: cobrar, tipo_sinal: tipo, valor_sinal: valorNum }).eq('id', salon.id);
     setBusy(false);
-    if (r.error) return toast.error(r.error.message);
+    if (r.error) { toast.error(r.error.message); return; }
     await qc.invalidateQueries({ queryKey: ['deposit-config'] });
     toast.success('Configuração de sinal salva');
   };
