@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
 - [ ] Controle master implementado; verificar ações com conta super_admin e definir a conta da desenvolvedora (nenhum super_admin confirmado)
 - [x] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
 - [x] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
