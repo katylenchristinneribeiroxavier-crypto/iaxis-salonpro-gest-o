@@ -20,7 +20,7 @@ export function SalonSubscription() {
       if (plans.error) throw plans.error;
       if (!canReadPayments) return { plans: plans.data, requests: [] };
       const requests = await supabase.from('subscription_requests')
-        .select('id, plan_id, amount, billing, status, created_at')
+        .select('id, plan_id, amount, billing, status, created_at,trial_ends_at,is_test_purchase')
         .eq('user_id', salon.owner_id).order('created_at', { ascending: false });
       if (requests.error) throw requests.error;
       return { plans: plans.data, requests: requests.data };
@@ -29,6 +29,7 @@ export function SalonSubscription() {
   const plan = data?.plans.find(p => p.id === salon?.plan_id);
   return <>
     <PageTitle title="Assinatura do salão" />
+    {data?.requests.find(r=>r.status==='confirmado'&&r.trial_ends_at)&&<p className="mb-5 text-sm text-gold">Teste de 7 dias até {new Date(data.requests.find(r=>r.status==='confirmado'&&r.trial_ends_at)?.trial_ends_at || '').toLocaleString('pt-BR')}.</p>}
     {isPending ? <p role="status">Carregando assinatura…</p> : error ? <p role="alert" className="text-destructive">Não foi possível carregar a assinatura. Tente novamente.</p> : <>
       <div className="flex flex-wrap items-center justify-between gap-6 border-b pb-6">
         <dl className="grid w-full gap-5 sm:w-auto sm:grid-cols-3">

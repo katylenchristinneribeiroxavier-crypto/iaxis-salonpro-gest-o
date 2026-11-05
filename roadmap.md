@@ -1,4 +1,7 @@
 # Roadmap
+- [ ] Garantir sete dias de teste em toda compra, com prazo contado da confirmação; compra gratuita única válida por sete dias
+- [ ] Compra: criar salões somente após compra confirmada; reservar uma única compra gratuita de teste controlada pela desenvolvedora
+- [ ] Concluir lembretes (1h antes, aniversário 07h, retorno 09h), assistente de agendamento no app e preparação da ativação pós-publicação exclusiva da desenvolvedora
 - [x] Continuação: suporte master com respostas, histórico privado e status; /meus-chamados para solicitantes, fluxo verificado com conta real e chamados de teste removidos
 - [x] Conta da solicitante identificada por sessão própria, acesso super_admin liberado e auditado; abas APIs, Evolution e regras verificadas com a conta real
 - [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas

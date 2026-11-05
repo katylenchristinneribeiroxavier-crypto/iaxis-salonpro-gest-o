@@ -8,7 +8,7 @@ import { PageTitle, Stat, StatusBadge, inputCls } from './Shell';
 import { Button } from './ui/button';
 import { brl } from '@/lib/auth';
 
-type Row = { id: string; client_name: string; starts_at: string; status: string; price: number; valor_sinal_pago: number; status_sinal: string; services: { name: string } | null };
+type Row = { id: string; client_name: string; starts_at: string; status: string; price: number; deposit:number; valor_sinal_pago: number; status_sinal: string; services: { name: string } | null };
 
 export function ClientsDeposits() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
@@ -22,7 +22,7 @@ export function ClientsDeposits() {
     queryFn: async () => {
       if (!ctx.salon) return null;
       const r = await supabase.from('appointments')
-        .select('id, client_name, starts_at, status, price, valor_sinal_pago, status_sinal, services(name)')
+        .select('id, client_name, starts_at, status, price, deposit, valor_sinal_pago, status_sinal, services(name)')
         .eq('salon_id', ctx.salon.id)
         .neq('status', 'cancelado')
         .gte('starts_at', new Date().toISOString().slice(0, 10))
@@ -42,10 +42,11 @@ export function ClientsDeposits() {
 
   const confirmados = (data ?? []).filter((r) => r.status_sinal === 'pago').length;
   const pendentes = (data ?? []).filter((r) => r.status_sinal === 'pendente').length;
-  const totalPendente = (data ?? []).filter((r) => r.status_sinal === 'pendente').reduce((s, r) => s + Number(r.valor_sinal_pago), 0);
+  const totalPendente = (data ?? []).filter((r) => r.status_sinal === 'pendente').reduce((s, r) => s + Number(r.deposit), 0);
 
   const confirmar = async (id: string): Promise<void> => {
-    const r = await supabase.from('appointments').update({ status_sinal: 'pago' }).eq('id', id);
+    const row=data?.find(r=>r.id===id);if(!row)return;
+    const r = await supabase.from('appointments').update({ status_sinal: 'pago',valor_sinal_pago:row.deposit }).eq('id', id);
     if (r.error) { toast.error(r.error.message); return; }
     toast.success('Sinal confirmado');
     await qc.invalidateQueries({ queryKey: ['clients-deposits'] });
@@ -79,7 +80,7 @@ export function ClientsDeposits() {
           <td className="p-3 font-medium">{r.client_name}</td>
           <td className="p-3">{new Date(r.starts_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</td>
           <td className="p-3">{r.services?.name ?? '—'} · {brl(Number(r.price))}</td>
-          <td className="p-3 text-gold">{r.status_sinal === 'isento' ? '—' : brl(Number(r.valor_sinal_pago))}</td>
+          <td className="p-3 text-gold">{r.status_sinal === 'isento' ? '—' : brl(Number(r.status_sinal==='pago'?r.valor_sinal_pago:r.deposit))}</td>
           <td className="p-3"><StatusBadge s={r.status_sinal === 'pago' ? 'confirmado' : r.status_sinal === 'pendente' ? 'pendente' : 'isento'} /></td>
           <td className="p-3"><StatusBadge s={r.status} /></td>
           <td className="p-3">{r.status_sinal === 'pendente' && <Button size="sm" variant="outline" onClick={() => confirmar(r.id)}><Check />Confirmar</Button>}</td>

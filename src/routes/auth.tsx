@@ -41,6 +41,7 @@ function Auth() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+    if(data?.some(r=>r.role==='dono_salao')&&!data.some(r=>r.role==='super_admin')){const own=await supabase.from('salons').select('id').eq('owner_id',user.id).maybeSingle();if(!own.data)return navigate({to:'/assinar'});}
     navigate({ to: homeFor((data ?? []).map((r) => r.role as Role)) });
   };
   useEffect(() => { goHome(); }, []);

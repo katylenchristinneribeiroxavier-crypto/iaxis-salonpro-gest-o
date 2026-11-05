@@ -8,6 +8,8 @@ import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
 import { PageTitle, inputCls, Stat } from './Shell';
+import { SingleTestPurchase } from './SingleTestPurchase';
+import { ReminderActivation } from './ReminderActivation';
 
 export function PlatformAutomations() {
   const get = useServerFn(getPlatformEvolution);
@@ -52,7 +54,7 @@ export function PlatformAutomations() {
           <Button disabled={busy} type="submit"><Save />{busy ? 'Validando…' : 'Salvar e testar central'}</Button>
         </form>
       </section>
-      <section className="mt-8 border-t pt-6"><h2 className="mb-4 text-xl">Serviços</h2><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt>Mensagens WhatsApp</dt><dd className="text-muted-foreground">{data?.config?.enabled ? 'Disponíveis após confirmação de cada número' : 'Aguardando Evolution central'}</dd></div><div><dt>Planos e qualificação de leads com IA</dt><dd className="text-muted-foreground">Disponíveis no painel do revendedor</dd></div><div><dt>Recebimentos PIX</dt><dd className="text-muted-foreground">Confirmação manual pela dona do salão</dd></div><div><dt>Assistente WhatsApp 24h e lembretes</dt><dd className="text-muted-foreground">Ainda não ativados</dd></div></dl></section>
+      <section className="mt-8 border-t pt-6"><h2 className="mb-4 text-xl">Serviços</h2><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt>Mensagens WhatsApp</dt><dd className="text-muted-foreground">{data?.config?.enabled ? 'Disponíveis após confirmação de cada número' : 'Aguardando Evolution central'}</dd></div><div><dt>Planos e qualificação de leads com IA</dt><dd className="text-muted-foreground">Disponíveis no painel do revendedor</dd></div><div><dt>Recebimentos PIX</dt><dd className="text-muted-foreground">Confirmação manual pela dona do salão</dd></div><div><dt>Agendamento e lembretes</dt><dd className="text-muted-foreground">Assistente no app disponível; WhatsApp aguardando ativação</dd></div></dl></section>
       </TabsContent>
       <TabsContent value="evolution">
       <section className="mt-8 border-t pt-6">
@@ -63,9 +65,11 @@ export function PlatformAutomations() {
       </section>
       </TabsContent>
       <TabsContent value="regras">
+        <SingleTestPurchase />
+        <ReminderActivation />
         <section className="mt-5 border-t pt-6"><h2 className="mb-5 flex items-center gap-2 text-xl"><CalendarClock className="text-gold" />Regras de agendamento · consulta</h2>
           <dl className="grid gap-x-8 text-sm sm:grid-cols-2">
-            {[['Horário de funcionamento', 'Definido pela dona do salão; fechamento às 00:00 representa meia-noite.'], ['Sinal de agendamento', 'Opcional, configurado por salão como percentual ou valor fixo.'], ['Destino do PIX', 'Chave do próprio salão; recebimento confirmado pela dona.'], ['WhatsApp de confirmação', 'Número da dona do salão selecionado, nunca um número global.'], ['Preços e equipe', 'Serviços, valores e funcionários cadastrados pela dona.'], ['Lembretes planejados', 'Uma hora antes do atendimento; envio automático ainda não ativado.']].map(([label, value]) => <div key={label} className="border-b py-4"><dt className="font-medium">{label}</dt><dd className="mt-2 text-muted-foreground">{value}</dd></div>)}
+            {[['Horário de funcionamento', 'Definido pela dona do salão; fechamento às 00:00 representa meia-noite.'], ['Sinal de agendamento', 'Opcional, configurado por salão como percentual ou valor fixo.'], ['Destino do PIX', 'Chave do próprio salão; recebimento confirmado pela dona.'], ['WhatsApp de confirmação', 'Número da dona do salão selecionado, nunca um número global.'], ['Preços e equipe', 'Serviços, valores e funcionários cadastrados pela dona.'], ['Lembretes planejados', 'Uma hora antes do atendimento; fila pronta, envio externo aguardando ativação.']].map(([label, value]) => <div key={label} className="border-b py-4"><dt className="font-medium">{label}</dt><dd className="mt-2 text-muted-foreground">{value}</dd></div>)}
           </dl>
         </section>
       </TabsContent>

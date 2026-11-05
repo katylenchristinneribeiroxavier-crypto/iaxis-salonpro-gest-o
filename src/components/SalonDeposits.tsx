@@ -8,7 +8,7 @@ import { PageTitle, Stat, inputCls } from './Shell';
 import { Button } from './ui/button';
 import { brl } from '@/lib/auth';
 
-type Row = { id: string; salon_id: string; client_name: string; starts_at: string; status: string; price: number; valor_sinal_pago: number; status_sinal: string };
+type Row = { id: string; salon_id: string; client_name: string; starts_at: string; status: string; price: number; deposit:number; valor_sinal_pago: number; status_sinal: string };
 
 export function SalonDeposits() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
@@ -16,7 +16,8 @@ export function SalonDeposits() {
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
 
   const confirmar = async (id: string): Promise<void> => {
-    const r = await supabase.from('appointments').update({ status_sinal: 'pago' }).eq('id', id);
+    const row=data?.rows.find(r=>r.id===id);if(!row)return;
+    const r = await supabase.from('appointments').update({ status_sinal: 'pago',valor_sinal_pago:row.deposit }).eq('id', id);
     if (r.error) { toast.error(r.error.message); return; }
     toast.success('Sinal confirmado');
     await qc.invalidateQueries({ queryKey: ['deposits'] });
@@ -30,7 +31,7 @@ export function SalonDeposits() {
       const start = new Date(`${month}-01T00:00:00`);
       const end = new Date(start); end.setMonth(end.getMonth() + 1);
       const q = supabase.from('appointments')
-        .select('id, salon_id, client_name, starts_at, status, price, valor_sinal_pago, status_sinal')
+        .select('id, salon_id, client_name, starts_at, status, price, deposit, valor_sinal_pago, status_sinal')
         .gte('starts_at', start.toISOString()).lt('starts_at', end.toISOString())
         .neq('status', 'cancelado').order('starts_at', { ascending: false });
       const a = await (ctx.manager ? q.eq('salon_id', ctx.salon.id) : q);
@@ -43,7 +44,7 @@ export function SalonDeposits() {
 
   const rows = data?.rows ?? [];
   const comSinal = rows.filter((r) => r.status_sinal !== 'isento');
-  const pendente = comSinal.filter((r) => r.status_sinal === 'pendente').reduce((s, r) => s + Number(r.valor_sinal_pago), 0);
+  const pendente = comSinal.filter((r) => r.status_sinal === 'pendente').reduce((s, r) => s + Number(r.deposit), 0);
   const confirmado = comSinal.filter((r) => r.status_sinal === 'pago').reduce((s, r) => s + Number(r.valor_sinal_pago), 0);
   const saldo = comSinal.filter((r) => r.status_sinal === 'pago').reduce((s, r) => s + Number(r.price) - Number(r.valor_sinal_pago), 0);
 
@@ -52,7 +53,7 @@ export function SalonDeposits() {
       const r = comSinal.filter((x) => x.salon_id === s.id);
       return {
         id: s.id, name: s.name || 'Sem nome',
-        pendente: r.filter((x) => x.status_sinal === 'pendente').reduce((t, x) => t + Number(x.valor_sinal_pago), 0),
+        pendente: r.filter((x) => x.status_sinal === 'pendente').reduce((t, x) => t + Number(x.deposit), 0),
         confirmado: r.filter((x) => x.status_sinal === 'pago').reduce((t, x) => t + Number(x.valor_sinal_pago), 0),
         saldo: r.filter((x) => x.status_sinal === 'pago').reduce((t, x) => t + Number(x.price) - Number(x.valor_sinal_pago), 0),
       };
@@ -88,7 +89,7 @@ export function SalonDeposits() {
             <td className="p-3">{new Date(r.starts_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</td>
             <td className="p-3">{r.client_name}</td>
             <td className="p-3">{brl(Number(r.price))}</td>
-            <td className="p-3 text-gold">{brl(Number(r.valor_sinal_pago))}</td>
+            <td className="p-3 text-gold">{brl(Number(r.status_sinal==='pago'?r.valor_sinal_pago:r.deposit))}</td>
             <td className="p-3">{r.status_sinal === 'pago' ? 'Confirmado' : 'Pendente'}</td>
             <td className="p-3">{r.status_sinal === 'pago' ? brl(Number(r.price) - Number(r.valor_sinal_pago)) : '—'}</td>
             <td className="p-3">{r.status_sinal === 'pendente' && <Button size="sm" variant="outline" onClick={() => confirmar(r.id)}><Check />Confirmar recebimento</Button>}</td>

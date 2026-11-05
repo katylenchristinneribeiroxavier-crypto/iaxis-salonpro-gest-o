@@ -21,3 +21,6 @@
 - Central Evolution credentials are service-role-only after super_admin checks; provision stable salon-scoped instances through owner-authorized functions and resolve managed credentials only server-side to prevent cross-tenant access.
 - Salon users have column-scoped access only to personal contact settings, never API credentials or instance controls; keep one super_admin enforced by a partial unique index and never grant it through self-signup.
 - Support conversations reuse existing tickets; an authenticated transactional database function assigns authorship and developer status, and only the requester or super_admin may read the immutable history.
+- Booking assistants use database slot availability and transactional booking to derive catalog prices, duration, timezone and deposit; never allow model output to write appointments.
+- Reminder queues are generated idempotently from appointment/client changes; external delivery stays off until developer activation and uses managed authenticated scheduled callbacks with atomic claims and uncertain-send quarantine.
+- Salon creation requires a confirmed purchase; a database singleton locks the developer-only free test redemption, and purchase timestamps preserve the seven-day trial separately from paid access.
