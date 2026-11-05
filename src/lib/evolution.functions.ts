@@ -35,13 +35,15 @@ export const connectEvolution = createServerFn({ method: 'POST' }).middleware([r
     const config = await context.supabase.from('configuracoes_salao').select('*').eq('user_id', context.userId).single();
     if (config.error || !config.data?.evolution_api_url || !config.data.evolution_api_key || !config.data.evolution_instance) throw new Error('Salve URL, instância e chave primeiro.');
     const c = config.data;
+    if (!c.evolution_api_url || !c.evolution_api_key) throw new Error('Configuração incompleta.');
     const { evolutionRequest, tenantWebhookToken } = await import('./evolution.server');
     const state = await evolutionRequest(c.evolution_api_url, c.evolution_api_key, `/instance/connectionState/${encodeURIComponent(c.evolution_instance)}`);
     const instance = state['instance'] as { state?: string } | undefined;
     const secret = process.env['EVOLUTION_WEBHOOK_SIGNING_KEY'];
     if (!secret) throw new Error('A segurança do recebimento ainda não está configurada.');
     const origin = new URL(data.callbackOrigin);
-    if (origin.protocol !== 'https:' || !origin.hostname.endsWith('.lovable.app')) throw new Error('Use o endereço público do aplicativo para ativar o recebimento.');
+    const allowed = ['https://id-preview--622f4b9e-289b-53b6-af7a-3ff5229c16ec.lovable.app', 'https://project--622f4b9e-289b-53b6-af7a-3ff5229c16ec.lovable.app', 'https://project--622f4b9e-289b-53b6-af7a-3ff5229c16ec-dev.lovable.app'];
+    if (!allowed.includes(origin.origin)) throw new Error('Use o endereço público deste aplicativo para ativar o recebimento.');
     await evolutionRequest(c.evolution_api_url, c.evolution_api_key, `/webhook/set/${encodeURIComponent(c.evolution_instance)}`, {
       webhook: { enabled: true, url: `${origin.origin}/api/public/evolution/${c.salon_id}`, webhookByEvents: false, webhookBase64: false,
         headers: { 'x-salon-webhook-token': await tenantWebhookToken(c.salon_id, secret) }, events: ['MESSAGES_UPSERT', 'MESSAGES_UPDATE'] },
@@ -69,7 +71,7 @@ export const sendSalonMessage = createServerFn({ method: 'POST' }).middleware([r
     const c = config.data;
     if (config.error || !c?.evolution_api_url || !c.evolution_api_key || !c.evolution_instance) throw new Error('A dona precisa configurar a Evolution primeiro.');
     const phone = evolutionPhone(data.phone);
-    const saved = await supabaseAdmin.from('salon_messages').insert({ salon_id: data.salonId, contact_phone: phone, direction: 'outbound', body: data.body, appointment_id: data.appointmentId, created_by: context.userId }).select('id').single();
+    const saved = await supabaseAdmin.from('salon_messages').insert({ salon_id: data.salonId, contact_phone: phone, direction: 'outbound', body: data.body, appointment_id: data.appointmentId ?? null, created_by: context.userId }).select('id').single();
     if (saved.error) throw new Error(saved.error.message);
     const { evolutionRequest } = await import('./evolution.server');
     try {

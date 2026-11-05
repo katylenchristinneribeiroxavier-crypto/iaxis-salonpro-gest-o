@@ -5,7 +5,7 @@ export const evolutionRequest = createServerOnlyFn(async (base: string, key: str
   const response = await fetch(`${evolutionBaseUrl(base)}${path}`, {
     method: body === undefined ? 'GET' : 'POST', redirect: 'error',
     headers: { apikey: key, 'Content-Type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(12000),
+    body: body === undefined ? null : JSON.stringify(body), signal: AbortSignal.timeout(12000),
   });
   const text = await response.text();
   if (!response.ok) {
