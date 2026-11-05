@@ -228,6 +228,7 @@ export type Database = {
           evolution_connection_state: string
           evolution_instance: string
           evolution_last_received_at: string | null
+          evolution_managed: boolean
           evolution_webhook_enabled: boolean
           id: string
           nome_salao: string
@@ -241,6 +242,7 @@ export type Database = {
           evolution_connection_state?: string
           evolution_instance?: string
           evolution_last_received_at?: string | null
+          evolution_managed?: boolean
           evolution_webhook_enabled?: boolean
           id?: string
           nome_salao?: string
@@ -254,6 +256,7 @@ export type Database = {
           evolution_connection_state?: string
           evolution_instance?: string
           evolution_last_received_at?: string | null
+          evolution_managed?: boolean
           evolution_webhook_enabled?: boolean
           id?: string
           nome_salao?: string
@@ -578,6 +581,60 @@ export type Database = {
           online_fee_pct?: number
           price?: number
           sort?: number
+        }
+        Relationships: []
+      }
+      platform_automation_audit: {
+        Row: {
+          action: string
+          id: string
+          performed_at: string
+          performed_by: string
+        }
+        Insert: {
+          action: string
+          id?: string
+          performed_at?: string
+          performed_by: string
+        }
+        Update: {
+          action?: string
+          id?: string
+          performed_at?: string
+          performed_by?: string
+        }
+        Relationships: []
+      }
+      platform_evolution_settings: {
+        Row: {
+          api_key: string
+          api_url: string
+          callback_origin: string
+          enabled: boolean
+          id: boolean
+          updated_at: string
+          updated_by: string
+          verified_at: string | null
+        }
+        Insert: {
+          api_key: string
+          api_url: string
+          callback_origin: string
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+          updated_by: string
+          verified_at?: string | null
+        }
+        Update: {
+          api_key?: string
+          api_url?: string
+          callback_origin?: string
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+          updated_by?: string
+          verified_at?: string | null
         }
         Relationships: []
       }
