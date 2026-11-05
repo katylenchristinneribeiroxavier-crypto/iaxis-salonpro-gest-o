@@ -23,7 +23,7 @@ export function MasterSubscriptions() {
       if (p.error) throw p.error;
       if (pr.error) throw pr.error;
       if (r.error) throw r.error;
-      return { salons: s.data, plans: p.data, profiles: p.data ? pr.data : [], requests: r.data };
+      return { salons: s.data, plans: p.data, profiles: pr.data, requests: r.data };
     },
   });
 
