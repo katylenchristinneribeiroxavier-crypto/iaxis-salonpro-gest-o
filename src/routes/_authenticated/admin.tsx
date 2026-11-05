@@ -49,8 +49,26 @@ function Admin() {
     if (error) toast.error(error.message); else { toast.success("Salvo"); refresh(); }
   };
 
+  const confirmarPagamento = async (q: { id: string; name: string; amount: number; billing: string; plans: unknown }) => {
+    const { error } = await supabase.from("subscription_requests").update({ status: "confirmado" }).eq("id", q.id);
+    if (error) return toast.error(error.message);
+    const plano = (q.plans as { name: string } | null)?.name ?? "Plano";
+    const { data: u } = await supabase.auth.getUser();
+    const r = await supabase.from("caixa_master_saas").insert({
+      nome_salao: q.name,
+      tipo: q.billing === "anual" ? "entrada_assinatura_anual" : "entrada_assinatura_mensal",
+      descricao: `Assinatura ${q.billing} ${q.name} - ${plano} - ${brl(Number(q.amount))} - PIX`,
+      valor: Number(q.amount), valor_liquido: Number(q.amount), taxa: 0,
+      forma_pagamento: "pix_manual", status: "recebido", criado_por: u.user?.id ?? null,
+    });
+    if (r.error) toast.error(`Confirmado, mas não entrou no caixa master: ${r.error.message}`);
+    else toast.success("Pagamento confirmado e lançado no seu caixa master");
+    refresh();
+    qc.invalidateQueries({ queryKey: ["master-finance"] });
+  };
+
   return (
-    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" },{to:'/master-desenvolvedora',label:'Controle de acesso'}, { to: "/salao", label: "Ver painel do salão" },{to:'/configuracao-suporte',label:'Configurar suporte'},{to:'/tickets-suporte',label:'Tickets de suporte'},{to:'/gestao-revendedores',label:'Gestão de revendas'}]}>
+    <Shell role="Super Admin" nav={[{ to: "/admin", label: "Painel Master" },{to:'/master-desenvolvedora',label:'Controle de acesso'},{to:'/master-financeiro',label:'Meu caixa master'}, { to: "/salao", label: "Ver painel do salão" },{to:'/configuracao-suporte',label:'Configurar suporte'},{to:'/tickets-suporte',label:'Tickets de suporte'},{to:'/gestao-revendedores',label:'Gestão de revendas'}]}>
       <PageTitle title="Painel Master" sub="Visão geral de toda a plataforma" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="MRR" value={brl(mrr)} />
@@ -135,7 +153,7 @@ function Admin() {
             <div key={q.id} className="mt-3 flex items-center justify-between gap-3 border-t pt-3 text-sm">
               <div><p>{q.name} · {q.email}</p><p className="text-xs text-muted-foreground">{(q.plans as { name: string } | null)?.name} {q.billing} · {brl(Number(q.amount))}</p></div>
               {q.status === "aguardando"
-                ? <button className="text-gold hover:underline" onClick={() => upd("subscription_requests", "id", q.id, { status: "confirmado" })}>Confirmar</button>
+                ? <button className="text-gold hover:underline" onClick={() => confirmarPagamento(q)}>Confirmar</button>
                 : <StatusBadge s={q.status} />}
             </div>
           ))}
