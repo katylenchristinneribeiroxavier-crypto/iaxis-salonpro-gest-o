@@ -36,6 +36,7 @@ import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_a
 import { Route as AuthenticatedGestaoSalaoRouteImport } from './routes/_authenticated/gestao-salao'
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
+import { Route as AuthenticatedMensagensRouteImport } from './routes/_authenticated/mensagens'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
@@ -53,6 +54,7 @@ import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
 import { Route as AuthenticatedSalaoPastaRouteImport } from './routes/_authenticated/salao.$pasta'
+import { Route as ApiPublicEvolutionSalonIdRouteImport } from './routes/api/public/evolution/$salonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -205,6 +207,11 @@ const AuthenticatedMasterFinanceiroRoute =
     path: '/master-financeiro',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMensagensRoute = AuthenticatedMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMinhasComissoesRoute =
   AuthenticatedMinhasComissoesRouteImport.update({
     id: '/minhas-comissoes',
@@ -297,6 +304,12 @@ const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
   path: '/$pasta',
   getParentRoute: () => AuthenticatedSalaoRoute,
 } as any)
+const ApiPublicEvolutionSalonIdRoute =
+  ApiPublicEvolutionSalonIdRouteImport.update({
+    id: '/api/public/evolution/$salonId',
+    path: '/api/public/evolution/$salonId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -325,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
+  '/mensagens': typeof AuthenticatedMensagensRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -342,6 +356,7 @@ export interface FileRoutesByFullPath {
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -369,6 +384,7 @@ export interface FileRoutesByTo {
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
+  '/mensagens': typeof AuthenticatedMensagensRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -385,6 +401,7 @@ export interface FileRoutesByTo {
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -415,6 +432,7 @@ export interface FileRoutesById {
   '/_authenticated/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
+  '/_authenticated/mensagens': typeof AuthenticatedMensagensRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -432,6 +450,7 @@ export interface FileRoutesById {
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
+  '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -462,6 +481,7 @@ export interface FileRouteTypes {
     | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
+    | '/mensagens'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -479,6 +499,7 @@ export interface FileRouteTypes {
     | '/salao/$pasta'
     | '/configuracoes/'
     | '/salao/'
+    | '/api/public/evolution/$salonId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -506,6 +527,7 @@ export interface FileRouteTypes {
     | '/gestao-salao'
     | '/master-desenvolvedora'
     | '/master-financeiro'
+    | '/mensagens'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -522,6 +544,7 @@ export interface FileRouteTypes {
     | '/salao/$pasta'
     | '/configuracoes'
     | '/salao'
+    | '/api/public/evolution/$salonId'
   id:
     | '__root__'
     | '/'
@@ -551,6 +574,7 @@ export interface FileRouteTypes {
     | '/_authenticated/gestao-salao'
     | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/master-financeiro'
+    | '/_authenticated/mensagens'
     | '/_authenticated/minhas-comissoes'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
@@ -568,6 +592,7 @@ export interface FileRouteTypes {
     | '/_authenticated/salao/$pasta'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
+    | '/api/public/evolution/$salonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -581,6 +606,7 @@ export interface RootRouteChildren {
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
   RCodeRoute: typeof RCodeRoute
+  ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -774,6 +800,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMasterFinanceiroRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/mensagens': {
+      id: '/_authenticated/mensagens'
+      path: '/mensagens'
+      fullPath: '/mensagens'
+      preLoaderRoute: typeof AuthenticatedMensagensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/minhas-comissoes': {
       id: '/_authenticated/minhas-comissoes'
       path: '/minhas-comissoes'
@@ -893,6 +926,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalaoPastaRouteImport
       parentRoute: typeof AuthenticatedSalaoRoute
     }
+    '/api/public/evolution/$salonId': {
+      id: '/api/public/evolution/$salonId'
+      path: '/api/public/evolution/$salonId'
+      fullPath: '/api/public/evolution/$salonId'
+      preLoaderRoute: typeof ApiPublicEvolutionSalonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -961,6 +1001,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedGestaoSalaoRoute: typeof AuthenticatedGestaoSalaoRoute
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
+  AuthenticatedMensagensRoute: typeof AuthenticatedMensagensRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
@@ -996,6 +1037,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMasterDesenvolvedoraRoute:
     AuthenticatedMasterDesenvolvedoraRoute,
   AuthenticatedMasterFinanceiroRoute: AuthenticatedMasterFinanceiroRoute,
+  AuthenticatedMensagensRoute: AuthenticatedMensagensRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
@@ -1021,6 +1063,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
   RCodeRoute: RCodeRoute,
+  ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
