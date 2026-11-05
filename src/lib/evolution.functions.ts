@@ -6,7 +6,7 @@ import { evolutionBaseUrl, evolutionPhone } from './evolution';
 export const getEvolutionSettings = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const result = await context.supabase.from('configuracoes_salao')
-      .select('salon_id, evolution_api_url, evolution_instance, evolution_connection_state, evolution_webhook_enabled, evolution_last_received_at')
+      .select('salon_id, whatsapp_salao, evolution_managed, evolution_api_url, evolution_instance, evolution_connection_state, evolution_webhook_enabled, evolution_last_received_at')
       .eq('user_id', context.userId).maybeSingle();
     if (result.error) throw new Error(result.error.message);
     return result.data;
@@ -67,9 +67,10 @@ export const sendSalonMessage = createServerFn({ method: 'POST' }).middleware([r
     if (accessCheck.error || !accessCheck.data) throw new Error('O salão está suspenso.');
     const salon = await supabaseAdmin.from('salons').select('owner_id').eq('id', data.salonId).single();
     if (salon.error) throw new Error('Salão não encontrado.');
-    const config = await supabaseAdmin.from('configuracoes_salao').select('evolution_api_url, evolution_api_key, evolution_instance').eq('salon_id', data.salonId).eq('user_id', salon.data.owner_id).single();
-    const c = config.data;
-    if (config.error || !c?.evolution_api_url || !c.evolution_api_key || !c.evolution_instance) throw new Error('A dona precisa configurar a Evolution primeiro.');
+    const { resolveEvolutionConfig } = await import('./evolution.server');
+    const c = await resolveEvolutionConfig(data.salonId);
+    if (c.user_id !== salon.data.owner_id || !c.evolution_api_url || !c.evolution_api_key || !c.evolution_instance) throw new Error('A dona precisa conectar o WhatsApp primeiro.');
+    if (c.evolution_managed && c.evolution_connection_state !== 'open') throw new Error('Reconecte o WhatsApp do salão antes de enviar.');
     const phone = evolutionPhone(data.phone);
     const saved = await supabaseAdmin.from('salon_messages').insert({ salon_id: data.salonId, contact_phone: phone, direction: 'outbound', body: data.body, appointment_id: data.appointmentId ?? null, created_by: context.userId }).select('id').single();
     if (saved.error) throw new Error(saved.error.message);

@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { evolutionBaseUrl, evolutionPhone, advanceMessageStatus, parseEvolutionMessage } from './evolution';
+import { evolutionBaseUrl, evolutionPhone, advanceMessageStatus, parseEvolutionMessage, managedEvolutionInstance, evolutionPairing } from './evolution';
 describe('Evolution por salão', () => {
+  it('cria uma conexão central exclusiva e estável para cada salão', () => {
+    const first = '11111111-1111-4111-8111-111111111111';
+    const second = '22222222-2222-4222-8222-222222222222';
+    expect(managedEvolutionInstance(first)).toBe(`iaxis-${first}`);
+    expect(managedEvolutionInstance(first)).not.toBe(managedEvolutionInstance(second));
+    expect(managedEvolutionInstance(first)).toBe(managedEvolutionInstance(first));
+  });
+  it('não trata só o número como conexão autorizada', () => {
+    expect(evolutionPairing({ number: '5511999999999' })).toEqual({ qrImage: '', qrText: '', pairingCode: '' });
+    expect(evolutionPairing({ base64: 'https://untrusted.example/image', pairingCode: '12345678' }).qrImage).toBe('');
+    expect(evolutionPairing({ qrcode: { base64: 'data:image/png;base64,YWJj' } }).qrImage).toBe('data:image/png;base64,YWJj');
+  });
   it('recusa endereços locais e conexões sem HTTPS', () => {
     expect(() => evolutionBaseUrl('http://example.com')).toThrow();
     expect(() => evolutionBaseUrl('https://127.0.0.1')).toThrow();
