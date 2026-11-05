@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Continuar desenvolvimento: concluir respostas, histórico e acompanhamento do suporte master sem alterar a gestão dos salões
+- [x] Continuação: suporte master com respostas, histórico privado e status; /meus-chamados para solicitantes, fluxo verificado com conta real e chamados de teste removidos
 - [x] Conta da solicitante identificada por sessão própria, acesso super_admin liberado e auditado; abas APIs, Evolution e regras verificadas com a conta real
 - [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas
 - [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
@@ -19,7 +19,7 @@
 - [ ] Comissões por profissional e fechamento mensal
 - [ ] Fornecedores, clientes por categoria e conexão WhatsApp
 - [ ] Agendamento público, secretária com IA e mensagens programadas
-- [ ] Suporte técnico master, tickets e encaminhamento
+- [x] Suporte técnico master, tickets e encaminhamento: contatos externos existentes preservados, respostas internas e histórico imutável concluídos
 - [ ] Revendedores, vendas confirmadas, comissão e notificações
 - [x] Ícone PWA oficial iAxis dourado + manifest azul-marinho + splash de 2s (logo iAxis para equipe, logo do salão para cliente) — logo gerada; trocar se a dona enviar o arquivo oficial
 - [x] WhatsApp manual: tela /configuracoes/whatsapp com API URL + token (Evolution), salvar e testar conexão
