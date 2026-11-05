@@ -109,6 +109,41 @@ export type Database = {
           },
         ]
       }
+      booking_handoffs: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          salon_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          salon_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          salon_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_handoffs_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       caixa_master_saas: {
         Row: {
           created_at: string
@@ -323,13 +358,16 @@ export type Database = {
           agendado_para: string
           appointment_id: string | null
           attempts: number
+          claimed_at: string | null
           client_id: string | null
           cliente_whatsapp: string
           dedupe_key: string
           error: string
           id: string
           mensagem: string
+          provider_message_id: string | null
           salon_id: string
+          sent_at: string | null
           status: string
           tipo: string
         }
@@ -337,13 +375,16 @@ export type Database = {
           agendado_para: string
           appointment_id?: string | null
           attempts?: number
+          claimed_at?: string | null
           client_id?: string | null
           cliente_whatsapp: string
           dedupe_key: string
           error?: string
           id?: string
           mensagem: string
+          provider_message_id?: string | null
           salon_id: string
+          sent_at?: string | null
           status?: string
           tipo: string
         }
@@ -351,13 +392,16 @@ export type Database = {
           agendado_para?: string
           appointment_id?: string | null
           attempts?: number
+          claimed_at?: string | null
           client_id?: string | null
           cliente_whatsapp?: string
           dedupe_key?: string
           error?: string
           id?: string
           mensagem?: string
+          provider_message_id?: string | null
           salon_id?: string
+          sent_at?: string | null
           status?: string
           tipo?: string
         }
@@ -635,6 +679,27 @@ export type Database = {
           updated_at?: string
           updated_by?: string
           verified_at?: string | null
+        }
+        Relationships: []
+      }
+      platform_reminder_control: {
+        Row: {
+          enabled: boolean
+          id: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          id?: boolean
+          updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -1001,6 +1066,41 @@ export type Database = {
             foreignKeyName: "sale_codes_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_automation_preferences: {
+        Row: {
+          appointment_reminders: boolean
+          birthday_reminders: boolean
+          return_days: number
+          return_reminders: boolean
+          salon_id: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_reminders?: boolean
+          birthday_reminders?: boolean
+          return_days?: number
+          return_reminders?: boolean
+          salon_id: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_reminders?: boolean
+          birthday_reminders?: boolean
+          return_days?: number
+          return_reminders?: boolean
+          salon_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_automation_preferences_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: true
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },
@@ -1722,11 +1822,47 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assistant_book_appointment: {
+        Args: {
+          _client?: string
+          _professional: string
+          _salon: string
+          _service: string
+          _starts: string
+        }
+        Returns: Json
+      }
       become_reseller: { Args: never; Returns: string }
       belongs_salon: { Args: { _salon: string }; Returns: boolean }
       booked_slots: {
         Args: { _day: string; _professional: string }
         Returns: string[]
+      }
+      claim_salon_reminders: {
+        Args: { _limit?: number }
+        Returns: {
+          agendado_para: string
+          appointment_id: string | null
+          attempts: number
+          claimed_at: string | null
+          client_id: string | null
+          cliente_whatsapp: string
+          dedupe_key: string
+          error: string
+          id: string
+          mensagem: string
+          provider_message_id: string | null
+          salon_id: string
+          sent_at: string | null
+          status: string
+          tipo: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "fila_mensagens_ia"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       has_role: {
         Args: {
@@ -1747,6 +1883,7 @@ export type Database = {
       }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
+      prepare_salon_reminders: { Args: { _salon?: string }; Returns: number }
       public_salon_booking_contact: {
         Args: { _salon: string }
         Returns: {
@@ -1780,6 +1917,19 @@ export type Database = {
         Returns: string
       }
       salon_access_allowed: { Args: { _salon: string }; Returns: boolean }
+      salon_available_slots: {
+        Args: {
+          _day: string
+          _professional: string
+          _salon: string
+          _service: string
+        }
+        Returns: {
+          label: string
+          starts_at: string
+        }[]
+      }
+      salon_booking_catalog: { Args: { _salon: string }; Returns: Json }
       save_salon_identity: {
         Args: {
           _article: string
