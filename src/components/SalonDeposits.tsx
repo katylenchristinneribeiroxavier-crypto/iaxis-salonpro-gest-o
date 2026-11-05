@@ -1,15 +1,26 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { Check } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
 import { PageTitle, Stat, inputCls } from './Shell';
+import { Button } from './ui/button';
 import { brl } from '@/lib/auth';
 
 type Row = { id: string; salon_id: string; client_name: string; starts_at: string; status: string; price: number; valor_sinal_pago: number; status_sinal: string };
 
 export function SalonDeposits() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
+  const qc = useQueryClient();
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
+
+  const confirmar = async (id: string) => {
+    const r = await supabase.from('appointments').update({ status_sinal: 'pago' }).eq('id', id);
+    if (r.error) return toast.error(r.error.message);
+    toast.success('Sinal confirmado');
+    await qc.invalidateQueries({ queryKey: ['deposits'] });
+  };
 
   const { data } = useQuery({
     queryKey: ['deposits', ctx.salon?.id, month, ctx.manager],
@@ -72,7 +83,7 @@ export function SalonDeposits() {
       <h2 className="text-2xl">Agendamentos com sinal</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="border-b text-left text-muted-foreground">{['Data', 'Cliente', 'Serviço', 'Sinal', 'Status do sinal', 'Saldo'].map((h) => <th key={h} className="p-3">{h}</th>)}</tr></thead>
+          <thead><tr className="border-b text-left text-muted-foreground">{['Data', 'Cliente', 'Serviço', 'Sinal', 'Status do sinal', 'Saldo', ''].map((h) => <th key={h} className="p-3">{h}</th>)}</tr></thead>
           <tbody>{comSinal.map((r) => <tr key={r.id} className="border-b">
             <td className="p-3">{new Date(r.starts_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</td>
             <td className="p-3">{r.client_name}</td>
@@ -80,6 +91,7 @@ export function SalonDeposits() {
             <td className="p-3 text-gold">{brl(Number(r.valor_sinal_pago))}</td>
             <td className="p-3">{r.status_sinal === 'pago' ? 'Confirmado' : 'Pendente'}</td>
             <td className="p-3">{r.status_sinal === 'pago' ? brl(Number(r.price) - Number(r.valor_sinal_pago)) : '—'}</td>
+            <td className="p-3">{r.status_sinal === 'pendente' && <Button size="sm" variant="outline" onClick={() => confirmar(r.id)}><Check />Confirmar recebimento</Button>}</td>
           </tr>)}</tbody>
         </table>
         {!comSinal.length && <p className="py-6 text-muted-foreground">Nenhum agendamento com sinal neste mês.</p>}
