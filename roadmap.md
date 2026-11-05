@@ -11,7 +11,8 @@
 - [ ] Agendamento público, secretária com IA e mensagens programadas
 - [ ] Suporte técnico master, tickets e encaminhamento
 - [ ] Revendedores, vendas confirmadas, comissão e notificações
-- [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona
+- [ ] Assistente de WhatsApp 24h para novos clientes: orçamento pelos preços, agendamento e transferência para a dona (ativar conexão com o número da dona)
+- [ ] Marca da desenvolvedora em todo o app — pedido do documento "Coloque minha marca de desenvolvedora"
 - [ ] Verificar regras, isolamento entre salões e fluxos completos com contas reais
 - [x] 4 painéis (Admin, Revendedor, Salão, Cliente) com login e dados reais
 - [x] Novos preços mensais/anuais dos planos
