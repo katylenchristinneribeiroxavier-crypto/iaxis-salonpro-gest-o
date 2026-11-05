@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas
 - [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
 - [x] Central Evolution em /master-automacoes e conexão individual por número + QR; credenciais centrais sem acesso pelo navegador, instâncias exclusivas e histórico master
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
