@@ -16,4 +16,6 @@
 - [x] 4 painéis (Admin, Revendedor, Salão, Cliente) com login e dados reais
 - [x] Novos preços mensais/anuais dos planos
 - [x] Área de pagamento via PIX com dados da empresa do criador (chave editável no Painel Master)
+- [x] Sinal de agendamento: configuração por salão (% ou valor fixo) e cobrança no agendamento online (pagamento simulado, pronto para Asaas)
+- [ ] Caixa master da dona do app (caixa_master_saas, tela /master-financeiro, lançamento automático de assinaturas) — pedido do documento "Correção crítica de caixa"
 - [ ] Futuro: WhatsApp, cobrança automática, notas fiscais, estoque/financeiro completos

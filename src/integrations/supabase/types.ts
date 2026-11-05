@@ -33,6 +33,8 @@ export type Database = {
           service_id: string | null
           starts_at: string
           status: string
+          status_sinal: string
+          valor_sinal_pago: number
         }
         Insert: {
           applied_commission_pct?: number | null
@@ -52,6 +54,8 @@ export type Database = {
           service_id?: string | null
           starts_at: string
           status?: string
+          status_sinal?: string
+          valor_sinal_pago?: number
         }
         Update: {
           applied_commission_pct?: number | null
@@ -71,6 +75,8 @@ export type Database = {
           service_id?: string | null
           starts_at?: string
           status?: string
+          status_sinal?: string
+          valor_sinal_pago?: number
         }
         Relationships: [
           {
@@ -918,6 +924,7 @@ export type Database = {
           blocked_by: string | null
           brand_color: string
           city: string | null
+          cobrar_sinal: boolean
           created_at: string
           id: string
           logo_url: string
@@ -932,6 +939,8 @@ export type Database = {
           subscription_due_date: string | null
           suspended_until: string | null
           timezone: string
+          tipo_sinal: string
+          valor_sinal: number
         }
         Insert: {
           access_enabled?: boolean
@@ -941,6 +950,7 @@ export type Database = {
           blocked_by?: string | null
           brand_color?: string
           city?: string | null
+          cobrar_sinal?: boolean
           created_at?: string
           id?: string
           logo_url?: string
@@ -955,6 +965,8 @@ export type Database = {
           subscription_due_date?: string | null
           suspended_until?: string | null
           timezone?: string
+          tipo_sinal?: string
+          valor_sinal?: number
         }
         Update: {
           access_enabled?: boolean
@@ -964,6 +976,7 @@ export type Database = {
           blocked_by?: string | null
           brand_color?: string
           city?: string | null
+          cobrar_sinal?: boolean
           created_at?: string
           id?: string
           logo_url?: string
@@ -978,6 +991,8 @@ export type Database = {
           subscription_due_date?: string | null
           suspended_until?: string | null
           timezone?: string
+          tipo_sinal?: string
+          valor_sinal?: number
         }
         Relationships: [
           {
