@@ -38,6 +38,7 @@ import { Route as AuthenticatedMasterAutomacoesRouteImport } from './routes/_aut
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
 import { Route as AuthenticatedMensagensRouteImport } from './routes/_authenticated/mensagens'
+import { Route as AuthenticatedMeusChamadosRouteImport } from './routes/_authenticated/meus-chamados'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
@@ -219,6 +220,12 @@ const AuthenticatedMensagensRoute = AuthenticatedMensagensRouteImport.update({
   path: '/mensagens',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMeusChamadosRoute =
+  AuthenticatedMeusChamadosRouteImport.update({
+    id: '/meus-chamados',
+    path: '/meus-chamados',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMinhasComissoesRoute =
   AuthenticatedMinhasComissoesRouteImport.update({
     id: '/minhas-comissoes',
@@ -347,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/mensagens': typeof AuthenticatedMensagensRoute
+  '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -394,6 +402,7 @@ export interface FileRoutesByTo {
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/mensagens': typeof AuthenticatedMensagensRoute
+  '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -443,6 +452,7 @@ export interface FileRoutesById {
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/_authenticated/mensagens': typeof AuthenticatedMensagensRoute
+  '/_authenticated/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -493,6 +503,7 @@ export interface FileRouteTypes {
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/mensagens'
+    | '/meus-chamados'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -540,6 +551,7 @@ export interface FileRouteTypes {
     | '/master-desenvolvedora'
     | '/master-financeiro'
     | '/mensagens'
+    | '/meus-chamados'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -588,6 +600,7 @@ export interface FileRouteTypes {
     | '/_authenticated/master-desenvolvedora'
     | '/_authenticated/master-financeiro'
     | '/_authenticated/mensagens'
+    | '/_authenticated/meus-chamados'
     | '/_authenticated/minhas-comissoes'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
@@ -827,6 +840,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMensagensRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/meus-chamados': {
+      id: '/_authenticated/meus-chamados'
+      path: '/meus-chamados'
+      fullPath: '/meus-chamados'
+      preLoaderRoute: typeof AuthenticatedMeusChamadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/minhas-comissoes': {
       id: '/_authenticated/minhas-comissoes'
       path: '/minhas-comissoes'
@@ -1023,6 +1043,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
   AuthenticatedMensagensRoute: typeof AuthenticatedMensagensRoute
+  AuthenticatedMeusChamadosRoute: typeof AuthenticatedMeusChamadosRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
@@ -1060,6 +1081,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedMasterDesenvolvedoraRoute,
   AuthenticatedMasterFinanceiroRoute: AuthenticatedMasterFinanceiroRoute,
   AuthenticatedMensagensRoute: AuthenticatedMensagensRoute,
+  AuthenticatedMeusChamadosRoute: AuthenticatedMeusChamadosRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
