@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { introduction, splitCommission, clientCategory, depositAmount } from './salon-rules';
+import { introduction, splitCommission, clientCategory, depositAmount, buildPixPayload } from './salon-rules';
 describe('Personalização e regras do salão', () => {
   it('usa nome masculino digitado e tratamento do salão', () => expect(introduction('Júlio', 'Studio Ana', 'masculino', 'do')).toBe('Oi, eu sou o Júlio, eu sou o secretário do Studio Ana'));
   it('usa nome feminino digitado e tratamento do salão', () => expect(introduction('Júlia', 'Espaço Jéssica', 'feminino', 'do')).toBe('Oi, eu sou a Júlia, eu sou a secretária do Espaço Jéssica'));
@@ -14,4 +14,6 @@ describe('Personalização e regras do salão', () => {
   it('calcula sinal de 30% sobre serviço de 300', () => expect(depositAmount(300, 'porcentagem', 30)).toBe(90));
   it('calcula sinal de valor fixo sem ultrapassar o preço do serviço', () => { expect(depositAmount(300, 'fixo', 50)).toBe(50); expect(depositAmount(100, 'fixo', 150)).toBe(100); });
   it('rejeita sinal com valores inválidos', () => { expect(() => depositAmount(300, 'porcentagem', 101)).toThrow(); expect(() => depositAmount(-1, 'fixo', 10)).toThrow(); });
+  it('gera payload PIX válido com valor e chave do salão', () => { const p = buildPixPayload('11999990000', 'Studio Ana', 'São Paulo', 90, 'abc123'); expect(p).toContain('BR.GOV.BCB.PIX'); expect(p).toContain('11999990000'); expect(p).toContain('540590.00'); expect(p).toContain('STUDIO ANA'); expect(p.slice(-4)).toMatch(/^[0-9A-F]{4}$/); });
+  it('rejeita payload PIX sem chave ou sem valor', () => { expect(() => buildPixPayload('', 'Ana', 'SP', 10, 'x')).toThrow(); expect(() => buildPixPayload('11999990000', 'Ana', 'SP', 0, 'x')).toThrow(); });
 });
