@@ -12,6 +12,14 @@ export function splitCommission(total: number, percentage: number) {
   const commission = Math.round((total * percentage / 100 + Number.EPSILON) * 100) / 100;
   return { commission, salon: Math.round((total - commission) * 100) / 100 };
 }
+export function depositAmount(servicePrice: number, type: 'porcentagem' | 'fixo', value: number) {
+  if (!Number.isFinite(servicePrice) || servicePrice < 0 || !Number.isFinite(value) || value < 0) throw new Error('Valores inválidos');
+  if (type === 'porcentagem') {
+    if (value > 100) throw new Error('Valores inválidos');
+    return Math.round((servicePrice * value / 100 + Number.EPSILON) * 100) / 100;
+  }
+  return Math.round((Math.min(value, servicePrice) + Number.EPSILON) * 100) / 100;
+}
 export function clientCategory(days: number | null, visits: number) {
   if (visits > 10) return 'vip';
   if (days === null) return 'sem_visita';
