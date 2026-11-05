@@ -1498,6 +1498,41 @@ export type Database = {
           },
         ]
       }
+      support_ticket_messages: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          is_developer: boolean
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          is_developer: boolean
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          is_developer?: boolean
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets_suporte"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_messages: {
         Row: {
           created_at: string
@@ -1740,6 +1775,10 @@ export type Database = {
         }[]
       }
       redeem_sale_code: { Args: { _code: string }; Returns: string }
+      reply_support_ticket: {
+        Args: { _body: string; _status?: string; _ticket: string }
+        Returns: string
+      }
       salon_access_allowed: { Args: { _salon: string }; Returns: boolean }
       save_salon_identity: {
         Args: {
