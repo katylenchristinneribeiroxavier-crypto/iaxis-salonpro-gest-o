@@ -18,3 +18,4 @@
 - Compose the unified salon page from existing operational modules; show subscription requests as owner-account history because they have no salon identifier.
 - Resolve booking WhatsApp through the selected salon's owner-scoped configuracoes_salao row; expose only name and contact through a safe public function, never Evolution credentials.
 - Evolution sends run in authenticated server functions; tenant webhooks authenticate a derived header token, persist sanitized events, and recover pending events on callbacks, sends, and inbox refresh.
+- Central Evolution credentials are service-role-only after super_admin checks; provision stable salon-scoped instances through owner-authorized functions and resolve managed credentials only server-side to prevent cross-tenant access.

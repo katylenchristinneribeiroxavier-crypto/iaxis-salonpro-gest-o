@@ -15,6 +15,14 @@ export function evolutionPhone(value: string) {
   if (!/^\d{12,15}$/.test(international)) throw new Error('Informe DDD e um WhatsApp válido.');
   return international;
 }
+export function managedEvolutionInstance(salonId: string) {
+  return `iaxis-${z.string().uuid().parse(salonId)}`;
+}
+export function evolutionPairing(response: unknown) {
+  const parsed = z.object({ base64: z.string().optional(), code: z.string().optional(), pairingCode: z.string().optional(), qrcode: z.object({ base64: z.string().optional(), code: z.string().optional() }).optional() }).parse(response);
+  const image = parsed.base64 || parsed.qrcode?.base64 || '';
+  return { qrImage: /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(image) ? image : '', qrText: parsed.code || parsed.qrcode?.code || '', pairingCode: parsed.pairingCode || '' };
+}
 export function evolutionStatus(value: unknown) {
   const status = String(value).toUpperCase();
   if (['4', 'READ', 'PLAYED', '5'].includes(status)) return 'read';

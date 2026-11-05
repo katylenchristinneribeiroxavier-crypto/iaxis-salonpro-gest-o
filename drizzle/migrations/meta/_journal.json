@@ -120,6 +120,20 @@
       "when": 1793896361526,
       "tag": "0016_evolution_inbox_retry_schedule",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793896785672,
+      "tag": "0017_central_evolution_provisioning",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1793896906585,
+      "tag": "0018_restrict_platform_evolution_grants",
+      "breakpoints": true
     }
   ]
 }

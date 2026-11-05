@@ -1,6 +1,7 @@
 # Roadmap
+- [x] Central Evolution em /master-automacoes e conexão individual por número + QR; credenciais centrais sem acesso pelo navegador, instâncias exclusivas e histórico master
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
-- [ ] Ativar e verificar conexão Evolution real — bloqueado: nenhum salão, URL, instância ou chave cadastrados; recebimento precisa de aplicativo publicado e Evolution com cabeçalhos de webhook
+- [ ] Ativar e verificar conexão Evolution real — bloqueado: sem salões, conta super_admin, URL/chave central ou endereço publicado; Evolution v2 deve estar hospedada e suportar cabeçalhos de webhook. Testes de isolamento e bloqueio de acesso passaram, pareamento real não verificado
 - [x] WhatsApp por dona: configuracoes_salao com acesso exclusivo da dona, formulário /configuracoes e contato dinâmico no agendamento; nenhuma conexão WhatsApp global encontrada
 - [x] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
 - [ ] Validar novas páginas e agendamento com dados reais — bloqueado: não há salões cadastrados; envio automático WhatsApp ainda depende de integração de mensagens

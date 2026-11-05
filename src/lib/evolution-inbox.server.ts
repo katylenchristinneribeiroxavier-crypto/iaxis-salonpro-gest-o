@@ -12,6 +12,13 @@ export const processEvolutionEvents = createServerOnlyFn(async (salonId: string)
       const envelope = event.payload as { data?: unknown };
       const items = Array.isArray(envelope.data) ? envelope.data : [envelope.data];
       let unmatched = false;
+      if (event.event === 'connection.update') {
+        const connection = envelope.data as { state?: string } | undefined;
+        if (connection?.state && ['open', 'close', 'connecting'].includes(connection.state)) {
+          const updated = await db.from('configuracoes_salao').update({ evolution_connection_state: connection.state }).eq('salon_id', salonId);
+          if (updated.error) throw updated.error;
+        }
+      }
       for (const item of items) {
         if (event.event === 'messages.upsert') {
           const message = parseEvolutionMessage(item);
