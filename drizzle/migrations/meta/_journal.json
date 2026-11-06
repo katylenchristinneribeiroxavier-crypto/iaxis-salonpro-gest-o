@@ -302,6 +302,13 @@
       "when": 1793993247394,
       "tag": "0042_salon_media_select",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1793993682475,
+      "tag": "0043_owner_photo",
+      "breakpoints": true
     }
   ]
 }

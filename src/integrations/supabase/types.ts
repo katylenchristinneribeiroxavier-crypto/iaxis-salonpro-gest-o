@@ -1679,6 +1679,7 @@ export type Database = {
           evolution_conectado: boolean
           evolution_instance_name: string
           evolution_ultimo_qr: string | null
+          foto_dona_url: string
           id: string
           logo_url: string
           name: string
@@ -1713,6 +1714,7 @@ export type Database = {
           evolution_conectado?: boolean
           evolution_instance_name?: string
           evolution_ultimo_qr?: string | null
+          foto_dona_url?: string
           id?: string
           logo_url?: string
           name?: string
@@ -1747,6 +1749,7 @@ export type Database = {
           evolution_conectado?: boolean
           evolution_instance_name?: string
           evolution_ultimo_qr?: string | null
+          foto_dona_url?: string
           id?: string
           logo_url?: string
           name?: string
@@ -2496,6 +2499,10 @@ export type Database = {
         }[]
       }
       salon_booking_catalog: { Args: { _salon: string }; Returns: Json }
+      save_owner_photo: {
+        Args: { _salon: string; _url: string }
+        Returns: undefined
+      }
       save_salon_identity: {
         Args: {
           _article: string
