@@ -2104,6 +2104,17 @@ export type Database = {
           pix_key: string
         }[]
       }
+      public_plans: {
+        Args: never
+        Returns: {
+          annual_monthly_price: number
+          id: string
+          name: string
+          online_fee_pct: number
+          price: number
+          sort: number
+        }[]
+      }
       public_salon_booking_contact: {
         Args: { _salon: string }
         Returns: {
