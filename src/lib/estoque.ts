@@ -32,7 +32,7 @@ export function pedidoWhatsApp(whatsapp: string, fornecedor: string, produto: st
 export function extrairQuantidade(texto: string): { quantidade: number; unidade: 'ml' | 'g' | 'litro' } | null {
   const m = texto.replace(/,/g, '.').match(/(\d+(?:\.\d+)?)\s*(ml|kg|g|l|lt|litros?)\b/i);
   if (!m) return null;
-  const n = Number(m[1]); const u = m[2].toLowerCase();
+  const n = Number(m[1]); const u = (m[2] ?? '').toLowerCase();
   if (u === 'ml') return { quantidade: n, unidade: 'ml' };
   if (u === 'g') return { quantidade: n, unidade: 'g' };
   if (u === 'kg') return { quantidade: n * 1000, unidade: 'g' };
