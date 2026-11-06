@@ -16,6 +16,7 @@ import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as LicencaExpiradaRouteImport } from './routes/licenca-expirada'
+import { Route as ReservaRouteImport } from './routes/reserva'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminMasterIaxis2026SecretoRouteImport } from './routes/_authenticated/admin-master-iaxis-2026-secreto'
@@ -97,6 +98,11 @@ const ClienteRoute = ClienteRouteImport.update({
 const LicencaExpiradaRoute = LicencaExpiradaRouteImport.update({
   id: '/licenca-expirada',
   path: '/licenca-expirada',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReservaRoute = ReservaRouteImport.update({
+  id: '/reserva',
+  path: '/reserva',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SuporteRoute = SuporteRouteImport.update({
@@ -378,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -434,6 +441,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -490,6 +498,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -548,6 +557,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/reserva'
     | '/suporte'
     | '/admin'
     | '/admin-master-iaxis-2026-secreto'
@@ -604,6 +614,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/reserva'
     | '/suporte'
     | '/admin'
     | '/admin-master-iaxis-2026-secreto'
@@ -659,6 +670,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/reserva'
     | '/suporte'
     | '/_authenticated/admin'
     | '/_authenticated/admin-master-iaxis-2026-secreto'
@@ -717,6 +729,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
   LicencaExpiradaRoute: typeof LicencaExpiradaRoute
+  ReservaRoute: typeof ReservaRoute
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
@@ -774,6 +787,13 @@ declare module '@tanstack/react-router' {
       path: '/licenca-expirada'
       fullPath: '/licenca-expirada'
       preLoaderRoute: typeof LicencaExpiradaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reserva': {
+      id: '/reserva'
+      path: '/reserva'
+      fullPath: '/reserva'
+      preLoaderRoute: typeof ReservaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/suporte': {
@@ -1255,6 +1275,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
   LicencaExpiradaRoute: LicencaExpiradaRoute,
+  ReservaRoute: ReservaRoute,
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
