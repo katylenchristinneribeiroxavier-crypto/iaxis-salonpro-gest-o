@@ -14,7 +14,7 @@ export const workspaceNav = [
   { to: '/minhas-comissoes', label: 'Minhas comissões' },
   { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
-  { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' },
+  { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' }, { to: '/despesas-salao', label: 'Despesas do salão' },
   { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
   { to: '/configuracoes', label: 'Configurações e WhatsApp' }, { to: '/minha-licenca', label: 'Minha Licença' }, { to: '/despesas', label: 'Despesas' }, { to: '/gestao-revendedores', label: 'Revendas' },

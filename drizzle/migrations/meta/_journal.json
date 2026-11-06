@@ -232,6 +232,13 @@
       "when": 1793984280709,
       "tag": "0032_public_booking_without_login",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1793985133750,
+      "tag": "0033_salon_expenses",
+      "breakpoints": true
     }
   ]
 }

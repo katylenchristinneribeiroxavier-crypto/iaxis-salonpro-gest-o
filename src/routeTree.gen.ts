@@ -34,6 +34,7 @@ import { Route as AuthenticatedConfiguracaoSuporteRouteImport } from './routes/_
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/_authenticated/configurar-secretaria'
 import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated/despesas'
+import { Route as AuthenticatedDespesasSalaoRouteImport } from './routes/_authenticated/despesas-salao'
 import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
@@ -202,6 +203,12 @@ const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
   path: '/despesas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDespesasSalaoRoute =
+  AuthenticatedDespesasSalaoRouteImport.update({
+    id: '/despesas-salao',
+    path: '/despesas-salao',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedFinanceiroComissoesRoute =
   AuthenticatedFinanceiroComissoesRouteImport.update({
     id: '/financeiro-comissoes',
@@ -402,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/despesas': typeof AuthenticatedDespesasRoute
+  '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -458,6 +466,7 @@ export interface FileRoutesByTo {
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/despesas': typeof AuthenticatedDespesasRoute
+  '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -516,6 +525,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
   '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
+  '/_authenticated/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -575,6 +585,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/configurar-secretaria'
     | '/despesas'
+    | '/despesas-salao'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
@@ -631,6 +642,7 @@ export interface FileRouteTypes {
     | '/configuracao-suporte'
     | '/configurar-secretaria'
     | '/despesas'
+    | '/despesas-salao'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
@@ -688,6 +700,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes'
     | '/_authenticated/configurar-secretaria'
     | '/_authenticated/despesas'
+    | '/_authenticated/despesas-salao'
     | '/_authenticated/financeiro-comissoes'
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
@@ -913,6 +926,13 @@ declare module '@tanstack/react-router' {
       path: '/despesas'
       fullPath: '/despesas'
       preLoaderRoute: typeof AuthenticatedDespesasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/despesas-salao': {
+      id: '/_authenticated/despesas-salao'
+      path: '/despesas-salao'
+      fullPath: '/despesas-salao'
+      preLoaderRoute: typeof AuthenticatedDespesasSalaoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/financeiro-comissoes': {
@@ -1196,6 +1216,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedConfigurarSecretariaRoute: typeof AuthenticatedConfigurarSecretariaRoute
   AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
+  AuthenticatedDespesasSalaoRoute: typeof AuthenticatedDespesasSalaoRoute
   AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
@@ -1239,6 +1260,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfigurarSecretariaRoute:
     AuthenticatedConfigurarSecretariaRoute,
   AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
+  AuthenticatedDespesasSalaoRoute: AuthenticatedDespesasSalaoRoute,
   AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
   AuthenticatedFornecedoresParceirosRoute:
     AuthenticatedFornecedoresParceirosRoute,
