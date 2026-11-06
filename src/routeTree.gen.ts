@@ -32,6 +32,7 @@ import { Route as AuthenticatedConfiguracaoLojaRouteImport } from './routes/_aut
 import { Route as AuthenticatedConfiguracaoSuporteRouteImport } from './routes/_authenticated/configuracao-suporte'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/_authenticated/configurar-secretaria'
+import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated/despesas'
 import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
@@ -43,6 +44,7 @@ import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/
 import { Route as AuthenticatedMasterFinanceiroRouteImport } from './routes/_authenticated/master-financeiro'
 import { Route as AuthenticatedMensagensRouteImport } from './routes/_authenticated/mensagens'
 import { Route as AuthenticatedMeusChamadosRouteImport } from './routes/_authenticated/meus-chamados'
+import { Route as AuthenticatedMinhaLicencaRouteImport } from './routes/_authenticated/minha-licenca'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
@@ -189,6 +191,11 @@ const AuthenticatedConfigurarSecretariaRoute =
     path: '/configurar-secretaria',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDespesasRoute = AuthenticatedDespesasRouteImport.update({
+  id: '/despesas',
+  path: '/despesas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFinanceiroComissoesRoute =
   AuthenticatedFinanceiroComissoesRouteImport.update({
     id: '/financeiro-comissoes',
@@ -251,6 +258,12 @@ const AuthenticatedMeusChamadosRoute =
   AuthenticatedMeusChamadosRouteImport.update({
     id: '/meus-chamados',
     path: '/meus-chamados',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMinhaLicencaRoute =
+  AuthenticatedMinhaLicencaRouteImport.update({
+    id: '/minha-licenca',
+    path: '/minha-licenca',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMinhasComissoesRoute =
@@ -381,6 +394,7 @@ export interface FileRoutesByFullPath {
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -392,6 +406,7 @@ export interface FileRoutesByFullPath {
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/mensagens': typeof AuthenticatedMensagensRoute
   '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
+  '/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -434,6 +449,7 @@ export interface FileRoutesByTo {
   '/configuracao-loja': typeof AuthenticatedConfiguracaoLojaRoute
   '/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/despesas': typeof AuthenticatedDespesasRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -445,6 +461,7 @@ export interface FileRoutesByTo {
   '/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/mensagens': typeof AuthenticatedMensagensRoute
   '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
+  '/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -489,6 +506,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracao-suporte': typeof AuthenticatedConfiguracaoSuporteRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/configurar-secretaria': typeof AuthenticatedConfigurarSecretariaRoute
+  '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
   '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
@@ -500,6 +518,7 @@ export interface FileRoutesById {
   '/_authenticated/master-financeiro': typeof AuthenticatedMasterFinanceiroRoute
   '/_authenticated/mensagens': typeof AuthenticatedMensagensRoute
   '/_authenticated/meus-chamados': typeof AuthenticatedMeusChamadosRoute
+  '/_authenticated/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
@@ -545,6 +564,7 @@ export interface FileRouteTypes {
     | '/configuracao-suporte'
     | '/configuracoes'
     | '/configurar-secretaria'
+    | '/despesas'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
@@ -556,6 +576,7 @@ export interface FileRouteTypes {
     | '/master-financeiro'
     | '/mensagens'
     | '/meus-chamados'
+    | '/minha-licenca'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -598,6 +619,7 @@ export interface FileRouteTypes {
     | '/configuracao-loja'
     | '/configuracao-suporte'
     | '/configurar-secretaria'
+    | '/despesas'
     | '/financeiro-comissoes'
     | '/fornecedores-parceiros'
     | '/funcionarios'
@@ -609,6 +631,7 @@ export interface FileRouteTypes {
     | '/master-financeiro'
     | '/mensagens'
     | '/meus-chamados'
+    | '/minha-licenca'
     | '/minhas-comissoes'
     | '/profissoes'
     | '/revendedor'
@@ -652,6 +675,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracao-suporte'
     | '/_authenticated/configuracoes'
     | '/_authenticated/configurar-secretaria'
+    | '/_authenticated/despesas'
     | '/_authenticated/financeiro-comissoes'
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
@@ -663,6 +687,7 @@ export interface FileRouteTypes {
     | '/_authenticated/master-financeiro'
     | '/_authenticated/mensagens'
     | '/_authenticated/meus-chamados'
+    | '/_authenticated/minha-licenca'
     | '/_authenticated/minhas-comissoes'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
@@ -863,6 +888,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfigurarSecretariaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/despesas': {
+      id: '/_authenticated/despesas'
+      path: '/despesas'
+      fullPath: '/despesas'
+      preLoaderRoute: typeof AuthenticatedDespesasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/financeiro-comissoes': {
       id: '/_authenticated/financeiro-comissoes'
       path: '/financeiro-comissoes'
@@ -938,6 +970,13 @@ declare module '@tanstack/react-router' {
       path: '/meus-chamados'
       fullPath: '/meus-chamados'
       preLoaderRoute: typeof AuthenticatedMeusChamadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/minha-licenca': {
+      id: '/_authenticated/minha-licenca'
+      path: '/minha-licenca'
+      fullPath: '/minha-licenca'
+      preLoaderRoute: typeof AuthenticatedMinhaLicencaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/minhas-comissoes': {
@@ -1136,6 +1175,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracaoSuporteRoute: typeof AuthenticatedConfiguracaoSuporteRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedConfigurarSecretariaRoute: typeof AuthenticatedConfigurarSecretariaRoute
+  AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
   AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
@@ -1147,6 +1187,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMasterFinanceiroRoute: typeof AuthenticatedMasterFinanceiroRoute
   AuthenticatedMensagensRoute: typeof AuthenticatedMensagensRoute
   AuthenticatedMeusChamadosRoute: typeof AuthenticatedMeusChamadosRoute
+  AuthenticatedMinhaLicencaRoute: typeof AuthenticatedMinhaLicencaRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
@@ -1177,6 +1218,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedConfigurarSecretariaRoute:
     AuthenticatedConfigurarSecretariaRoute,
+  AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
   AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
   AuthenticatedFornecedoresParceirosRoute:
     AuthenticatedFornecedoresParceirosRoute,
@@ -1190,6 +1232,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMasterFinanceiroRoute: AuthenticatedMasterFinanceiroRoute,
   AuthenticatedMensagensRoute: AuthenticatedMensagensRoute,
   AuthenticatedMeusChamadosRoute: AuthenticatedMeusChamadosRoute,
+  AuthenticatedMinhaLicencaRoute: AuthenticatedMinhaLicencaRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,

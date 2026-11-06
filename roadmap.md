@@ -41,3 +41,8 @@
 - [x] Marca da desenvolvedora Katylen Ribeiro em rodapé, menu, login e Sobre o sistema
 - [ ] Futuro: WhatsApp, cobrança automática, notas fiscais, estoque/financeiro completos
 - [x] Agenda mensal do salão (/agenda-mes): gráfico de ocupação por dia e dias com horários livres
+
+- [x] Minha Licença: tela do cliente, renovação no app, bloqueio automático ao vencer
+- [x] Despesas: envio de notas/recibos, leitura e categorização por IA, tabela exportável
+- [ ] Evolution real na página secreta (aguarda URL/chave da Evolution hospedada e publicação)
+- [x] Relatório de licenças na página secreta

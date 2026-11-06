@@ -24,3 +24,8 @@ describe('licença nacional', () => {
     expect(verificarLicenca({ ...base, status: 'pago' }, new Date('2026-11-07'))).toBe(false);
   });
 });
+import { diasRestantes as dr } from './license-rules';
+describe('diasRestantes', () => {
+  it('conta 7 dias para teste recém-criado', () => { const n = new Date('2026-01-01T00:00:00Z'); expect(dr('2026-01-08T00:00:00Z', n)).toBe(7); });
+  it('zero quando expirada', () => { expect(dr('2025-01-01T00:00:00Z', new Date('2026-01-01T00:00:00Z'))).toBe(0); });
+});
