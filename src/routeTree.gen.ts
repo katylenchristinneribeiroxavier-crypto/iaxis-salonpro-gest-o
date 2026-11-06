@@ -16,6 +16,7 @@ import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as LicencaExpiradaRouteImport } from './routes/licenca-expirada'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ReservaRouteImport } from './routes/reserva'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -102,6 +103,11 @@ const ClienteRoute = ClienteRouteImport.update({
 const LicencaExpiradaRoute = LicencaExpiradaRouteImport.update({
   id: '/licenca-expirada',
   path: '/licenca-expirada',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReservaRoute = ReservaRouteImport.update({
@@ -409,6 +415,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -470,6 +477,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -531,6 +539,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
   '/licenca-expirada': typeof LicencaExpiradaRoute
+  '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
   '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -594,6 +603,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/login'
     | '/reserva'
     | '/suporte'
     | '/admin'
@@ -655,6 +665,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/login'
     | '/reserva'
     | '/suporte'
     | '/admin'
@@ -715,6 +726,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cliente'
     | '/licenca-expirada'
+    | '/login'
     | '/reserva'
     | '/suporte'
     | '/_authenticated/admin'
@@ -778,6 +790,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
   LicencaExpiradaRoute: typeof LicencaExpiradaRoute
+  LoginRoute: typeof LoginRoute
   ReservaRoute: typeof ReservaRoute
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
@@ -837,6 +850,13 @@ declare module '@tanstack/react-router' {
       path: '/licenca-expirada'
       fullPath: '/licenca-expirada'
       preLoaderRoute: typeof LicencaExpiradaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reserva': {
@@ -1359,6 +1379,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
   LicencaExpiradaRoute: LicencaExpiradaRoute,
+  LoginRoute: LoginRoute,
   ReservaRoute: ReservaRoute,
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
