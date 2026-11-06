@@ -46,3 +46,4 @@
 - [x] Despesas: envio de notas/recibos, leitura e categorização por IA, tabela exportável
 - [ ] Evolution real na página secreta (aguarda URL/chave da Evolution hospedada e publicação)
 - [x] Relatório de licenças na página secreta
+- [ ] Testar pagamento mensal em /minha-licenca (volta a liberado, nova expiração)
