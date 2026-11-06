@@ -16,6 +16,6 @@ describe('enviar_mensagem_futura', () => {
     const f = vi.fn().mockResolvedValue({ ok: true, status: 200 });
     const r = await enviarMensagemFuturaCom({ evolution_url: 'https://evo.com/', evolution_api_key_global: 'k', ativo: true }, msg, f as never);
     expect(r.modo).toBe('real');
-    expect(f.mock.calls[0][0]).toBe('https://evo.com/message/sendText/iaxis-1');
+    expect(f.mock.calls[0]?.[0]).toBe('https://evo.com/message/sendText/iaxis-1');
   });
 });
