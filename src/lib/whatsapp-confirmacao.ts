@@ -4,7 +4,7 @@ export function waDigits(phone: string | null | undefined): string {
   return d.length <= 11 ? `55${d}` : d;
 }
 
-export function mensagemConfirmacao(p: { cliente: string; salao?: string | null; servico?: string | null; profissional?: string | null; inicio: string }): string {
+export function mensagemConfirmacao(p: { cliente: string; salao?: string | null | undefined; servico?: string | null | undefined; profissional?: string | null | undefined; inicio: string }): string {
   const dt = new Date(p.inicio);
   const data = dt.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
   const hora = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
