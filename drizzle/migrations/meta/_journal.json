@@ -267,6 +267,13 @@
       "when": 1793989317130,
       "tag": "0037_salon_insert_and_staff_portal",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1793990519294,
+      "tag": "0038_owner_signup_trial_salon",
+      "breakpoints": true
     }
   ]
 }
