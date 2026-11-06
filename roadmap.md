@@ -42,5 +42,6 @@
 - [ ] Futuro: WhatsApp, cobrança automática, notas fiscais, estoque/financeiro completos
 - [x] Agenda mensal do salão (/agenda-mes): gráfico de ocupação por dia e dias com horários livres
 
-- [ ] Minha Licença: tela do cliente, renovação no app, bloqueio automático ao vencer
+- [x] Minha Licença: tela do cliente, renovação no app, bloqueio automático ao vencer
 - [ ] Despesas: envio de notas/recibos, leitura e categorização por IA, tabela exportável
+- [ ] Evolution real na página secreta (aguarda URL/chave da Evolution hospedada e publicação)
