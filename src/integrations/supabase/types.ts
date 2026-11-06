@@ -309,6 +309,51 @@ export type Database = {
           },
         ]
       }
+      despesas: {
+        Row: {
+          arquivo_nome: string
+          arquivo_path: string
+          categoria: string
+          created_at: string
+          data_documento: string | null
+          descricao: string
+          fornecedor: string
+          id: string
+          numero_documento: string
+          tipo: string
+          user_id: string
+          valor: number
+        }
+        Insert: {
+          arquivo_nome?: string
+          arquivo_path: string
+          categoria?: string
+          created_at?: string
+          data_documento?: string | null
+          descricao?: string
+          fornecedor?: string
+          id?: string
+          numero_documento?: string
+          tipo?: string
+          user_id?: string
+          valor?: number
+        }
+        Update: {
+          arquivo_nome?: string
+          arquivo_path?: string
+          categoria?: string
+          created_at?: string
+          data_documento?: string | null
+          descricao?: string
+          fornecedor?: string
+          id?: string
+          numero_documento?: string
+          tipo?: string
+          user_id?: string
+          valor?: number
+        }
+        Relationships: []
+      }
       evolution_webhook_events: {
         Row: {
           event: string
