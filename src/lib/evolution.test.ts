@@ -4,7 +4,7 @@ describe('Evolution por salão', () => {
   it('cria uma conexão central exclusiva e estável para cada salão', () => {
     const first = '11111111-1111-4111-8111-111111111111';
     const second = '22222222-2222-4222-8222-222222222222';
-    expect(managedEvolutionInstance(first)).toBe(`iaxis-${first}`);
+    expect(managedEvolutionInstance(first)).toBe(`salao_${first}`);
     expect(managedEvolutionInstance(first)).not.toBe(managedEvolutionInstance(second));
     expect(managedEvolutionInstance(first)).toBe(managedEvolutionInstance(first));
   });

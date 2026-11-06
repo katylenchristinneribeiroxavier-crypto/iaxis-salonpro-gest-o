@@ -1,9 +1,9 @@
 import { createServerOnlyFn } from '@tanstack/react-start';
 import { evolutionBaseUrl } from './evolution';
 
-export const evolutionRequest = createServerOnlyFn(async (base: string, key: string, path: string, body?: unknown) => {
+export const evolutionRequest = createServerOnlyFn(async (base: string, key: string, path: string, body?: unknown, method?: 'DELETE') => {
   const response = await fetch(`${evolutionBaseUrl(base)}${path}`, {
-    method: body === undefined ? 'GET' : 'POST', redirect: 'error',
+    method: method ?? (body === undefined ? 'GET' : 'POST'), redirect: 'error',
     headers: { apikey: key, 'Content-Type': 'application/json' },
     body: body === undefined ? null : JSON.stringify(body), signal: AbortSignal.timeout(12000),
   });
