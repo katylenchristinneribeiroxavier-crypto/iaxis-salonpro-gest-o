@@ -288,6 +288,13 @@
       "when": 1793993139608,
       "tag": "0040_product_photos",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1793993233580,
+      "tag": "0041_salon_media_policies",
+      "breakpoints": true
     }
   ]
 }
