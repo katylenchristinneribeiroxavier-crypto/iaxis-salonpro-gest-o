@@ -34,20 +34,20 @@ function Auth() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"in" | "up">(search.ref || search.role ? "up" : "in");
   const [role, setRole] = useState<Role>((search.role as Role) ?? (search.ref ? "dono_salao" : "cliente"));
-  const [f, setF] = useState({ name: "", email: "", password: "", salon: "", city: "" });
+  const [f, setF] = useState({ name: "", email: "", password: "", confirm: "", salon: "", city: "" });
   const [busy, setBusy] = useState(false);
 
   const goHome = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
-    if(data?.some(r=>r.role==='dono_salao')&&!data.some(r=>r.role==='super_admin')){const own=await supabase.from('salons').select('id').eq('owner_id',user.id).maybeSingle();if(!own.data)return navigate({to:'/assinar'});}
     navigate({ to: homeFor((data ?? []).map((r) => r.role as Role)) });
   };
   useEffect(() => { goHome(); }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mode === "up" && f.password !== f.confirm) return void toast.error("As senhas não são iguais");
     setBusy(true);
     if (mode === "in") {
       const { error } = await supabase.auth.signInWithPassword({ email: f.email, password: f.password });
@@ -62,10 +62,14 @@ function Auth() {
         data: { full_name: f.name, role, salon_name: f.salon, city: f.city, ref: search.ref },
       },
     });
+    if (error) { setBusy(false); return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta. Use Entrar." : error.message); }
+    if (!data.session) {
+      const r = await supabase.auth.signInWithPassword({ email: f.email, password: f.password });
+      if (r.error) { setBusy(false); return toast.error("Conta criada, mas não foi possível entrar. Tente Entrar."); }
+    }
     setBusy(false);
-    if (error) return toast.error(error.message);
-    if (!data.session) toast.success("Conta criada! Confirme pelo link enviado ao seu e-mail.");
-    else goHome();
+    toast.success("Conta criada! Abrindo seu aplicativo…");
+    goHome();
   };
 
   const google = async () => {
@@ -89,18 +93,27 @@ function Auth() {
                     className={`rounded-md border p-2 text-xs ${role === r.v ? "border-primary bg-primary/15 text-gold" : ""}`}>{r.l}</button>
                 ))}
               </div>
-              <input required placeholder="Seu nome" className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
               {role === "dono_salao" && (
-                <>
-                  <input required placeholder="Nome do salão" className={inputCls} value={f.salon} onChange={(e) => setF({ ...f, salon: e.target.value })} />
-                  <input placeholder="Cidade/UF" className={inputCls} value={f.city} onChange={(e) => setF({ ...f, city: e.target.value })} />
-                </>
+                <label className="block text-sm">Nome do Salão
+                  <input required maxLength={100} placeholder="Nome do seu salão" className={`${inputCls} mt-1`} value={f.salon} onChange={(e) => setF({ ...f, salon: e.target.value })} /></label>
               )}
+              <label className="block text-sm">{role === "dono_salao" ? "Nome da Dona" : "Seu nome"}
+                <input required maxLength={100} placeholder="Seu nome" className={`${inputCls} mt-1`} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></label>
             </>
           )}
-          <input required type="email" placeholder="E-mail" className={inputCls} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
-          <input required type="password" minLength={6} placeholder="Senha" className={inputCls} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
-          <button disabled={busy} className={`${btnGold} w-full py-3`}>{mode === "in" ? "Entrar" : "Cadastrar"}</button>
+          <label className="block text-sm">Email
+            <input required type="email" placeholder="seu@email.com" className={`${inputCls} mt-1`} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} /></label>
+          <label className="block text-sm">{mode === "up" ? "Crie sua senha" : "Senha"}
+            <input required type="password" minLength={6} autoComplete={mode === "up" ? "new-password" : "current-password"}
+              placeholder={mode === "up" ? "Crie uma senha nova (não precisa ser do seu email)" : "Sua senha do app"} className={`${inputCls} mt-1`} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} /></label>
+          {mode === "up" && (
+            <label className="block text-sm">Confirme sua senha
+              <input required type="password" minLength={6} autoComplete="new-password" placeholder="Digite a mesma senha de novo" className={`${inputCls} mt-1`} value={f.confirm} onChange={(e) => setF({ ...f, confirm: e.target.value })} />
+              {f.confirm && f.confirm !== f.password && <span className="mt-1 block text-xs text-destructive">As senhas não são iguais</span>}
+            </label>
+          )}
+          {mode === "up" && <p className="text-xs text-muted-foreground">Mínimo 6 caracteres. É uma senha só deste app, não a do seu email.</p>}
+          <button disabled={busy} className={`${btnGold} w-full py-3`}>{mode === "in" ? "Entrar" : busy ? "Criando…" : "Criar conta"}</button>
         </form>
         <button onClick={google} className="mt-3 w-full rounded-md border py-3 text-sm hover:border-primary">Continuar com Google</button>
         <button onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-sm text-gold hover:underline">
