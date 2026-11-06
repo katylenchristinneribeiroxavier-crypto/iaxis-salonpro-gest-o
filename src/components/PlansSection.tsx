@@ -15,7 +15,7 @@ export function PlansSection() {
   const [ciclo, setCiclo] = useState<Ciclo>("mensal");
   const { data: plans } = useQuery({
     queryKey: ["plans"],
-    queryFn: async () => (await supabase.from("plans").select("*").order("sort")).data ?? [],
+    queryFn: async () => (await supabase.rpc("public_plans")).data ?? [],
   });
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">

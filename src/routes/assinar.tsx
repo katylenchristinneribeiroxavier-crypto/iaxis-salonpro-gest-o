@@ -34,7 +34,7 @@ function Assinar() {
     queryKey: ["assinar"],
     queryFn: async () => {
       const [p, s] = await Promise.all([
-        supabase.from("plans").select("*").order("sort"),
+        supabase.rpc("public_plans"),
         supabase.rpc("public_pix_payment"),
       ]);
       return { plans: p.data ?? [], pix: s.data?.[0] ?? null };
