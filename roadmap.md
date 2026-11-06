@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Licença nacional por salão: teste 7 dias, mensal 30 dias, anual 365 dias, bloqueio no layout e no banco, página expirada, controle secreto master e aceite de termos; sem Evolution
+- [x] Licença nacional por salão: teste 7 dias, mensal 30 dias, anual 365 dias, bloqueio no layout e no banco, página expirada, controle secreto master e aceite de termos; 46 testes passaram, controles master e renovação verificados, licença de teste restaurada; sem Evolution
 - [x] Entrada master oculta para visitantes; visível apenas à conta super_admin autenticada, com navegação verificada
 - [x] Sete dias de teste a partir da confirmação em toda compra; prazo gratuito verificado
 - [x] Salões apenas após compra confirmada; única compra gratuita resgatada pela desenvolvedora, sem comissão, nomes em branco
