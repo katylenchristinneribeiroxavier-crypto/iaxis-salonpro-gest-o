@@ -183,6 +183,13 @@
       "when": 1793924933537,
       "tag": "0025_national_salon_licenses",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1793981452712,
+      "tag": "0026_restrict_national_license_grants",
+      "breakpoints": true
     }
   ]
 }
