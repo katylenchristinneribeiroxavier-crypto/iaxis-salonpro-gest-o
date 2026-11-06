@@ -1,15 +1,15 @@
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { AlertTriangle, MessageCircle, Pencil, Plus, Trash2 } from 'lucide-react';
+import { AlertTriangle, Camera, MessageCircle, Pencil, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
-import { estoqueBaixo, pedidoWhatsApp, resumoEstoque, semaforo } from '@/lib/estoque';
+import { estoqueBaixo, extrairQuantidade, numeroAproximado, pedidoWhatsApp, resumoEstoque, semaforo, usosRestantes } from '@/lib/estoque';
 import { inputCls } from './Shell';
 import { Button } from './ui/button';
 
 type Supplier = { id: string; nome: string; categoria: string; whatsapp: string; email: string; observacoes: string };
-type Product = { id: string; supplier_id: string | null; nome: string; marca: string; unidade: string; quantidade_atual: number; quantidade_minima: number; custo_unitario: number; consumo_por_servico: number; servico_relacionado: string; qtd_usos_restantes: number | null };
+type Product = { id: string; supplier_id: string | null; nome: string; marca: string; unidade: string; quantidade_atual: number; quantidade_minima: number; custo_unitario: number; consumo_por_servico: number; servico_relacionado: string; qtd_usos_restantes: number | null; foto_path: string };
 
 export function useStock() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
@@ -78,21 +78,47 @@ export function SuppliersModule() {
 }
 
 const dot = { verde: 'bg-success', amarelo: 'bg-gold', vermelho: 'bg-destructive' } as const;
-const emptyProd = { nome: '', marca: '', unidade: 'ml', supplier_id: '', quantidade_atual: '', quantidade_minima: '', custo_unitario: '', consumo_por_servico: '', servico_relacionado: '' };
+const emptyProd = { nome: '', marca: '', unidade: 'ml', supplier_id: '', quantidade_atual: '', quantidade_minima: '', custo_unitario: '', consumo_por_servico: '', servico_relacionado: '', foto_path: '' };
 export function ProductsModule() {
   const { ctx, salonId, suppliers, products } = useStock();
   const qc = useQueryClient();
   const [form, setForm] = useState(emptyProd); const [editing, setEditing] = useState<string>();
   const [mov, setMov] = useState<{ id: string; tipo: string; qtd: string; motivo: string }>();
+  const [preview, setPreview] = useState(''); const [lendo, setLendo] = useState(false);
+  const paths = products.map((p) => p.foto_path).filter(Boolean);
+  const { data: fotos } = useQuery({ queryKey: ['product-photos', paths.join('|')], enabled: paths.length > 0, queryFn: async () => {
+    const r = await supabase.storage.from('product_photos').createSignedUrls(paths, 3600);
+    return Object.fromEntries((r.data ?? []).map((x) => [x.path, x.signedUrl]));
+  } });
+  const onFoto = async (file?: File) => {
+    if (!file || !salonId) return;
+    setPreview(URL.createObjectURL(file));
+    const path = `${salonId}/${crypto.randomUUID()}.${file.type.split('/')[1] || 'jpg'}`;
+    const up = await supabase.storage.from('product_photos').upload(path, file, { contentType: file.type });
+    if (up.error) return void toast.error(up.error.message);
+    setForm((f) => ({ ...f, foto_path: path }));
+    setLendo(true);
+    try {
+      const { recognize } = await import('tesseract.js');
+      const { data } = await recognize(file, 'por');
+      const q = extrairQuantidade(data.text);
+      if (q) { setForm((f) => ({ ...f, quantidade_atual: f.quantidade_atual || String(q.quantidade), unidade: q.unidade })); toast.success(`Encontrei ${q.quantidade}${q.unidade} na embalagem`); }
+      else toast.info('Não achei a quantidade na foto. Digite abaixo.');
+      const nome = data.text.split('\n').map((l) => l.trim()).find((l) => /[a-zA-Z]{4,}/.test(l));
+      if (nome) setForm((f) => (f.nome ? f : { ...f, nome: nome.slice(0, 60) }));
+    } catch { toast.info('Não consegui ler a foto. Digite os dados.'); } finally { setLendo(false); }
+  };
+  const previewUsos = usosRestantes(Number(form.quantidade_atual || 0), numeroAproximado(form.consumo_por_servico));
+  const previewCor = semaforo(Number(form.quantidade_atual || 0), Number(form.quantidade_minima || 0));
   const set = (k: keyof typeof emptyProd) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setForm({ ...form, [k]: e.target.value });
   const save = async (e: React.FormEvent) => {
     e.preventDefault(); if (!salonId) return;
     const row = { nome: form.nome, marca: form.marca, unidade: form.unidade, supplier_id: form.supplier_id || null, servico_relacionado: form.servico_relacionado,
-      quantidade_atual: Number(form.quantidade_atual || 0), quantidade_minima: Number(form.quantidade_minima || 0), custo_unitario: Number(form.custo_unitario || 0), consumo_por_servico: Number(form.consumo_por_servico || 0) };
+      quantidade_atual: Number(form.quantidade_atual || 0), quantidade_minima: Number(form.quantidade_minima || 0), custo_unitario: Number(form.custo_unitario || 0), consumo_por_servico: numeroAproximado(form.consumo_por_servico), foto_path: form.foto_path };
     const r = editing ? await supabase.from('products').update(row).eq('id', editing) : await supabase.from('products').insert({ ...row, salon_id: salonId });
     if (r.error) return void toast.error(r.error.message);
     if (estoqueBaixo(row.quantidade_atual, row.quantidade_minima)) toast.warning(`Estoque baixo: ${row.nome}`); else toast.success('Produto salvo');
-    setForm(emptyProd); setEditing(undefined); qc.invalidateQueries({ queryKey: ['stock'] });
+    setForm(emptyProd); setPreview(''); setEditing(undefined); qc.invalidateQueries({ queryKey: ['stock'] });
   };
   const move = async () => {
     if (!mov || !salonId) return; const p = products.find((x) => x.id === mov.id); if (!p) return;
@@ -107,27 +133,38 @@ export function ProductsModule() {
   return <div className="space-y-8">
     <form onSubmit={save} className="grid gap-3 rounded-lg border bg-card p-5 sm:grid-cols-3">
       <h2 className="text-xl sm:col-span-3">{editing ? 'Editar produto' : 'Novo produto'}</h2>
+      <div className="flex flex-wrap items-center gap-4 rounded-lg border border-gold/40 p-4 sm:col-span-3">
+        <span className="text-sm text-gold">Passo 1</span>
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground"><Camera className="h-4 w-4" />Foto do produto
+          <input type="file" accept="image/*" capture="environment" className="sr-only" onChange={(e) => onFoto(e.target.files?.[0])} /></label>
+        {(preview || (form.foto_path && fotos?.[form.foto_path])) && <img src={preview || fotos?.[form.foto_path]} alt="Foto do produto" className="h-20 w-20 rounded-md object-cover" />}
+        {lendo && <p className="text-sm text-muted-foreground">Lendo a embalagem…</p>}
+      </div>
       <label className="text-sm">Nome<input required className={inputCls} value={form.nome} onChange={set('nome')} /></label>
       <label className="text-sm">Marca<input className={inputCls} value={form.marca} onChange={set('marca')} /></label>
       <label className="text-sm">Unidade<select className={inputCls} value={form.unidade} onChange={set('unidade')}>{['ml', 'g', 'unidade', 'litro'].map((u) => <option key={u}>{u}</option>)}</select></label>
       <label className="text-sm">Quantidade atual<input type="number" step="any" min="0" className={inputCls} value={form.quantidade_atual} onChange={set('quantidade_atual')} /></label>
       <label className="text-sm">Quantidade mínima<input type="number" step="any" min="0" className={inputCls} value={form.quantidade_minima} onChange={set('quantidade_minima')} /></label>
       <label className="text-sm">Custo unitário (R$)<input type="number" step="0.01" min="0" className={inputCls} value={form.custo_unitario} onChange={set('custo_unitario')} /></label>
-      <label className="text-sm">Consumo por serviço<input type="number" step="any" min="0" placeholder="ex: 200" className={inputCls} value={form.consumo_por_servico} onChange={set('consumo_por_servico')} /></label>
+      <label className="text-sm"><span className="text-gold">Passo 2 · </span>Quanto gasta por serviço<input placeholder="Ex: 200" className={inputCls} value={form.consumo_por_servico} onChange={set('consumo_por_servico')} /></label>
       <label className="text-sm">Serviço relacionado<input placeholder="ex: Progressiva" className={inputCls} value={form.servico_relacionado} onChange={set('servico_relacionado')} /></label>
       <label className="text-sm">Fornecedor<select className={inputCls} value={form.supplier_id} onChange={set('supplier_id')}><option value="">Nenhum</option>{suppliers.map((s) => <option key={s.id} value={s.id}>{s.nome}</option>)}</select></label>
-      <div className="flex gap-2 sm:col-span-3"><Button type="submit"><Plus />Salvar</Button>{editing && <Button type="button" variant="ghost" onClick={() => { setEditing(undefined); setForm(emptyProd); }}>Cancelar</Button>}</div>
+      <div className="flex items-center gap-3 rounded-lg bg-muted/30 p-3 sm:col-span-3"><span className="text-sm text-gold">Passo 3</span>
+        <span className={`h-4 w-4 rounded-full ${dot[previewCor]}`} />
+        <p>{previewUsos === null ? 'Informe quanto gasta por serviço para calcular' : `Restam ${previewUsos} ${previewUsos === 1 ? 'uso' : 'usos'}`}</p></div>
+      <div className="flex gap-2 sm:col-span-3"><Button type="submit"><Plus />Salvar</Button>{editing && <Button type="button" variant="ghost" onClick={() => { setEditing(undefined); setForm(emptyProd); setPreview(''); }}>Cancelar</Button>}</div>
     </form>
     <p className="text-sm text-muted-foreground">Ao concluir um atendimento cujo serviço contém o “serviço relacionado”, o consumo é descontado automaticamente.</p>
     <div className="space-y-3">{products.map((p) => {
       const cor = semaforo(Number(p.quantidade_atual), Number(p.quantidade_minima));
       return <article key={p.id} className="flex flex-wrap items-center gap-3 rounded-lg border bg-card p-4">
+        {p.foto_path && fotos?.[p.foto_path] ? <img src={fotos[p.foto_path]} alt={p.nome} className="h-14 w-14 rounded-md object-cover" /> : <div className="h-14 w-14 rounded-md bg-muted/30" />}
         <span aria-label={`Semáforo ${cor}`} className={`h-4 w-4 shrink-0 rounded-full ${dot[cor]}`} />
         <div className="min-w-48 flex-1"><p className="text-lg">{p.nome} {p.marca && <span className="text-sm text-muted-foreground">· {p.marca}</span>}</p>
           <p className="text-sm text-gold">{resumoEstoque(p)}</p><p className="text-xs text-muted-foreground">Mínimo {Number(p.quantidade_minima)}{p.unidade} · {suppliers.find((s) => s.id === p.supplier_id)?.nome ?? 'sem fornecedor'}</p></div>
         {cor !== 'verde' && <PedirButton product={p} suppliers={suppliers} salon={ctx.salon?.name} />}
         <Button size="sm" variant="outline" onClick={() => setMov({ id: p.id, tipo: 'entrada', qtd: '', motivo: '' })}>Movimentar</Button>
-        <Button size="sm" variant="outline" onClick={() => { setEditing(p.id); setForm({ nome: p.nome, marca: p.marca, unidade: p.unidade, supplier_id: p.supplier_id ?? '', quantidade_atual: String(p.quantidade_atual), quantidade_minima: String(p.quantidade_minima), custo_unitario: String(p.custo_unitario), consumo_por_servico: String(p.consumo_por_servico), servico_relacionado: p.servico_relacionado }); }}><Pencil />Editar</Button>
+        <Button size="sm" variant="outline" onClick={() => { setEditing(p.id); setForm({ nome: p.nome, marca: p.marca, unidade: p.unidade, supplier_id: p.supplier_id ?? '', quantidade_atual: String(p.quantidade_atual), quantidade_minima: String(p.quantidade_minima), custo_unitario: String(p.custo_unitario), consumo_por_servico: String(p.consumo_por_servico), servico_relacionado: p.servico_relacionado, foto_path: p.foto_path }); setPreview(''); }}><Pencil />Editar</Button>
         <Button size="sm" variant="ghost" aria-label="Excluir" onClick={() => del(p.id)}><Trash2 /></Button>
         {mov?.id === p.id && <div className="flex w-full flex-wrap gap-2">
           <select aria-label="Tipo" className={`${inputCls} max-w-40`} value={mov.tipo} onChange={(e) => setMov({ ...mov, tipo: e.target.value })}><option value="entrada">Entrada</option><option value="saida_uso">Saída (uso)</option><option value="perda">Perda</option><option value="ajuste">Ajuste (novo total)</option></select>
