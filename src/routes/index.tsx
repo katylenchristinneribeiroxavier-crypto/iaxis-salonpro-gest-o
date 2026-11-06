@@ -44,6 +44,12 @@ function Index() {
         <p className="mx-auto mt-6 max-w-2xl text-muted-foreground">
           Agenda gera comanda › comanda baixa estoque › estoque gera financeiro › financeiro gera comissão › comissão gera relatório › relatório gera campanha.
         </p>
+        {!me.data && (
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button asChild size="lg"><Link to="/auth" search={{ role: "dono_salao", ref: undefined }}>Sou Dona - Criar Conta</Link></Button>
+            <Button asChild size="lg" variant="outline"><Link to="/auth" search={{ role: undefined, ref: undefined }}>Já tenho conta</Link></Button>
+          </div>
+        )}
       </section>
       <section className="mx-auto grid max-w-6xl gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
         {visiblePortals.map((p) => (
