@@ -19,6 +19,7 @@ export type Database = {
           applied_commission_pct: number | null
           client_id: string | null
           client_name: string
+          client_whatsapp: string | null
           commission_amount: number | null
           created_at: string
           deposit: number
@@ -35,11 +36,14 @@ export type Database = {
           status: string
           status_sinal: string
           valor_sinal_pago: number
+          whatsapp_confirmacao: string
+          whatsapp_enviado_em: string | null
         }
         Insert: {
           applied_commission_pct?: number | null
           client_id?: string | null
           client_name: string
+          client_whatsapp?: string | null
           commission_amount?: number | null
           created_at?: string
           deposit?: number
@@ -56,11 +60,14 @@ export type Database = {
           status?: string
           status_sinal?: string
           valor_sinal_pago?: number
+          whatsapp_confirmacao?: string
+          whatsapp_enviado_em?: string | null
         }
         Update: {
           applied_commission_pct?: number | null
           client_id?: string | null
           client_name?: string
+          client_whatsapp?: string | null
           commission_amount?: number | null
           created_at?: string
           deposit?: number
@@ -77,6 +84,8 @@ export type Database = {
           status?: string
           status_sinal?: string
           valor_sinal_pago?: number
+          whatsapp_confirmacao?: string
+          whatsapp_enviado_em?: string | null
         }
         Relationships: [
           {
