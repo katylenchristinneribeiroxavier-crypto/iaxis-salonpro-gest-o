@@ -281,6 +281,27 @@
       "when": 1793992865355,
       "tag": "0039_suppliers_products_stock",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1793993139608,
+      "tag": "0040_product_photos",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1793993233580,
+      "tag": "0041_salon_media_policies",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1793993247394,
+      "tag": "0042_salon_media_select",
+      "breakpoints": true
     }
   ]
 }

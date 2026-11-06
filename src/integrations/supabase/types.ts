@@ -1007,6 +1007,7 @@ export type Database = {
           consumo_por_servico: number
           created_at: string
           custo_unitario: number
+          foto_path: string
           id: string
           marca: string
           nome: string
@@ -1022,6 +1023,7 @@ export type Database = {
           consumo_por_servico?: number
           created_at?: string
           custo_unitario?: number
+          foto_path?: string
           id?: string
           marca?: string
           nome?: string
@@ -1037,6 +1039,7 @@ export type Database = {
           consumo_por_servico?: number
           created_at?: string
           custo_unitario?: number
+          foto_path?: string
           id?: string
           marca?: string
           nome?: string

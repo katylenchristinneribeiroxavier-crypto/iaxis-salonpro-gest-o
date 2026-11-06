@@ -7,6 +7,8 @@ import { introduction, type AgentGender } from '@/lib/salon-rules';
 import { supabase } from '@/integrations/supabase/client';
 import { PageTitle, inputCls } from './Shell';
 import { Button } from './ui/button';
+import { PhotoPicker } from './PhotoPicker';
+import { uploadSalonPhoto } from '@/lib/salon-media';
 export function IdentitySettings({ secretary = false }: { secretary?: boolean }) {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
   const salon = ctx.salon;
@@ -33,7 +35,7 @@ export function IdentitySettings({ secretary = false }: { secretary?: boolean })
         <label className="block text-sm">Nome do salão<input aria-label="Nome do salão" className={`${inputCls} mt-2`} value={name} onChange={e => setName(e.target.value)} /></label>
         <label className="block text-sm">Tratamento do nome<select aria-label="Tratamento do nome" className={`${inputCls} mt-2`} value={article} onChange={e => setArticle(e.target.value)}><option value="da">da</option><option value="do">do</option><option value="de">de</option></select></label>
       </div>
-      {!secretary && <div className="grid gap-5 sm:grid-cols-2"><label className="text-sm">Endereço da logo<input type="url" className={`${inputCls} mt-2`} value={logo} onChange={e => setLogo(e.target.value)} /></label><label className="text-sm">Cor da marca<input aria-label="Cor da marca" type="color" className="mt-2 block h-10 w-20" value={color} onChange={e => setColor(e.target.value)} /></label></div>}
+      {!secretary && <div className="grid gap-5 sm:grid-cols-2"><div className="space-y-3 text-sm sm:col-span-2"><p>Logo / foto do salão</p>{logo && <img src={logo} alt="Logo do salão" className="h-24 w-24 rounded-xl object-cover" />}<PhotoPicker label="Abrir Câmera" onFile={async f => { if (!salon) return; try { setLogo(await uploadSalonPhoto(salon.id, 'logo', f)); toast.success('Foto enviada. Clique em Salvar configuração.'); } catch (err) { toast.error(err instanceof Error ? err.message : 'Falha no envio'); } }} /></div><label className="text-sm">Cor da marca<input aria-label="Cor da marca" type="color" className="mt-2 block h-10 w-20" value={color} onChange={e => setColor(e.target.value)} /></label></div>}
       {secretary && <><label className="block text-sm">Nome do agente<input aria-label="Nome do agente" className={`${inputCls} mt-2`} value={agent} onChange={e => setAgent(e.target.value)} /></label>
         <fieldset><legend className="mb-3 text-sm">Gênero e pronomes</legend><div className="flex flex-wrap gap-5">{(['feminino','masculino','neutro'] as const).map(g => <label key={g} className="flex items-center gap-2 text-sm"><input type="radio" name="gender" value={g} checked={gender===g} onChange={() => setGender(g)} />{g === 'feminino' ? 'Feminino · ela/dela' : g === 'masculino' ? 'Masculino · ele/dele' : 'Neutro · elu/delu'}</label>)}</div></fieldset>
         <section className="border-t pt-6"><h2 className="text-2xl">Apresentação</h2><div className="mt-4 flex items-start gap-3"><UserRound className="mt-1 h-6 w-6 shrink-0 text-gold" /><p aria-live="polite" data-testid="introduction" className="text-lg leading-relaxed">{introduction(agent, name, agent ? gender : undefined, article)}</p></div></section>
