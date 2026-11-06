@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Crown, Handshake, Store, UserRound } from "lucide-react";
 import { Brand } from "@/components/Shell";
 import { PlansSection } from "@/components/PlansSection";
+import { homeFor, useMe } from '@/lib/auth';
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,11 +27,14 @@ const portais = [
 ] as const;
 
 function Index() {
+  const me = useMe();
+  const master = me.data?.roles.includes('super_admin') ?? false;
+  const visiblePortals = portais.filter(p => p.to !== '/admin' || master);
   return (
     <div className="min-h-screen bg-gradient-navy">
       <header className="mx-auto flex max-w-6xl items-center justify-between p-6">
         <Brand />
-        <Link to="/auth" className="rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground">Entrar</Link>
+        <Button asChild><Link to={me.data ? homeFor(me.data.roles) : '/auth'}>{me.data ? 'Meu painel' : 'Entrar'}</Link></Button>
       </header>
       <section className="mx-auto max-w-6xl px-6 py-16 text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-gold">Gestão de beleza com inteligência</p>
@@ -41,7 +46,7 @@ function Index() {
         </p>
       </section>
       <section className="mx-auto grid max-w-6xl gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
-        {portais.map((p) => (
+        {visiblePortals.map((p) => (
           <Link key={p.to} to={p.to} className="group rounded-2xl border bg-card p-6 transition hover:-translate-y-1 hover:shadow-gold">
             <p.icon className="h-8 w-8 text-gold" />
             <h3 className="mt-4 text-2xl font-semibold">{p.t}</h3>
