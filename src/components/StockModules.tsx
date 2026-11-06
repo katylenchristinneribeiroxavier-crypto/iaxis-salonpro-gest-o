@@ -31,7 +31,7 @@ export function useStock() {
 function PedirButton({ product, suppliers, salon }: { product: Product; suppliers: Supplier[]; salon?: string }) {
   const s = suppliers.find((x) => x.id === product.supplier_id);
   if (!s?.whatsapp) return null;
-  return <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" asChild>
+  return <Button size="sm" className="bg-success text-background hover:bg-success/90" asChild>
     <a href={pedidoWhatsApp(s.whatsapp, s.nome, `${product.nome}${product.marca ? ` (${product.marca})` : ''}`, salon)} target="_blank" rel="noopener noreferrer"><MessageCircle />Pedir via WhatsApp</a>
   </Button>;
 }
@@ -68,7 +68,7 @@ export function SuppliersModule() {
         const first = low[0] ?? products.find((p) => p.supplier_id === s.id);
         return <article key={s.id} className="flex flex-wrap items-center gap-3 rounded-lg border bg-card p-4">
           <div className="min-w-48 flex-1"><p className="text-lg">{s.nome}</p><p className="text-sm text-muted-foreground">{[s.whatsapp, s.email].filter(Boolean).join(' · ')}</p>{s.observacoes && <p className="text-xs text-muted-foreground">{s.observacoes}</p>}</div>
-          {s.whatsapp && <Button size="sm" className="bg-success text-success-foreground hover:bg-success/90" asChild><a target="_blank" rel="noopener noreferrer" href={pedidoWhatsApp(s.whatsapp, s.nome, low.length ? low.map((p) => p.nome).join(', ') : first?.nome ?? 'produtos', ctx.salon?.name)}><MessageCircle />Pedir via WhatsApp</a></Button>}
+          {s.whatsapp && <Button size="sm" className="bg-success text-background hover:bg-success/90" asChild><a target="_blank" rel="noopener noreferrer" href={pedidoWhatsApp(s.whatsapp, s.nome, low.length ? low.map((p) => p.nome).join(', ') : first?.nome ?? 'produtos', ctx.salon?.name)}><MessageCircle />Pedir via WhatsApp</a></Button>}
           <Button size="sm" variant="outline" onClick={() => { setEditing(s.id); setForm({ nome: s.nome, categoria: s.categoria, whatsapp: s.whatsapp, email: s.email, observacoes: s.observacoes }); }}><Pencil />Editar</Button>
           <Button size="sm" variant="ghost" aria-label="Excluir" onClick={() => del(s.id)}><Trash2 /></Button>
         </article>;
@@ -77,7 +77,7 @@ export function SuppliersModule() {
   </div>;
 }
 
-const dot = { verde: 'bg-success', amarelo: 'bg-warning', vermelho: 'bg-destructive' } as const;
+const dot = { verde: 'bg-success', amarelo: 'bg-gold', vermelho: 'bg-destructive' } as const;
 const emptyProd = { nome: '', marca: '', unidade: 'ml', supplier_id: '', quantidade_atual: '', quantidade_minima: '', custo_unitario: '', consumo_por_servico: '', servico_relacionado: '' };
 export function ProductsModule() {
   const { ctx, salonId, suppliers, products } = useStock();

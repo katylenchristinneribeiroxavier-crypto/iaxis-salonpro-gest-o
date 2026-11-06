@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import * as Icons from "lucide-react";
 import { PageTitle } from "@/components/Shell";
 import { ownerBlocks } from "@/lib/owner-menu";
+import { LowStockCard } from "@/components/StockModules";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   head: () => ({ meta: [
@@ -38,6 +39,7 @@ function AppHome() {
           );
         })}
       </div>
+      <LowStockCard />
       <Link to="/salao" className="mt-6 inline-block text-sm text-gold hover:underline">Ver painel com números do dia</Link>
     </div>
   );

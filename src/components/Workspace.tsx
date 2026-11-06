@@ -16,7 +16,7 @@ export const workspaceNav = [
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
   { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' }, { to: '/despesas-salao', label: 'Despesas do salão' },
   { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
-  { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores-parceiros', label: 'Fornecedores' },
+  { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores', label: 'Fornecedores' }, { to: '/produtos', label: 'Produtos e estoque' },
   { to: '/configuracoes', label: 'Configurações e WhatsApp' }, { to: '/minha-licenca', label: 'Minha Licença' }, { to: '/despesas', label: 'Despesas' }, { to: '/gestao-revendedores', label: 'Revendas' },
   { to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' }, { to: '/salao', label: 'Todas as pastas' },
 ];
