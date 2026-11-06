@@ -281,6 +281,13 @@
       "when": 1793992865355,
       "tag": "0039_suppliers_products_stock",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1793993139608,
+      "tag": "0040_product_photos",
+      "breakpoints": true
     }
   ]
 }
