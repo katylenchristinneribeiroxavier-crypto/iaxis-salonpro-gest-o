@@ -25,6 +25,7 @@ export type Database = {
           deposit: number
           duration_min: number
           id: string
+          motivo_alteracao: string
           payment_status: string
           price: number
           professional_id: string
@@ -49,6 +50,7 @@ export type Database = {
           deposit?: number
           duration_min?: number
           id?: string
+          motivo_alteracao?: string
           payment_status?: string
           price?: number
           professional_id: string
@@ -73,6 +75,7 @@ export type Database = {
           deposit?: number
           duration_min?: number
           id?: string
+          motivo_alteracao?: string
           payment_status?: string
           price?: number
           professional_id?: string
@@ -1005,24 +1008,30 @@ export type Database = {
           id: string
           name: string
           photo_url: string
+          portal_token: string
           profession_id: string | null
           salon_id: string
+          whatsapp: string
         }
         Insert: {
           commission_pct?: number
           id?: string
           name: string
           photo_url?: string
+          portal_token?: string
           profession_id?: string | null
           salon_id: string
+          whatsapp?: string
         }
         Update: {
           commission_pct?: number
           id?: string
           name?: string
           photo_url?: string
+          portal_token?: string
           profession_id?: string | null
           salon_id?: string
+          whatsapp?: string
         }
         Relationships: [
           {
@@ -2158,6 +2167,7 @@ export type Database = {
         Args: { _day: string; _professional: string }
         Returns: string[]
       }
+      can_create_own_salon: { Args: { _owner: string }; Returns: boolean }
       claim_salon_reminders: {
         Args: { _limit?: number }
         Returns: {
@@ -2338,6 +2348,17 @@ export type Database = {
         }
         Returns: undefined
       }
+      staff_change_appointment: {
+        Args: {
+          _action: string
+          _appointment: string
+          _new_starts?: string
+          _reason: string
+          _token: string
+        }
+        Returns: Json
+      }
+      staff_portal: { Args: { _token: string }; Returns: Json }
       verificar_licenca: { Args: never; Returns: Json }
     }
     Enums: {

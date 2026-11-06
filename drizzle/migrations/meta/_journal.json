@@ -260,6 +260,13 @@
       "when": 1793988223294,
       "tag": "0036_waitlist_message_unlinked",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1793989317130,
+      "tag": "0037_salon_insert_and_staff_portal",
+      "breakpoints": true
     }
   ]
 }

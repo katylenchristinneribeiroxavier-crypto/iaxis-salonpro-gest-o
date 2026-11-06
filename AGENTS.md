@@ -25,3 +25,4 @@
 - Reminder queues are generated idempotently from appointment/client changes; external delivery stays off until developer activation and uses managed authenticated scheduled callbacks with atomic claims and uncertain-send quarantine.
 - Salon creation requires a confirmed purchase; a database singleton locks the developer-only free test redemption, and purchase timestamps preserve the seven-day trial separately from paid access.
 - National licenses are provisioned transactionally from confirmed purchases; salon_access_allowed enforces expiry with master suspension preserved, and only authenticated super_admin RPCs may renew or block licenses. The root layout checks licensing without gating renewal or support.
+- Staff portal /f/$token uses professionals.portal_token through security-definer RPCs (staff_portal, staff_change_appointment) so staff see only their own agenda and commission without login.

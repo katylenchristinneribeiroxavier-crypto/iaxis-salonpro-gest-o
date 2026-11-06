@@ -58,6 +58,7 @@ import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_a
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
 import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
 import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
+import { Route as FTokenRouteImport } from './routes/f.$token'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes.index'
 import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes/_authenticated/configuracoes.whatsapp'
@@ -338,6 +339,11 @@ const ApiResellerAiPlanRoute = ApiResellerAiPlanRouteImport.update({
   path: '/api/reseller-ai-plan',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FTokenRoute = FTokenRouteImport.update({
+  id: '/f/$token',
+  path: '/f/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RCodeRoute = RCodeRouteImport.update({
   id: '/r/$code',
   path: '/r/$code',
@@ -433,6 +439,7 @@ export interface FileRoutesByFullPath {
   '/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -489,6 +496,7 @@ export interface FileRoutesByTo {
   '/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -549,6 +557,7 @@ export interface FileRoutesById {
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
@@ -609,6 +618,7 @@ export interface FileRouteTypes {
     | '/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/f/$token'
     | '/r/$code'
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
@@ -665,6 +675,7 @@ export interface FileRouteTypes {
     | '/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/f/$token'
     | '/r/$code'
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
@@ -724,6 +735,7 @@ export interface FileRouteTypes {
     | '/_authenticated/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/f/$token'
     | '/r/$code'
     | '/_authenticated/configuracoes/whatsapp'
     | '/_authenticated/revendedor/codigos'
@@ -746,6 +758,7 @@ export interface RootRouteChildren {
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
+  FTokenRoute: typeof FTokenRoute
   RCodeRoute: typeof RCodeRoute
   ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
   ApiPublicJobsSalonRemindersRoute: typeof ApiPublicJobsSalonRemindersRoute
@@ -1096,6 +1109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResellerAiPlanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/f/$token': {
+      id: '/f/$token'
+      path: '/f/$token'
+      fullPath: '/f/$token'
+      preLoaderRoute: typeof FTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/r/$code': {
       id: '/r/$code'
       path: '/r/$code'
@@ -1301,6 +1321,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
+  FTokenRoute: FTokenRoute,
   RCodeRoute: RCodeRoute,
   ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,
   ApiPublicJobsSalonRemindersRoute: ApiPublicJobsSalonRemindersRoute,
