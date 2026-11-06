@@ -2095,6 +2095,15 @@ export type Database = {
       owns_salon: { Args: { _salon: string }; Returns: boolean }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
       prepare_salon_reminders: { Args: { _salon?: string }; Returns: number }
+      public_pix_payment: {
+        Args: never
+        Returns: {
+          pix_bank: string
+          pix_cnpj: string
+          pix_holder: string
+          pix_key: string
+        }[]
+      }
       public_salon_booking_contact: {
         Args: { _salon: string }
         Returns: {
