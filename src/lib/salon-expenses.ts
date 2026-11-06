@@ -11,7 +11,7 @@ export function totaisPorCategoria(rows: { categoria: string; valor: number }[])
 }
 
 export function intervaloMes(month: string) {
-  const [y, m] = month.split('-').map(Number);
+  const [y = 0, m = 1] = month.split('-').map(Number);
   const next = m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, '0')}`;
   return { inicio: `${month}-01`, fim: `${next}-01` };
 }
