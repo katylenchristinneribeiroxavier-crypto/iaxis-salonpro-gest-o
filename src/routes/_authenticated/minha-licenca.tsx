@@ -24,7 +24,12 @@ function MinhaLicenca() {
     queryKey: ['minha-licenca'],
     queryFn: async () => {
       const r = await check();
-      const salao = r.licenca?.salao_id;
+      let salao: string | undefined = r.licenca?.salao_id;
+      if (!salao && r.master) {
+        const { data: { user } } = await supabase.auth.getUser();
+        const own = user ? await supabase.from('salons').select('id').eq('owner_id', user.id).limit(1).maybeSingle() : null;
+        salao = own?.data?.id;
+      }
       const [lic, salon, hist] = await Promise.all([
         salao ? supabase.from('licencas_nacionais').select('*').eq('salao_id', salao).maybeSingle() : Promise.resolve({ data: null }),
         salao ? supabase.from('salons').select('plan_id, plans(name, price, annual_monthly_price)').eq('id', salao).maybeSingle() : Promise.resolve({ data: null }),
@@ -40,7 +45,7 @@ function MinhaLicenca() {
   const plan = salon?.plans;
   const valor = plan ? planCharge(plan, ciclo) : null;
   const dias = lic ? diasRestantes(lic.data_expira, new Date()) : 0;
-  const liberado = r.permitido;
+  const liberado = r.master ? lic?.status === 'liberado' && dias > 0 : r.permitido;
   return (
     <div className="min-h-screen bg-gradient-navy p-6">
       <Brand />
