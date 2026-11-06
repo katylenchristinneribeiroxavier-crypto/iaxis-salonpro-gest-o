@@ -6,6 +6,7 @@ import { salonContextOptions } from '@/lib/salon-data';
 import { brl } from '@/lib/auth';
 import { PageTitle, StatusBadge } from './Shell';
 import { Button } from './ui/button';
+import { SalonLicense } from './SalonLicense';
 
 export function SalonSubscription() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
@@ -29,6 +30,7 @@ export function SalonSubscription() {
   const plan = data?.plans.find(p => p.id === salon?.plan_id);
   return <>
     <PageTitle title="Assinatura do salão" />
+    {salon && <SalonLicense salon={salon.id} owner={ctx.userId === salon.owner_id} />}
     {data?.requests.find(r=>r.status==='confirmado'&&r.trial_ends_at)&&<p className="mb-5 text-sm text-gold">Teste de 7 dias até {new Date(data.requests.find(r=>r.status==='confirmado'&&r.trial_ends_at)?.trial_ends_at || '').toLocaleString('pt-BR')}.</p>}
     {isPending ? <p role="status">Carregando assinatura…</p> : error ? <p role="alert" className="text-destructive">Não foi possível carregar a assinatura. Tente novamente.</p> : <>
       <div className="flex flex-wrap items-center justify-between gap-6 border-b pb-6">
