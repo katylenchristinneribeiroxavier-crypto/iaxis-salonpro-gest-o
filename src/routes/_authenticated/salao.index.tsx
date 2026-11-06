@@ -103,3 +103,23 @@ function Painel() {
     </>
   );
 }
+
+function CreateSalon({ onDone }: { onDone: () => void }) {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { error } = await supabase.from("salons").insert({ owner_id: user.id, name: String(f.get("name") ?? "").trim(), city: String(f.get("city") ?? "").trim() || null, slug: "auto" });
+    if (error) return void toast.error(error.code === "42501" ? "Seu salão é liberado após a compra confirmada (ou você já tem um salão)." : error.message);
+    toast.success("Salão criado"); onDone();
+  };
+  return (
+    <form onSubmit={submit} className="max-w-md space-y-4 rounded-xl border bg-card p-6">
+      <h2 className="text-2xl">Criar meu salão</h2>
+      <label className="block text-sm">Nome do salão<input name="name" required maxLength={100} className="mt-2 w-full rounded-md border bg-background p-2" /></label>
+      <label className="block text-sm">Cidade<input name="city" maxLength={100} className="mt-2 w-full rounded-md border bg-background p-2" /></label>
+      <button type="submit" className={btnGold}>Criar salão</button>
+    </form>
+  );
+}
