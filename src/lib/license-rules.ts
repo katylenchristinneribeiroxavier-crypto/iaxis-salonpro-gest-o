@@ -12,3 +12,8 @@ export function verificarLicenca(license: License, now: Date): boolean {
   }
   return license.status !== 'pago' && expiration >= now.getTime();
 }
+export function diasRestantes(dataExpira: string, now: Date): number {
+  const t = Date.parse(dataExpira);
+  if (!Number.isFinite(t)) return 0;
+  return Math.max(0, Math.ceil((t - now.getTime()) / 86400000));
+}

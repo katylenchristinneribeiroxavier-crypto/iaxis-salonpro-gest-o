@@ -5,7 +5,7 @@ import { useServerFn } from '@tanstack/react-start';
 import { verificarLicenca } from '@/lib/license.functions';
 
 export function LicenseLayoutGate({ children }: { children: ReactNode }) {
-  const required = useRouterState({ select: state => state.matches.some(m => m.routeId.startsWith('/_authenticated/')) && !['/meus-chamados'].includes(state.location.pathname) });
+  const required = useRouterState({ select: state => state.matches.some(m => m.routeId.startsWith('/_authenticated/')) && !['/meus-chamados', '/minha-licenca'].includes(state.location.pathname) });
   const check = useServerFn(verificarLicenca);
   const query = useQuery({ queryKey: ['national-license'], queryFn: () => check(), enabled: required, staleTime: 0, refetchInterval: 30000, retry: false });
   if (!required) return children;
