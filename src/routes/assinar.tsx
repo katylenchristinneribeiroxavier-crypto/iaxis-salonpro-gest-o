@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Brand, btnGold, inputCls } from "@/components/Shell";
 import { brl } from "@/lib/auth";
 import { planCharge, type Ciclo } from "@/lib/plans";
+import { TermosELGPD } from '@/components/TermosELGPD';
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/assinar")({
   validateSearch: (s: Record<string, unknown>): { plano?: string | undefined; ciclo?: Ciclo | undefined } => ({
@@ -27,6 +29,7 @@ function Assinar() {
   const { plano, ciclo = "mensal" } = Route.useSearch();
   const [f, setF] = useState({ name: "", email: "", phone: "" });
   const [sent, setSent] = useState(false);
+  const [aceitou, setAceitou] = useState(false);
   const { data } = useQuery({
     queryKey: ["assinar"],
     queryFn: async () => {
@@ -43,11 +46,11 @@ function Assinar() {
 
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!plan) return;
+    if (!plan || !aceitou) { toast.error('Concorde com os termos para continuar.'); return; }
     const { data: { user } } = await supabase.auth.getUser();
     const { error } = await supabase.from("subscription_requests").insert({
       user_id: user?.id ?? null, name: f.name, email: f.email, phone: f.phone,
-      plan_id: plan.id, billing: ciclo, amount: valor,
+      plan_id: plan.id, billing: ciclo, amount: valor, aceitou_termos: aceitou,
     });
     if (error) { toast.error(error.message); return; }
     setSent(true);
@@ -102,7 +105,8 @@ function Assinar() {
             <input required placeholder="Nome / Salão" className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
             <input required type="email" placeholder="E-mail" className={inputCls} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
             <input placeholder="WhatsApp" className={inputCls} value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
-            <button className={`${btnGold} w-full py-3`}>Já paguei o PIX</button>
+            <TermosELGPD checked={aceitou} onChange={setAceitou} />
+            <Button type="submit" disabled={!aceitou} className="w-full">Já paguei o PIX</Button>
           </form>
         )}
       </div>
