@@ -225,6 +225,13 @@
       "when": 1793983762330,
       "tag": "0031_plans_public_function",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1793984280709,
+      "tag": "0032_public_booking_without_login",
+      "breakpoints": true
     }
   ]
 }
