@@ -28,7 +28,7 @@ export function useStock() {
   return { ctx, salonId, suppliers: q.data?.suppliers ?? [], products: q.data?.products ?? [] };
 }
 
-function PedirButton({ product, suppliers, salon }: { product: Product; suppliers: Supplier[]; salon?: string }) {
+function PedirButton({ product, suppliers, salon }: { product: Product; suppliers: Supplier[]; salon?: string | undefined }) {
   const s = suppliers.find((x) => x.id === product.supplier_id);
   if (!s?.whatsapp) return null;
   return <Button size="sm" className="bg-success text-background hover:bg-success/90" asChild>

@@ -22,7 +22,7 @@ export function resumoEstoque(p: { quantidade_atual: number; unidade: string; co
   return `${base} = ${usos} ${usos === 1 ? svc : svc.endsWith('s') ? svc : svc + 's'}`;
 }
 
-export function pedidoWhatsApp(whatsapp: string, fornecedor: string, produto: string, salao?: string) {
+export function pedidoWhatsApp(whatsapp: string, fornecedor: string, produto: string, salao?: string | undefined) {
   const digits = whatsapp.replace(/\D/g, '');
   const text = `Olá ${fornecedor}, preciso repor ${produto}${salao ? ` para o salão ${salao}` : ''}. Pode me passar valor e prazo?`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
