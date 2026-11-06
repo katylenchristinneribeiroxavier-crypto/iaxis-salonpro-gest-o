@@ -662,6 +662,67 @@ export type Database = {
           },
         ]
       }
+      lista_espera: {
+        Row: {
+          client_name: string
+          created_at: string
+          desired_at: string
+          id: string
+          notified_at: string | null
+          professional_id: string | null
+          salon_id: string
+          service_id: string | null
+          status: string
+          whatsapp: string
+        }
+        Insert: {
+          client_name: string
+          created_at?: string
+          desired_at: string
+          id?: string
+          notified_at?: string | null
+          professional_id?: string | null
+          salon_id: string
+          service_id?: string | null
+          status?: string
+          whatsapp: string
+        }
+        Update: {
+          client_name?: string
+          created_at?: string
+          desired_at?: string
+          id?: string
+          notified_at?: string | null
+          professional_id?: string | null
+          salon_id?: string
+          service_id?: string | null
+          status?: string
+          whatsapp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lista_espera_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lista_espera_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lista_espera_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       log_acoes_master: {
         Row: {
           action: string
@@ -1310,6 +1371,32 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "salon_automation_preferences_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_booking_rules: {
+        Row: {
+          cancel_min_hours: number
+          salon_id: string
+          updated_at: string
+        }
+        Insert: {
+          cancel_min_hours?: number
+          salon_id: string
+          updated_at?: string
+        }
+        Update: {
+          cancel_min_hours?: number
+          salon_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_booking_rules_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: true
             referencedRelation: "salons"
@@ -2155,6 +2242,21 @@ export type Database = {
           _whatsapp: string
         }
         Returns: Json
+      }
+      public_cancel_appointment: {
+        Args: { _appointment: string; _whatsapp: string }
+        Returns: Json
+      }
+      public_join_waitlist: {
+        Args: {
+          _desired: string
+          _name: string
+          _professional: string
+          _salon: string
+          _service: string
+          _whatsapp: string
+        }
+        Returns: string
       }
       public_pix_payment: {
         Args: never
