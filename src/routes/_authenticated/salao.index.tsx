@@ -39,7 +39,7 @@ function Painel() {
     },
   });
   if (data === undefined) return null;
-  if (data === null) return <p className="text-muted-foreground">Nenhum salão vinculado a esta conta.</p>;
+  if (data === null) return <CreateSalon onDone={() => qc.invalidateQueries()} />;
   const { salon, appts, services, pros } = data;
   const validos = appts.filter((a) => a.status !== "cancelado");
   const fat = appts.filter((a) => a.status === "finalizado").reduce((s, a) => s + Number(a.price), 0);
