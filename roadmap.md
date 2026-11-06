@@ -50,3 +50,4 @@
 - [x] Zerar alertas críticos de segurança sem ignorar
 - [x] WhatsApp: instância salao_{id} por salão, QR grande renovando a cada 30s, status verde
 - [x] Câmera + Galeria em Produtos, logo do salão e foto da dona
+- [ ] Espaço secreto (aguardando detalhes da Katylen — mensagem chegou cortada)
