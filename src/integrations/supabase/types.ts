@@ -354,6 +354,30 @@ export type Database = {
         }
         Relationships: []
       }
+      evolution_config_global: {
+        Row: {
+          ativo: boolean
+          criado_em: string
+          evolution_api_key_global: string
+          evolution_url: string
+          id: string
+        }
+        Insert: {
+          ativo?: boolean
+          criado_em?: string
+          evolution_api_key_global?: string
+          evolution_url?: string
+          id?: string
+        }
+        Update: {
+          ativo?: boolean
+          criado_em?: string
+          evolution_api_key_global?: string
+          evolution_url?: string
+          id?: string
+        }
+        Relationships: []
+      }
       evolution_webhook_events: {
         Row: {
           event: string
@@ -1440,6 +1464,9 @@ export type Database = {
           closing_time: string
           cobrar_sinal: boolean
           created_at: string
+          evolution_conectado: boolean
+          evolution_instance_name: string
+          evolution_ultimo_qr: string | null
           id: string
           logo_url: string
           name: string
@@ -1471,6 +1498,9 @@ export type Database = {
           closing_time?: string
           cobrar_sinal?: boolean
           created_at?: string
+          evolution_conectado?: boolean
+          evolution_instance_name?: string
+          evolution_ultimo_qr?: string | null
           id?: string
           logo_url?: string
           name?: string
@@ -1502,6 +1532,9 @@ export type Database = {
           closing_time?: string
           cobrar_sinal?: boolean
           created_at?: string
+          evolution_conectado?: boolean
+          evolution_instance_name?: string
+          evolution_ultimo_qr?: string | null
           id?: string
           logo_url?: string
           name?: string
@@ -2023,6 +2056,10 @@ export type Database = {
       }
       licenca_valida: { Args: { _salon: string }; Returns: boolean }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
+      master_gerar_instancia_futura: {
+        Args: { _salon: string }
+        Returns: string
+      }
       master_licenca: {
         Args: { _acao: string; _email: string }
         Returns: {
