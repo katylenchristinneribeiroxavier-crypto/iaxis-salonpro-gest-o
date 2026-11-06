@@ -90,3 +90,33 @@ export const checkSalonEvolution = createServerFn({ method: 'POST' }).middleware
   if (updated.error) throw new Error('Não foi possível atualizar a conexão.');
   return { state };
 });
+async function ownSalonConfig(context: { supabase: any; userId: string }) {
+  const salon = await context.supabase.from('salons').select('id').eq('owner_id', context.userId).single();
+  if (salon.error || !salon.data) throw new Error('Cadastre seu salão primeiro.');
+  const access = await context.supabase.rpc('owns_salon', { _salon: salon.data.id });
+  if (access.error || !access.data) throw new Error('Sem acesso à conexão.');
+  const { resolveEvolutionConfig } = await import('./evolution.server');
+  const c = await resolveEvolutionConfig(salon.data.id);
+  if (!c.evolution_api_url || !c.evolution_api_key || !c.evolution_instance) throw new Error('Gere o QR Code e conecte seu WhatsApp primeiro.');
+  return { salonId: salon.data.id as string, c };
+}
+
+export const testSalonEvolution = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const { c } = await ownSalonConfig(context);
+  if (c.evolution_connection_state !== 'open') throw new Error('Seu WhatsApp ainda não está conectado.');
+  if (!c.whatsapp_salao) throw new Error('Informe o número do salão.');
+  const { evolutionRequest } = await import('./evolution.server');
+  await evolutionRequest(c.evolution_api_url, c.evolution_api_key, `/message/sendText/${encodeURIComponent(c.evolution_instance)}`, { number: evolutionPhone(c.whatsapp_salao), text: 'Teste do IAxis SalonPRO: seu WhatsApp está conectado! ✅', linkPreview: false });
+  return { sent: true };
+});
+
+export const disconnectSalonEvolution = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const { salonId, c } = await ownSalonConfig(context);
+  const { evolutionRequest } = await import('./evolution.server');
+  try { await evolutionRequest(c.evolution_api_url, c.evolution_api_key, `/instance/logout/${encodeURIComponent(c.evolution_instance)}`, undefined, 'DELETE'); }
+  catch (error) { if (!(error instanceof Error) || !('status' in error) || (error.status !== 404 && error.status !== 400)) throw error; }
+  const { supabaseAdmin: db } = await import('@/integrations/supabase/client.server');
+  const updated = await db.from('configuracoes_salao').update({ evolution_connection_state: 'close' }).eq('salon_id', salonId);
+  if (updated.error) throw new Error('Desconectado; não foi possível atualizar o estado.');
+  return { state: 'close' };
+});
