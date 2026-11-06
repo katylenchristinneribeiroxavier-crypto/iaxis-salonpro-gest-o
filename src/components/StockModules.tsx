@@ -1,11 +1,12 @@
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { AlertTriangle, Camera, MessageCircle, Pencil, Plus, Trash2 } from 'lucide-react';
+import { AlertTriangle, MessageCircle, Pencil, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
 import { estoqueBaixo, extrairQuantidade, numeroAproximado, pedidoWhatsApp, resumoEstoque, semaforo, usosRestantes } from '@/lib/estoque';
 import { inputCls } from './Shell';
+import { PhotoPicker } from './PhotoPicker';
 import { Button } from './ui/button';
 
 type Supplier = { id: string; nome: string; categoria: string; whatsapp: string; email: string; observacoes: string };
@@ -135,8 +136,7 @@ export function ProductsModule() {
       <h2 className="text-xl sm:col-span-3">{editing ? 'Editar produto' : 'Novo produto'}</h2>
       <div className="flex flex-wrap items-center gap-4 rounded-lg border border-gold/40 p-4 sm:col-span-3">
         <span className="text-sm text-gold">Passo 1</span>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-primary-foreground"><Camera className="h-4 w-4" />Foto do produto
-          <input type="file" accept="image/*" capture="environment" className="sr-only" onChange={(e) => onFoto(e.target.files?.[0])} /></label>
+        <PhotoPicker label="Tirar foto do produto" busy={lendo} onFile={onFoto} />
         {(preview || (form.foto_path && fotos?.[form.foto_path])) && <img src={preview || fotos?.[form.foto_path]} alt="Foto do produto" className="h-20 w-20 rounded-md object-cover" />}
         {lendo && <p className="text-sm text-muted-foreground">Lendo a embalagem…</p>}
       </div>
