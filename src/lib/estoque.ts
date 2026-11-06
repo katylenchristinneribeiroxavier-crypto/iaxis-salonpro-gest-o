@@ -27,3 +27,20 @@ export function pedidoWhatsApp(whatsapp: string, fornecedor: string, produto: st
   const text = `Olá ${fornecedor}, preciso repor ${produto}${salao ? ` para o salão ${salao}` : ''}. Pode me passar valor e prazo?`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
 }
+
+/** Lê "1000ml", "1L", "500g", "1kg" do texto da embalagem. */
+export function extrairQuantidade(texto: string): { quantidade: number; unidade: 'ml' | 'g' | 'litro' } | null {
+  const m = texto.replace(/,/g, '.').match(/(\d+(?:\.\d+)?)\s*(ml|kg|g|l|lt|litros?)\b/i);
+  if (!m) return null;
+  const n = Number(m[1]); const u = m[2].toLowerCase();
+  if (u === 'ml') return { quantidade: n, unidade: 'ml' };
+  if (u === 'g') return { quantidade: n, unidade: 'g' };
+  if (u === 'kg') return { quantidade: n * 1000, unidade: 'g' };
+  return { quantidade: n * 1000, unidade: 'ml' };
+}
+
+/** Aceita "mais ou menos 200ml", "uns 200", "200,5". */
+export function numeroAproximado(valor: string) {
+  const m = valor.replace(',', '.').match(/\d+(?:\.\d+)?/);
+  return m ? Number(m[0]) : 0;
+}
