@@ -53,7 +53,7 @@ export function WhatsappSettings() {
     <div className="flex items-start gap-4">
       <span className="grid size-14 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><MessageCircle className="size-7" /></span>
       <div><h2 className="text-2xl">Conecte seu WhatsApp para automatizar</h2><p className="text-muted-foreground">Suas clientes receberão confirmação automática</p></div>
-      <span className={`ml-auto rounded-full px-3 py-1 text-sm font-medium ${connected ? 'bg-success text-success-foreground' : connecting ? 'bg-gold text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>{connected ? 'Conectado' : connecting ? 'Conectando' : 'Desconectado'}</span>
+      <span className={`ml-auto rounded-full px-3 py-1 text-sm font-medium ${connected ? 'bg-success text-primary-foreground' : connecting ? 'bg-gold text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>{connected ? 'Conectado' : connecting ? 'Conectando' : 'Desconectado'}</span>
     </div>
 
     <ol className="mt-6 grid gap-3 sm:grid-cols-3">{STEPS.map(s => <li key={s.n} className="rounded-lg border p-4"><span className="grid size-8 place-items-center rounded-full bg-gold font-bold text-primary-foreground">{s.n}</span><p className="mt-2 font-medium">{s.t}</p><p className="text-sm text-muted-foreground">{s.d}</p></li>)}</ol>
