@@ -176,6 +176,13 @@
       "when": 1793898595506,
       "tag": "0024_seven_day_purchase_trial",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1793924933537,
+      "tag": "0025_national_salon_licenses",
+      "breakpoints": true
     }
   ]
 }

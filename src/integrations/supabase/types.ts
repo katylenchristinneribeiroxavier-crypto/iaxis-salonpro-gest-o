@@ -490,6 +490,56 @@ export type Database = {
           },
         ]
       }
+      licencas_nacionais: {
+        Row: {
+          aceitou_termos: boolean
+          data_expira: string
+          data_inicio: string
+          email_cliente: string
+          id: string
+          salao_id: string
+          status: string
+          termos_aceitos_em: string | null
+          termos_aceitos_por: string | null
+          tipo_plano: string
+          ultimo_pagamento: string | null
+        }
+        Insert: {
+          aceitou_termos?: boolean
+          data_expira?: string
+          data_inicio?: string
+          email_cliente: string
+          id?: string
+          salao_id: string
+          status?: string
+          termos_aceitos_em?: string | null
+          termos_aceitos_por?: string | null
+          tipo_plano?: string
+          ultimo_pagamento?: string | null
+        }
+        Update: {
+          aceitou_termos?: boolean
+          data_expira?: string
+          data_inicio?: string
+          email_cliente?: string
+          id?: string
+          salao_id?: string
+          status?: string
+          termos_aceitos_em?: string | null
+          termos_aceitos_por?: string | null
+          tipo_plano?: string
+          ultimo_pagamento?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licencas_nacionais_salao_id_fkey"
+            columns: ["salao_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       log_acoes_master: {
         Row: {
           action: string
@@ -1468,6 +1518,7 @@ export type Database = {
       }
       subscription_requests: {
         Row: {
+          aceitou_termos: boolean
           amount: number
           billing: string
           confirmed_at: string | null
@@ -1483,6 +1534,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          aceitou_termos?: boolean
           amount: number
           billing?: string
           confirmed_at?: string | null
@@ -1498,6 +1550,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          aceitou_termos?: boolean
           amount?: number
           billing?: string
           confirmed_at?: string | null
@@ -1870,6 +1923,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      aceitar_termos_licenca: { Args: { _salon: string }; Returns: undefined }
       assistant_book_appointment: {
         Args: {
           _client?: string
@@ -1919,7 +1973,30 @@ export type Database = {
         }
         Returns: boolean
       }
+      licenca_valida: { Args: { _salon: string }; Returns: boolean }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
+      master_licenca: {
+        Args: { _acao: string; _email: string }
+        Returns: {
+          aceitou_termos: boolean
+          data_expira: string
+          data_inicio: string
+          email_cliente: string
+          id: string
+          salao_id: string
+          status: string
+          termos_aceitos_em: string | null
+          termos_aceitos_por: string | null
+          tipo_plano: string
+          ultimo_pagamento: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "licencas_nacionais"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       master_set_salon_access: {
         Args: {
           _action: string
@@ -1992,6 +2069,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      verificar_licenca: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "super_admin" | "revendedor" | "dono_salao" | "cliente"
