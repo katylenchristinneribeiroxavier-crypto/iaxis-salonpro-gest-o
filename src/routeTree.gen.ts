@@ -15,8 +15,10 @@ import { Route as AcessoBloqueadoRouteImport } from './routes/acesso-bloqueado'
 import { Route as AssinarRouteImport } from './routes/assinar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClienteRouteImport } from './routes/cliente'
+import { Route as LicencaExpiradaRouteImport } from './routes/licenca-expirada'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminMasterIaxis2026SecretoRouteImport } from './routes/_authenticated/admin-master-iaxis-2026-secreto'
 import { Route as AuthenticatedAgendaDoDiaRouteImport } from './routes/_authenticated/agenda-do-dia'
 import { Route as AuthenticatedAgendaMesRouteImport } from './routes/_authenticated/agenda-mes'
 import { Route as AuthenticatedAreaRevendedorRouteImport } from './routes/_authenticated/area-revendedor'
@@ -90,6 +92,11 @@ const ClienteRoute = ClienteRouteImport.update({
   path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LicencaExpiradaRoute = LicencaExpiradaRouteImport.update({
+  id: '/licenca-expirada',
+  path: '/licenca-expirada',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SuporteRoute = SuporteRouteImport.update({
   id: '/suporte',
   path: '/suporte',
@@ -100,6 +107,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminMasterIaxis2026SecretoRoute =
+  AuthenticatedAdminMasterIaxis2026SecretoRouteImport.update({
+    id: '/admin-master-iaxis-2026-secreto',
+    path: '/admin-master-iaxis-2026-secreto',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAgendaDoDiaRoute =
   AuthenticatedAgendaDoDiaRouteImport.update({
     id: '/agenda-do-dia',
@@ -351,8 +364,10 @@ export interface FileRoutesByFullPath {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/licenca-expirada': typeof LicencaExpiradaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
@@ -403,8 +418,10 @@ export interface FileRoutesByTo {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/licenca-expirada': typeof LicencaExpiradaRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
   '/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
@@ -455,8 +472,10 @@ export interface FileRoutesById {
   '/assinar': typeof AssinarRoute
   '/auth': typeof AuthRoute
   '/cliente': typeof ClienteRoute
+  '/licenca-expirada': typeof LicencaExpiradaRoute
   '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
   '/_authenticated/agenda-do-dia': typeof AuthenticatedAgendaDoDiaRoute
   '/_authenticated/agenda-mes': typeof AuthenticatedAgendaMesRoute
   '/_authenticated/area-revendedor': typeof AuthenticatedAreaRevendedorRoute
@@ -509,8 +528,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/licenca-expirada'
     | '/suporte'
     | '/admin'
+    | '/admin-master-iaxis-2026-secreto'
     | '/agenda-do-dia'
     | '/agenda-mes'
     | '/area-revendedor'
@@ -561,8 +582,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/licenca-expirada'
     | '/suporte'
     | '/admin'
+    | '/admin-master-iaxis-2026-secreto'
     | '/agenda-do-dia'
     | '/agenda-mes'
     | '/area-revendedor'
@@ -612,8 +635,10 @@ export interface FileRouteTypes {
     | '/assinar'
     | '/auth'
     | '/cliente'
+    | '/licenca-expirada'
     | '/suporte'
     | '/_authenticated/admin'
+    | '/_authenticated/admin-master-iaxis-2026-secreto'
     | '/_authenticated/agenda-do-dia'
     | '/_authenticated/agenda-mes'
     | '/_authenticated/area-revendedor'
@@ -666,6 +691,7 @@ export interface RootRouteChildren {
   AssinarRoute: typeof AssinarRoute
   AuthRoute: typeof AuthRoute
   ClienteRoute: typeof ClienteRoute
+  LicencaExpiradaRoute: typeof LicencaExpiradaRoute
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
@@ -718,6 +744,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/licenca-expirada': {
+      id: '/licenca-expirada'
+      path: '/licenca-expirada'
+      fullPath: '/licenca-expirada'
+      preLoaderRoute: typeof LicencaExpiradaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/suporte': {
       id: '/suporte'
       path: '/suporte'
@@ -730,6 +763,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin-master-iaxis-2026-secreto': {
+      id: '/_authenticated/admin-master-iaxis-2026-secreto'
+      path: '/admin-master-iaxis-2026-secreto'
+      fullPath: '/admin-master-iaxis-2026-secreto'
+      preLoaderRoute: typeof AuthenticatedAdminMasterIaxis2026SecretoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/agenda-do-dia': {
@@ -1082,6 +1122,7 @@ const AuthenticatedSalaoRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminMasterIaxis2026SecretoRoute: typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
   AuthenticatedAgendaDoDiaRoute: typeof AuthenticatedAgendaDoDiaRoute
   AuthenticatedAgendaMesRoute: typeof AuthenticatedAgendaMesRoute
   AuthenticatedAreaRevendedorRoute: typeof AuthenticatedAreaRevendedorRoute
@@ -1119,6 +1160,8 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminMasterIaxis2026SecretoRoute:
+    AuthenticatedAdminMasterIaxis2026SecretoRoute,
   AuthenticatedAgendaDoDiaRoute: AuthenticatedAgendaDoDiaRoute,
   AuthenticatedAgendaMesRoute: AuthenticatedAgendaMesRoute,
   AuthenticatedAreaRevendedorRoute: AuthenticatedAreaRevendedorRoute,
@@ -1168,6 +1211,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssinarRoute: AssinarRoute,
   AuthRoute: AuthRoute,
   ClienteRoute: ClienteRoute,
+  LicencaExpiradaRoute: LicencaExpiradaRoute,
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,

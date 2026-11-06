@@ -24,3 +24,4 @@
 - Booking assistants use database slot availability and transactional booking to derive catalog prices, duration, timezone and deposit; never allow model output to write appointments.
 - Reminder queues are generated idempotently from appointment/client changes; external delivery stays off until developer activation and uses managed authenticated scheduled callbacks with atomic claims and uncertain-send quarantine.
 - Salon creation requires a confirmed purchase; a database singleton locks the developer-only free test redemption, and purchase timestamps preserve the seven-day trial separately from paid access.
+- National licenses are provisioned transactionally from confirmed purchases; salon_access_allowed enforces expiry with master suspension preserved, and only authenticated super_admin RPCs may renew or block licenses. The root layout checks licensing without gating renewal or support.
