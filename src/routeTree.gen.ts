@@ -37,6 +37,7 @@ import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/
 import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated/despesas'
 import { Route as AuthenticatedDespesasSalaoRouteImport } from './routes/_authenticated/despesas-salao'
 import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
+import { Route as AuthenticatedFornecedoresRouteImport } from './routes/_authenticated/fornecedores'
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
@@ -49,6 +50,7 @@ import { Route as AuthenticatedMensagensRouteImport } from './routes/_authentica
 import { Route as AuthenticatedMeusChamadosRouteImport } from './routes/_authenticated/meus-chamados'
 import { Route as AuthenticatedMinhaLicencaRouteImport } from './routes/_authenticated/minha-licenca'
 import { Route as AuthenticatedMinhasComissoesRouteImport } from './routes/_authenticated/minhas-comissoes'
+import { Route as AuthenticatedProdutosRouteImport } from './routes/_authenticated/produtos'
 import { Route as AuthenticatedProfissoesRouteImport } from './routes/_authenticated/profissoes'
 import { Route as AuthenticatedRevendedorRouteImport } from './routes/_authenticated/revendedor'
 import { Route as AuthenticatedSalaoRouteImport } from './routes/_authenticated/salao'
@@ -224,6 +226,12 @@ const AuthenticatedFinanceiroComissoesRoute =
     path: '/financeiro-comissoes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFornecedoresRoute =
+  AuthenticatedFornecedoresRouteImport.update({
+    id: '/fornecedores',
+    path: '/fornecedores',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedFornecedoresParceirosRoute =
   AuthenticatedFornecedoresParceirosRouteImport.update({
     id: '/fornecedores-parceiros',
@@ -294,6 +302,11 @@ const AuthenticatedMinhasComissoesRoute =
     path: '/minhas-comissoes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProdutosRoute = AuthenticatedProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfissoesRoute = AuthenticatedProfissoesRouteImport.update({
   id: '/profissoes',
   path: '/profissoes',
@@ -436,6 +449,7 @@ export interface FileRoutesByFullPath {
   '/despesas': typeof AuthenticatedDespesasRoute
   '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
@@ -448,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/produtos': typeof AuthenticatedProdutosRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/salao': typeof AuthenticatedSalaoRouteWithChildren
@@ -497,6 +512,7 @@ export interface FileRoutesByTo {
   '/despesas': typeof AuthenticatedDespesasRoute
   '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
@@ -509,6 +525,7 @@ export interface FileRoutesByTo {
   '/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/produtos': typeof AuthenticatedProdutosRoute
   '/profissoes': typeof AuthenticatedProfissoesRoute
   '/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/servicos-precos': typeof AuthenticatedServicosPrecosRoute
@@ -560,6 +577,7 @@ export interface FileRoutesById {
   '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
   '/_authenticated/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
   '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
+  '/_authenticated/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
@@ -572,6 +590,7 @@ export interface FileRoutesById {
   '/_authenticated/meus-chamados': typeof AuthenticatedMeusChamadosRoute
   '/_authenticated/minha-licenca': typeof AuthenticatedMinhaLicencaRoute
   '/_authenticated/minhas-comissoes': typeof AuthenticatedMinhasComissoesRoute
+  '/_authenticated/produtos': typeof AuthenticatedProdutosRoute
   '/_authenticated/profissoes': typeof AuthenticatedProfissoesRoute
   '/_authenticated/revendedor': typeof AuthenticatedRevendedorRouteWithChildren
   '/_authenticated/salao': typeof AuthenticatedSalaoRouteWithChildren
@@ -624,6 +643,7 @@ export interface FileRouteTypes {
     | '/despesas'
     | '/despesas-salao'
     | '/financeiro-comissoes'
+    | '/fornecedores'
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
@@ -636,6 +656,7 @@ export interface FileRouteTypes {
     | '/meus-chamados'
     | '/minha-licenca'
     | '/minhas-comissoes'
+    | '/produtos'
     | '/profissoes'
     | '/revendedor'
     | '/salao'
@@ -685,6 +706,7 @@ export interface FileRouteTypes {
     | '/despesas'
     | '/despesas-salao'
     | '/financeiro-comissoes'
+    | '/fornecedores'
     | '/fornecedores-parceiros'
     | '/funcionarios'
     | '/gestao-revendedores'
@@ -697,6 +719,7 @@ export interface FileRouteTypes {
     | '/meus-chamados'
     | '/minha-licenca'
     | '/minhas-comissoes'
+    | '/produtos'
     | '/profissoes'
     | '/revendedor'
     | '/servicos-precos'
@@ -747,6 +770,7 @@ export interface FileRouteTypes {
     | '/_authenticated/despesas'
     | '/_authenticated/despesas-salao'
     | '/_authenticated/financeiro-comissoes'
+    | '/_authenticated/fornecedores'
     | '/_authenticated/fornecedores-parceiros'
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
@@ -759,6 +783,7 @@ export interface FileRouteTypes {
     | '/_authenticated/meus-chamados'
     | '/_authenticated/minha-licenca'
     | '/_authenticated/minhas-comissoes'
+    | '/_authenticated/produtos'
     | '/_authenticated/profissoes'
     | '/_authenticated/revendedor'
     | '/_authenticated/salao'
@@ -999,6 +1024,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFinanceiroComissoesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/fornecedores': {
+      id: '/_authenticated/fornecedores'
+      path: '/fornecedores'
+      fullPath: '/fornecedores'
+      preLoaderRoute: typeof AuthenticatedFornecedoresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/fornecedores-parceiros': {
       id: '/_authenticated/fornecedores-parceiros'
       path: '/fornecedores-parceiros'
@@ -1081,6 +1113,13 @@ declare module '@tanstack/react-router' {
       path: '/minhas-comissoes'
       fullPath: '/minhas-comissoes'
       preLoaderRoute: typeof AuthenticatedMinhasComissoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/produtos': {
+      id: '/_authenticated/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof AuthenticatedProdutosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profissoes': {
@@ -1296,6 +1335,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
   AuthenticatedDespesasSalaoRoute: typeof AuthenticatedDespesasSalaoRoute
   AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
+  AuthenticatedFornecedoresRoute: typeof AuthenticatedFornecedoresRoute
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
@@ -1308,6 +1348,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMeusChamadosRoute: typeof AuthenticatedMeusChamadosRoute
   AuthenticatedMinhaLicencaRoute: typeof AuthenticatedMinhaLicencaRoute
   AuthenticatedMinhasComissoesRoute: typeof AuthenticatedMinhasComissoesRoute
+  AuthenticatedProdutosRoute: typeof AuthenticatedProdutosRoute
   AuthenticatedProfissoesRoute: typeof AuthenticatedProfissoesRoute
   AuthenticatedRevendedorRoute: typeof AuthenticatedRevendedorRouteWithChildren
   AuthenticatedSalaoRoute: typeof AuthenticatedSalaoRouteWithChildren
@@ -1342,6 +1383,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
   AuthenticatedDespesasSalaoRoute: AuthenticatedDespesasSalaoRoute,
   AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
+  AuthenticatedFornecedoresRoute: AuthenticatedFornecedoresRoute,
   AuthenticatedFornecedoresParceirosRoute:
     AuthenticatedFornecedoresParceirosRoute,
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
@@ -1356,6 +1398,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMeusChamadosRoute: AuthenticatedMeusChamadosRoute,
   AuthenticatedMinhaLicencaRoute: AuthenticatedMinhaLicencaRoute,
   AuthenticatedMinhasComissoesRoute: AuthenticatedMinhasComissoesRoute,
+  AuthenticatedProdutosRoute: AuthenticatedProdutosRoute,
   AuthenticatedProfissoesRoute: AuthenticatedProfissoesRoute,
   AuthenticatedRevendedorRoute: AuthenticatedRevendedorRouteWithChildren,
   AuthenticatedSalaoRoute: AuthenticatedSalaoRouteWithChildren,

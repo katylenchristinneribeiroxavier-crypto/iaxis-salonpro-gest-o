@@ -14,7 +14,9 @@ export const ownerBlocks: OwnerBlock[] = [
     { to: "/lembretes", title: "Lembretes", desc: "Avisos automáticos" },
   ]},
   { slug: "estoque", title: "Estoque", desc: "Produtos e controle", icon: "Package", links: [
-    { to: "/fornecedores-parceiros", title: "Produtos e fornecedores", desc: "Marcas, produtos e pedidos de reposição" },
+    { to: "/produtos", title: "Produtos e estoque", desc: "Semáforo, usos restantes e baixa automática" },
+    { to: "/fornecedores", title: "Fornecedores", desc: "Cadastro e pedido via WhatsApp" },
+    { to: "/fornecedores-parceiros", title: "Pedidos por marca", desc: "Histórico de pedidos de reposição" },
   ]},
   { slug: "pedidos", title: "Pedidos", desc: "Agendamentos e lista de espera", icon: "ClipboardList", links: [
     { to: "/agenda-do-dia", title: "Agendamentos e lista de espera", desc: "Reservas, confirmações e fila" },

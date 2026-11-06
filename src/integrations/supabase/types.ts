@@ -1002,6 +1002,69 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          consumo_por_servico: number
+          created_at: string
+          custo_unitario: number
+          id: string
+          marca: string
+          nome: string
+          qtd_usos_restantes: number | null
+          quantidade_atual: number
+          quantidade_minima: number
+          salon_id: string
+          servico_relacionado: string
+          supplier_id: string | null
+          unidade: string
+        }
+        Insert: {
+          consumo_por_servico?: number
+          created_at?: string
+          custo_unitario?: number
+          id?: string
+          marca?: string
+          nome?: string
+          qtd_usos_restantes?: number | null
+          quantidade_atual?: number
+          quantidade_minima?: number
+          salon_id: string
+          servico_relacionado?: string
+          supplier_id?: string | null
+          unidade?: string
+        }
+        Update: {
+          consumo_por_servico?: number
+          created_at?: string
+          custo_unitario?: number
+          id?: string
+          marca?: string
+          nome?: string
+          qtd_usos_restantes?: number | null
+          quantidade_atual?: number
+          quantidade_minima?: number
+          salon_id?: string
+          servico_relacionado?: string
+          supplier_id?: string | null
+          unidade?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_supplier_id_salon_id_fkey"
+            columns: ["supplier_id", "salon_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id", "salon_id"]
+          },
+        ]
+      }
       professionals: {
         Row: {
           commission_pct: number
@@ -1743,6 +1806,57 @@ export type Database = {
           },
         ]
       }
+      stock_movements: {
+        Row: {
+          appointment_id: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          motivo: string
+          product_id: string
+          quantidade: number
+          salon_id: string
+          tipo: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          motivo?: string
+          product_id: string
+          quantidade: number
+          salon_id: string
+          tipo: string
+        }
+        Update: {
+          appointment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          motivo?: string
+          product_id?: string
+          quantidade?: number
+          salon_id?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_product_id_salon_id_fkey"
+            columns: ["product_id", "salon_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id", "salon_id"]
+          },
+          {
+            foreignKeyName: "stock_movements_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscription_requests: {
         Row: {
           aceitou_termos: boolean
@@ -1919,6 +2033,47 @@ export type Database = {
           },
           {
             foreignKeyName: "supplier_products_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      suppliers: {
+        Row: {
+          categoria: string
+          created_at: string
+          email: string
+          id: string
+          nome: string
+          observacoes: string
+          salon_id: string
+          whatsapp: string
+        }
+        Insert: {
+          categoria?: string
+          created_at?: string
+          email?: string
+          id?: string
+          nome?: string
+          observacoes?: string
+          salon_id: string
+          whatsapp?: string
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          email?: string
+          id?: string
+          nome?: string
+          observacoes?: string
+          salon_id?: string
+          whatsapp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suppliers_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: false
             referencedRelation: "salons"
