@@ -1,0 +1,2 @@
+ALTER TABLE public.appointments ADD COLUMN IF NOT EXISTS client_whatsapp text, ADD COLUMN IF NOT EXISTS whatsapp_confirmacao text NOT NULL DEFAULT 'pendente', ADD COLUMN IF NOT EXISTS whatsapp_enviado_em timestamptz;
+ALTER TABLE public.appointments ADD CONSTRAINT appointments_whatsapp_confirmacao_chk CHECK (whatsapp_confirmacao IN ('pendente','enviado','confirmado','recusado'));
