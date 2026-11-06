@@ -47,4 +47,4 @@
 - [ ] Evolution real na página secreta (aguarda URL/chave da Evolution hospedada e publicação)
 - [x] Relatório de licenças na página secreta
 - [x] Testar pagamento mensal em /minha-licenca (volta a liberado, nova expiração)
-- [ ] Zerar alertas críticos de segurança sem ignorar
+- [x] Zerar alertas críticos de segurança sem ignorar
