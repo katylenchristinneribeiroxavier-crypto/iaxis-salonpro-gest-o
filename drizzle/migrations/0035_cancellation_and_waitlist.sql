@@ -72,8 +72,8 @@ BEGIN
  IF NOT FOUND THEN RETURN new; END IF;
  SELECT * INTO _s FROM public.salons WHERE id=new.salon_id;
  UPDATE public.lista_espera SET status='notificado', notified_at=now() WHERE id=_w.id;
- INSERT INTO public.fila_mensagens_ia(salon_id,dedupe_key,cliente_whatsapp,mensagem,tipo,agendado_para)
- VALUES(new.salon_id,'espera:'||_w.id,_w.whatsapp,
+ INSERT INTO public.fila_mensagens_ia(salon_id,appointment_id,dedupe_key,cliente_whatsapp,mensagem,tipo,agendado_para)
+ VALUES(new.salon_id,new.id,'espera:'||_w.id,_w.whatsapp,
   'Olá! Abriu vaga no salão '||coalesce(nullif(_s.name,''),'')||' no horário '||to_char(new.starts_at AT TIME ZONE _s.timezone,'DD/MM "às" HH24:MI')||' que você queria! Quer agendar?',
   'lista_espera',now()) ON CONFLICT (dedupe_key) DO NOTHING;
  RETURN new;
