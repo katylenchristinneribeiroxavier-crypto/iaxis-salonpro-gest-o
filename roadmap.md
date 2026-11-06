@@ -1,18 +1,19 @@
 # Roadmap
-- [ ] Ocultar entrada da desenvolvedora de visitantes e clientes; mostrar apenas à conta super_admin autenticada
-- [ ] Garantir sete dias de teste em toda compra, com prazo contado da confirmação; compra gratuita única válida por sete dias
-- [ ] Compra: criar salões somente após compra confirmada; reservar uma única compra gratuita de teste controlada pela desenvolvedora
-- [ ] Concluir lembretes (1h antes, aniversário 07h, retorno 09h), assistente de agendamento no app e preparação da ativação pós-publicação exclusiva da desenvolvedora
+- [x] Entrada master oculta para visitantes; visível apenas à conta super_admin autenticada, com navegação verificada
+- [x] Sete dias de teste a partir da confirmação em toda compra; prazo gratuito verificado
+- [x] Salões apenas após compra confirmada; única compra gratuita resgatada pela desenvolvedora, sem comissão, nomes em branco
+- [x] Assistente guiado de agendamento no app e fila de lembretes 1h antes, aniversário 07h e retorno 09h; reserva, disponibilidade, encaminhamento e cancelamento verificados, registros temporários removidos
+- [ ] Ativar entrega externa de lembretes após publicação — depende de Evolution validada, pareamento do salão e execução programada gerenciada; nenhum envio externo ativado
 - [x] Continuação: suporte master com respostas, histórico privado e status; /meus-chamados para solicitantes, fluxo verificado com conta real e chamados de teste removidos
 - [x] Conta da solicitante identificada por sessão própria, acesso super_admin liberado e auditado; abas APIs, Evolution e regras verificadas com a conta real
 - [x] Tela /master-automacoes exclusiva da desenvolvedora com abas APIs, conexões Evolution pesquisáveis e consulta de regras de agendamento; nenhuma alteração na gestão das donas
 - [x] APIs e campos técnicos exclusivos da desenvolvedora, configurações pessoais por salão preservadas; cadastro não concede master e índice limita super_admin a uma conta
 - [x] Central Evolution em /master-automacoes e conexão individual por número + QR; credenciais centrais sem acesso pelo navegador, instâncias exclusivas e histórico master
 - [x] Tela de mensagens /mensagens com respostas, atalhos de agendamento/sinal, envio Evolution e recebimento autenticado persistido
-- [ ] Ativar e verificar conexão Evolution real — bloqueado: sem salões, URL/chave central ou endereço publicado; conta master liberada. Evolution v2 deve estar hospedada e suportar cabeçalhos de webhook; pareamento real não verificado
+- [ ] Ativar e verificar conexão Evolution real — depende de URL/chave central e publicação; salão gratuito disponível, pareamento real não verificado
 - [x] WhatsApp por dona: configuracoes_salao com acesso exclusivo da dona, formulário /configuracoes e contato dinâmico no agendamento; nenhuma conexão WhatsApp global encontrada
 - [x] Página única do salão com agendamentos, sinais, clientes e assinatura, preservando os fluxos existentes
-- [ ] Validar novas páginas e agendamento com dados reais — bloqueado: não há salões cadastrados; envio automático WhatsApp ainda depende de integração de mensagens
+- [x] Agendamento e lembretes verificados no salão da compra gratuita com dados temporários, posteriormente removidos; envio WhatsApp externo não verificado
 - [ ] Verificar bloqueio/liberação de salões com conta master — bloqueado: nenhum salão cadastrado; conta da desenvolvedora definida e central verificada
 - [x] Plano de ação personalizado com Lovable AI pelas metas e contexto do revendedor
 - [x] Resumo de vendas validadas, comissão por venda e valores pagos/pendentes
