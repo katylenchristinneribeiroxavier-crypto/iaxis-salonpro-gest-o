@@ -16,7 +16,7 @@ export function evolutionPhone(value: string) {
   return international;
 }
 export function managedEvolutionInstance(salonId: string) {
-  return `salao_${z.string().uuid().parse(salonId).replace(/-/g, "")}`;
+  return `salao_${z.string().uuid().parse(salonId)}`;
 }
 export function evolutionPairing(response: unknown) {
   const parsed = z.object({ base64: z.string().optional(), code: z.string().optional(), pairingCode: z.string().optional(), qrcode: z.object({ base64: z.string().optional(), code: z.string().optional() }).optional() }).parse(response);

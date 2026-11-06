@@ -82,7 +82,7 @@ export function WhatsappSettings() {
       </div>
     </form>
 
-    {(qrImage || pairingCode) && !connected && <div className="mt-6 max-w-xl border-t pt-5"><h3 className="mb-1 text-lg">Escaneie com o WhatsApp do salão</h3><p className="mb-3 text-sm text-muted-foreground">O QR Code se renova sozinho a cada 30 segundos. Instância: {data?.evolution_instance ?? '—'}</p>{qrImage && <img src={qrImage} width={360} height={360} alt="QR Code para conectar o WhatsApp do salão" className="rounded bg-background p-2" />}{pairingCode && <p className="mt-4">Ou digite o código: <span className="font-mono text-2xl">{pairingCode}</span></p>}</div>}
+    {(qrImage || pairingCode) && !connected && <div className="mt-6 max-w-xl border-t pt-5"><h3 className="mb-1 text-lg">Escaneie com o WhatsApp do salão</h3><p className="mb-3 text-sm text-muted-foreground">O QR Code se renova sozinho a cada 30 segundos.</p>{qrImage && <img src={qrImage} width={360} height={360} alt="QR Code para conectar o WhatsApp do salão" className="rounded bg-background p-2" />}{pairingCode && <p className="mt-4">Ou digite o código: <span className="font-mono text-2xl">{pairingCode}</span></p>}</div>}
 
     <div className="mt-6 border-t pt-5">
       <h3 className="mb-3 text-lg">Automações {connected ? 'ligadas' : '(ligam quando conectar)'}</h3>
