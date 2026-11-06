@@ -35,9 +35,9 @@ function Assinar() {
     queryFn: async () => {
       const [p, s] = await Promise.all([
         supabase.from("plans").select("*").order("sort"),
-        supabase.from("platform_settings").select("*").eq("id", 1).maybeSingle(),
+        supabase.rpc("public_pix_payment"),
       ]);
-      return { plans: p.data ?? [], pix: s.data };
+      return { plans: p.data ?? [], pix: s.data?.[0] ?? null };
     },
   });
   const plan = data?.plans.find((p) => p.id === plano) ?? data?.plans[0];

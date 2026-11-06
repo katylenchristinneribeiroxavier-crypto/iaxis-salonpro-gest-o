@@ -211,6 +211,13 @@
       "when": 1793983093854,
       "tag": "0029_evolution_future_central",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1793983617440,
+      "tag": "0030_restrict_public_catalog_reads",
+      "breakpoints": true
     }
   ]
 }
