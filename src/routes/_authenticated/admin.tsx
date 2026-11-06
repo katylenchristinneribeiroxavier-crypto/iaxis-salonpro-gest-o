@@ -23,15 +23,16 @@ function Admin() {
   const { data } = useQuery({
     queryKey: ["admin"],
     queryFn: async () => {
-      const [s, p, r, pr, st, rq] = await Promise.all([
+      const [s, p, r, pr, st, rq, ap] = await Promise.all([
         supabase.from("salons").select("*").order("created_at", { ascending: false }),
         supabase.from("plans").select("*").order("sort"),
         supabase.from("resellers").select("*"),
         supabase.from("profiles").select("id, full_name, email"),
         supabase.from("platform_settings").select("*").eq("id", 1).maybeSingle(),
         supabase.from("subscription_requests").select("*, plans(name)").order("created_at", { ascending: false }),
+        supabase.from("appointments").select("salon_id, status, price"),
       ]);
-      return { salons: s.data ?? [], plans: p.data ?? [], resellers: r.data ?? [], profiles: pr.data ?? [], pix: st.data, reqs: rq.data ?? [] };
+      return { salons: s.data ?? [], plans: p.data ?? [], resellers: r.data ?? [], profiles: pr.data ?? [], pix: st.data, reqs: rq.data ?? [], appts: ap.data ?? [] };
     },
   });
   const salons = data?.salons ?? [];
@@ -42,6 +43,17 @@ function Admin() {
   const ativos = salons.filter((s) => s.status === "ativo");
   const mrr = ativos.reduce((a, s) => a + priceOf(s.plan_id), 0);
   const churn = salons.length ? ((salons.length - ativos.length) / salons.length) * 100 : 0;
+  const appts = data?.appts ?? [];
+  const apptsOf = (id: string) => appts.filter((a) => a.salon_id === id && a.status !== "cancelado").length;
+  const receitaOf = (id: string) => appts.filter((a) => a.salon_id === id && a.status === "finalizado").reduce((t, a) => t + Number(a.price), 0);
+  const totalAppts = appts.filter((a) => a.status !== "cancelado").length;
+  const receitaTotal = appts.filter((a) => a.status === "finalizado").reduce((t, a) => t + Number(a.price), 0);
+  const toggleBloqueio = async (id: string, bloqueado: boolean) => {
+    const reason = bloqueado ? "" : window.prompt("Motivo do bloqueio") ?? "";
+    if (!bloqueado && reason.trim().length < 3) return void toast.error("Informe o motivo (mín. 3 letras)");
+    const r = await supabase.rpc("master_set_salon_access", { _salon: id, _action: bloqueado ? "liberar" : "bloquear", _reason: reason, _days: 0 });
+    if (r.error) toast.error(r.error.message); else { toast.success(bloqueado ? "Salão liberado" : "Salão bloqueado"); refresh(); }
+  };
   const refresh = () => qc.invalidateQueries({ queryKey: ["admin"] });
 
   const upd = async (table: "salons" | "plans" | "resellers" | "platform_settings" | "subscription_requests", key: string, id: string, patch: Record<string, unknown>) => {
@@ -75,14 +87,16 @@ function Admin() {
         <Stat label="Salões ativos" value={`${ativos.length} / ${salons.length}`} />
         <Stat label="Churn / bloqueados" value={`${churn.toFixed(1).replace(".", ",")}%`} />
         <Stat label="Revendedores" value={String(resellers.length)} />
+        <Stat label="Total de agendamentos" value={String(totalAppts)} />
+        <Stat label="Receita total dos salões" value={brl(receitaTotal)} />
       </div>
 
       <h2 className="mt-10 mb-4 text-2xl">Salões cadastrados</h2>
       <div className="overflow-x-auto rounded-xl border bg-card">
         <table className="w-full text-sm">
-          <thead className="text-left text-muted-foreground"><tr>{["Salão","Dono","Cidade","Plano","Revendedor","Status",""].map(h=><th key={h} className="p-3">{h}</th>)}</tr></thead>
+          <thead className="text-left text-muted-foreground"><tr>{["Salão","Dono","Cidade","Plano","Revendedor","Agendamentos","Receita","Status",""].map(h=><th key={h} className="p-3">{h}</th>)}</tr></thead>
           <tbody>
-            {salons.length === 0 && <tr><td colSpan={7} className="p-6 text-center text-muted-foreground">Nenhum salão ainda.</td></tr>}
+            {salons.length === 0 && <tr><td colSpan={9} className="p-6 text-center text-muted-foreground">Nenhum salão ainda.</td></tr>}
             {salons.map((s) => (
               <tr key={s.id} className="border-t">
                 <td className="p-3">{s.name}</td><td className="p-3">{nameOf(s.owner_id)}</td><td className="p-3">{s.city ?? "—"}</td>
@@ -92,8 +106,9 @@ function Admin() {
                   </select>
                 </td>
                 <td className="p-3">{nameOf(s.reseller_id)}</td>
-                <td className="p-3"><StatusBadge s={s.status} /></td>
-                <td className="p-3"><Link to="/master-desenvolvedora" className="text-gold hover:underline">Controlar acesso</Link></td>
+                <td className="p-3">{apptsOf(s.id)}</td><td className="p-3">{brl(receitaOf(s.id))}</td>
+                <td className="p-3"><StatusBadge s={s.access_enabled ? s.status : "bloqueado"} /></td>
+                <td className="p-3 flex flex-wrap gap-2"><button className="rounded border border-gold/40 px-2 py-1 text-gold" onClick={() => toggleBloqueio(s.id, !s.access_enabled)}>{s.access_enabled ? "Bloquear" : "Liberar"}</button><Link to="/master-desenvolvedora" className="text-gold hover:underline">Controlar acesso</Link></td>
               </tr>
             ))}
           </tbody>
