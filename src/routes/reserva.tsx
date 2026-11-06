@@ -36,7 +36,8 @@ function Reserva() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState<{ starts_at: string; deposit: number; pix_key: string } | null>(null);
+  const [done, setDone] = useState<{ id: string; starts_at: string; deposit: number; pix_key: string } | null>(null);
+  const [waitTime, setWaitTime] = useState('');
   const slots = useQuery({
     queryKey: ['reserva-slots', chosen, service, pro, day], enabled: !!(chosen && service && pro && day),
     queryFn: async () => { const r = await supabase.rpc('salon_available_slots', { _salon: chosen, _service: service, _professional: pro, _day: day }); if (r.error) throw r.error; return r.data ?? []; },
@@ -49,7 +50,27 @@ function Reserva() {
     const r = await supabase.rpc('public_book_appointment', { _salon: chosen, _service: service, _professional: pro, _starts: slot, _name: name, _whatsapp: phone });
     setBusy(false);
     if (r.error) { toast.error(r.error.message); slots.refetch(); return; }
-    setDone(r.data as { starts_at: string; deposit: number; pix_key: string });
+    setDone(r.data as { id: string; starts_at: string; deposit: number; pix_key: string });
+  }
+
+  async function cancelar() {
+    if (!done || !confirm('Cancelar esta reserva?')) return;
+    setBusy(true);
+    const r = await supabase.rpc('public_cancel_appointment', { _appointment: done.id, _whatsapp: phone });
+    setBusy(false);
+    if (r.error) { toast.error(r.error.message); return; }
+    toast.success('Reserva cancelada. O horário foi liberado.');
+    setDone(null); setSlot(''); slots.refetch();
+  }
+
+  async function entrarEspera() {
+    if (!waitTime) { toast.error('Escolha o horário desejado.'); return; }
+    setBusy(true);
+    const r = await supabase.rpc('public_join_waitlist', { _salon: chosen, _service: service || null, _professional: pro || null, _desired: new Date(`${day}T${waitTime}`).toISOString(), _name: name, _whatsapp: phone } as never);
+    setBusy(false);
+    if (r.error) { toast.error(r.error.message); return; }
+    toast.success('Você entrou na lista de espera. Avisaremos pelo WhatsApp se abrir vaga.');
+    setWaitTime('');
   }
 
   const sel = `${inputCls} mt-2`;
@@ -59,7 +80,11 @@ function Reserva() {
       <h2 className="text-2xl text-gold">Reserva confirmada ✦</h2>
       <p className="mt-2">{new Date(done.starts_at).toLocaleString('pt-BR', { dateStyle: 'full', timeStyle: 'short' })}</p>
       {done.deposit > 0 && <p className="mt-3 text-sm">Sinal de {brl(done.deposit)} via PIX: <code className="text-gold">{done.pix_key}</code></p>}
-      <Button className="mt-4" variant="outline" onClick={() => { setDone(null); setSlot(''); }}>Fazer outra reserva</Button>
+      <p className="mt-3 text-xs text-muted-foreground">Precisa desmarcar? O cancelamento é permitido com antecedência mínima definida pelo salão (padrão de 2 horas).</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Button variant="outline" onClick={() => { setDone(null); setSlot(''); }}>Fazer outra reserva</Button>
+        <Button variant="ghost" disabled={busy} onClick={cancelar}>Cancelar esta reserva</Button>
+      </div>
     </div> : <form onSubmit={reservar} className="mt-8 space-y-4">
       {(salons.data?.length ?? 0) > 1 && <label className="block text-sm">Salão<select className={sel} value={chosen} onChange={e => { setSalonId(e.target.value); setService(''); setPro(''); setSlot(''); }}><option value="">Escolha</option>{salons.data?.map(x => <option key={x.id} value={x.id}>{x.name || 'Salão'}{x.city ? ` · ${x.city}` : ''}</option>)}</select></label>}
       {salons.data?.length === 0 && <p className="text-muted-foreground">Nenhum salão disponível no momento.</p>}
@@ -73,6 +98,13 @@ function Reserva() {
         <input required placeholder="Seu nome" maxLength={120} className={inputCls} value={name} onChange={e => setName(e.target.value)} />
         <input required placeholder="WhatsApp com DDD" maxLength={20} className={inputCls} value={phone} onChange={e => setPhone(e.target.value)} />
         <Button type="submit" disabled={busy || !slot} className="w-full">Confirmar reserva</Button>
+        {service && pro && <div className="rounded-lg border border-gold/30 p-4">
+          <p className="text-sm text-gold">Horário que você queria está lotado?</p>
+          <p className="text-xs text-muted-foreground">Entre na lista de espera. Se alguém cancelar, você recebe uma mensagem no WhatsApp.</p>
+          <div className="mt-2 flex flex-wrap gap-2"><input aria-label="Horário desejado" type="time" step={1800} className={`${inputCls} max-w-36`} value={waitTime} onChange={e => setWaitTime(e.target.value)} />
+          <Button type="button" variant="outline" disabled={busy || !name || !phone} onClick={entrarEspera}>Entrar na lista de espera</Button></div>
+          {(!name || !phone) && <p className="mt-1 text-xs text-muted-foreground">Preencha seu nome e WhatsApp acima.</p>}
+        </div>}
       </>}
     </form>}
   </main></div>;
