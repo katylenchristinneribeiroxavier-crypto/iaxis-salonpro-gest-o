@@ -354,6 +354,47 @@ export type Database = {
         }
         Relationships: []
       }
+      despesas_salao: {
+        Row: {
+          categoria: string
+          created_at: string
+          criado_por: string | null
+          data_despesa: string
+          descricao: string
+          id: string
+          salon_id: string
+          valor: number
+        }
+        Insert: {
+          categoria?: string
+          created_at?: string
+          criado_por?: string | null
+          data_despesa?: string
+          descricao?: string
+          id?: string
+          salon_id: string
+          valor: number
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          criado_por?: string | null
+          data_despesa?: string
+          descricao?: string
+          id?: string
+          salon_id?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "despesas_salao_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       evolution_config_global: {
         Row: {
           ativo: boolean
