@@ -18,7 +18,7 @@ export function useMe() {
 
 export function homeFor(roles: Role[]) {
   if (roles.includes("super_admin")) return "/master-desenvolvedora";
-  if (roles.includes("dono_salao")) return "/salao";
+  if (roles.includes("dono_salao")) return "/app";
   if (roles.includes("revendedor")) return "/revendedor";
   return "/cliente";
 }

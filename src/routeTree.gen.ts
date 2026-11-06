@@ -60,6 +60,8 @@ import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-
 import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
 import { Route as FTokenRouteImport } from './routes/f.$token'
 import { Route as RCodeRouteImport } from './routes/r.$code'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppBlocoRouteImport } from './routes/_authenticated/app.$bloco'
 import { Route as AuthenticatedConfiguracoesIndexRouteImport } from './routes/_authenticated/configuracoes.index'
 import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes/_authenticated/configuracoes.whatsapp'
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
@@ -349,6 +351,16 @@ const RCodeRoute = RCodeRouteImport.update({
   path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/app/',
+  path: '/app/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppBlocoRoute = AuthenticatedAppBlocoRouteImport.update({
+  id: '/app/$bloco',
+  path: '/app/$bloco',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedConfiguracoesIndexRoute =
   AuthenticatedConfiguracoesIndexRouteImport.update({
     id: '/',
@@ -441,9 +453,11 @@ export interface FileRoutesByFullPath {
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
+  '/app/$bloco': typeof AuthenticatedAppBlocoRoute
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
@@ -498,9 +512,11 @@ export interface FileRoutesByTo {
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
+  '/app/$bloco': typeof AuthenticatedAppBlocoRoute
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/app': typeof AuthenticatedAppIndexRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
@@ -559,9 +575,11 @@ export interface FileRoutesById {
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
+  '/_authenticated/app/$bloco': typeof AuthenticatedAppBlocoRoute
   '/_authenticated/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
   '/api/public/evolution/$salonId': typeof ApiPublicEvolutionSalonIdRoute
@@ -620,9 +638,11 @@ export interface FileRouteTypes {
     | '/api/reseller-ai-plan'
     | '/f/$token'
     | '/r/$code'
+    | '/app/$bloco'
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/app/'
     | '/configuracoes/'
     | '/salao/'
     | '/api/public/evolution/$salonId'
@@ -677,9 +697,11 @@ export interface FileRouteTypes {
     | '/api/reseller-ai-plan'
     | '/f/$token'
     | '/r/$code'
+    | '/app/$bloco'
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/app'
     | '/configuracoes'
     | '/salao'
     | '/api/public/evolution/$salonId'
@@ -737,9 +759,11 @@ export interface FileRouteTypes {
     | '/api/reseller-ai-plan'
     | '/f/$token'
     | '/r/$code'
+    | '/_authenticated/app/$bloco'
     | '/_authenticated/configuracoes/whatsapp'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
+    | '/_authenticated/app/'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
     | '/api/public/evolution/$salonId'
@@ -1123,6 +1147,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/app'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/$bloco': {
+      id: '/_authenticated/app/$bloco'
+      path: '/app/$bloco'
+      fullPath: '/app/$bloco'
+      preLoaderRoute: typeof AuthenticatedAppBlocoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/configuracoes/': {
       id: '/_authenticated/configuracoes/'
       path: '/'
@@ -1258,6 +1296,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTicketsSuporteRoute: typeof AuthenticatedTicketsSuporteRoute
   AuthenticatedTornarSeRevendedorRoute: typeof AuthenticatedTornarSeRevendedorRoute
   AuthenticatedValidarRoute: typeof AuthenticatedValidarRoute
+  AuthenticatedAppBlocoRoute: typeof AuthenticatedAppBlocoRoute
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1304,6 +1344,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTicketsSuporteRoute: AuthenticatedTicketsSuporteRoute,
   AuthenticatedTornarSeRevendedorRoute: AuthenticatedTornarSeRevendedorRoute,
   AuthenticatedValidarRoute: AuthenticatedValidarRoute,
+  AuthenticatedAppBlocoRoute: AuthenticatedAppBlocoRoute,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
