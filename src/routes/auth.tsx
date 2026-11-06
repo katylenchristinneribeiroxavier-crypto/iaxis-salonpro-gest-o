@@ -62,7 +62,7 @@ function Auth() {
         data: { full_name: f.name, role, salon_name: f.salon, city: f.city, ref: search.ref },
       },
     });
-    if (error) { setBusy(false); return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta. Use Entrar." : error.message); }
+    if (error) { setBusy(false); return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta. Use Entrar." : /weak|pwned|known/i.test(error.message) ? "Senha muito fácil ou já vazada na internet. Crie outra senha mais forte." : error.message); }
     if (!data.session) {
       const r = await supabase.auth.signInWithPassword({ email: f.email, password: f.password });
       if (r.error) { setBusy(false); return toast.error("Conta criada, mas não foi possível entrar. Tente Entrar."); }
