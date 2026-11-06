@@ -493,6 +493,7 @@ export type Database = {
       licencas_nacionais: {
         Row: {
           aceitou_termos: boolean
+          bloqueado_por_expiracao: boolean
           data_expira: string
           data_inicio: string
           email_cliente: string
@@ -506,6 +507,7 @@ export type Database = {
         }
         Insert: {
           aceitou_termos?: boolean
+          bloqueado_por_expiracao?: boolean
           data_expira?: string
           data_inicio?: string
           email_cliente: string
@@ -519,6 +521,7 @@ export type Database = {
         }
         Update: {
           aceitou_termos?: boolean
+          bloqueado_por_expiracao?: boolean
           data_expira?: string
           data_inicio?: string
           email_cliente?: string
@@ -1979,6 +1982,7 @@ export type Database = {
         Args: { _acao: string; _email: string }
         Returns: {
           aceitou_termos: boolean
+          bloqueado_por_expiracao: boolean
           data_expira: string
           data_inicio: string
           email_cliente: string
