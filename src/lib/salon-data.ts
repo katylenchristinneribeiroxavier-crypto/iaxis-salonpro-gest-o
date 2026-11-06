@@ -12,6 +12,8 @@ export const salonContextOptions = queryOptions({
     ]);
     const admin = roles.data?.some(r => r.role === 'super_admin') ?? false;
     let salon = own.data;
+    const chosen = admin && typeof window !== 'undefined' ? window.localStorage.getItem('criador_salon') : null;
+    if (chosen) { const r = await supabase.from('salons').select('*').eq('id', chosen).maybeSingle(); if (r.data) salon = r.data; }
     if (!salon && membership.data) {
       const response = await supabase.from('salons').select('*').eq('id', membership.data.salon_id).maybeSingle();
       salon = response.data;
