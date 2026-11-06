@@ -47,6 +47,13 @@ export function WhatsappSettings() {
     return () => clearInterval(id);
   }, [connecting]);
 
+  // QR codes expire; regenerate every 30 seconds while waiting for the scan.
+  useEffect(() => {
+    if (!qrImage || connected) return;
+    const id = setInterval(async () => { try { const r = await pair({ data: { phone: whatsappDigits(phone) } }); let img = r.qrImage; if (!img && r.qrText) { const QRCode = await import('qrcode'); img = await QRCode.toDataURL(r.qrText, { width: 360, margin: 2 }); } if (img) setQrImage(img); if (r.pairingCode) setPairingCode(r.pairingCode); } catch { /* next try */ } }, 30000);
+    return () => clearInterval(id);
+  }, [qrImage, connected, phone]);
+
   if (!owner) return <p className="mt-8">A conexão do WhatsApp é feita pela dona do salão.</p>;
 
   return <section className="mt-8 rounded-xl border border-gold/30 bg-card p-6">
@@ -61,7 +68,7 @@ export function WhatsappSettings() {
     <form className="mt-6 max-w-xl space-y-4" onSubmit={e => { e.preventDefault(); run(async () => {
       const result = await pair({ data: { phone: whatsappDigits(phone) } });
       let image = result.qrImage;
-      if (!image && result.qrText) { const QRCode = await import('qrcode'); image = await QRCode.toDataURL(result.qrText, { width: 280, margin: 2 }); }
+      if (!image && result.qrText) { const QRCode = await import('qrcode'); image = await QRCode.toDataURL(result.qrText, { width: 360, margin: 2 }); }
       setQrImage(image); setPairingCode(result.pairingCode);
       toast.success(result.state === 'open' ? 'WhatsApp conectado' : image || result.pairingCode ? 'Escaneie o QR Code com seu celular' : 'QR ainda não disponível. Tente de novo em instantes.');
       await refresh();
@@ -75,7 +82,7 @@ export function WhatsappSettings() {
       </div>
     </form>
 
-    {(qrImage || pairingCode) && !connected && <div className="mt-6 max-w-xl border-t pt-5"><h3 className="mb-3 text-lg">Escaneie com o WhatsApp do salão</h3>{qrImage && <img src={qrImage} width={280} height={280} alt="QR Code para conectar o WhatsApp do salão" className="rounded bg-background p-2" />}{pairingCode && <p className="mt-4">Ou digite o código: <span className="font-mono text-2xl">{pairingCode}</span></p>}</div>}
+    {(qrImage || pairingCode) && !connected && <div className="mt-6 max-w-xl border-t pt-5"><h3 className="mb-1 text-lg">Escaneie com o WhatsApp do salão</h3><p className="mb-3 text-sm text-muted-foreground">O QR Code se renova sozinho a cada 30 segundos. Instância: {data?.evolution_instance ?? '—'}</p>{qrImage && <img src={qrImage} width={360} height={360} alt="QR Code para conectar o WhatsApp do salão" className="rounded bg-background p-2" />}{pairingCode && <p className="mt-4">Ou digite o código: <span className="font-mono text-2xl">{pairingCode}</span></p>}</div>}
 
     <div className="mt-6 border-t pt-5">
       <h3 className="mb-3 text-lg">Automações {connected ? 'ligadas' : '(ligam quando conectar)'}</h3>
