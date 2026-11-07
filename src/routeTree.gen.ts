@@ -37,6 +37,7 @@ import { Route as AuthenticatedConfigurarSecretariaRouteImport } from './routes/
 import { Route as AuthenticatedCriadorRouteImport } from './routes/_authenticated/criador'
 import { Route as AuthenticatedDespesasRouteImport } from './routes/_authenticated/despesas'
 import { Route as AuthenticatedDespesasSalaoRouteImport } from './routes/_authenticated/despesas-salao'
+import { Route as AuthenticatedFechamentoMensalRouteImport } from './routes/_authenticated/fechamento-mensal'
 import { Route as AuthenticatedFinanceiroComissoesRouteImport } from './routes/_authenticated/financeiro-comissoes'
 import { Route as AuthenticatedFornecedoresRouteImport } from './routes/_authenticated/fornecedores'
 import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes/_authenticated/fornecedores-parceiros'
@@ -225,6 +226,12 @@ const AuthenticatedDespesasSalaoRoute =
   AuthenticatedDespesasSalaoRouteImport.update({
     id: '/despesas-salao',
     path: '/despesas-salao',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFechamentoMensalRoute =
+  AuthenticatedFechamentoMensalRouteImport.update({
+    id: '/fechamento-mensal',
+    path: '/fechamento-mensal',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedFinanceiroComissoesRoute =
@@ -461,6 +468,7 @@ export interface FileRoutesByFullPath {
   '/criador': typeof AuthenticatedCriadorRoute
   '/despesas': typeof AuthenticatedDespesasRoute
   '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
+  '/fechamento-mensal': typeof AuthenticatedFechamentoMensalRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
@@ -526,6 +534,7 @@ export interface FileRoutesByTo {
   '/criador': typeof AuthenticatedCriadorRoute
   '/despesas': typeof AuthenticatedDespesasRoute
   '/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
+  '/fechamento-mensal': typeof AuthenticatedFechamentoMensalRoute
   '/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
@@ -593,6 +602,7 @@ export interface FileRoutesById {
   '/_authenticated/criador': typeof AuthenticatedCriadorRoute
   '/_authenticated/despesas': typeof AuthenticatedDespesasRoute
   '/_authenticated/despesas-salao': typeof AuthenticatedDespesasSalaoRoute
+  '/_authenticated/fechamento-mensal': typeof AuthenticatedFechamentoMensalRoute
   '/_authenticated/financeiro-comissoes': typeof AuthenticatedFinanceiroComissoesRoute
   '/_authenticated/fornecedores': typeof AuthenticatedFornecedoresRoute
   '/_authenticated/fornecedores-parceiros': typeof AuthenticatedFornecedoresParceirosRoute
@@ -661,6 +671,7 @@ export interface FileRouteTypes {
     | '/criador'
     | '/despesas'
     | '/despesas-salao'
+    | '/fechamento-mensal'
     | '/financeiro-comissoes'
     | '/fornecedores'
     | '/fornecedores-parceiros'
@@ -726,6 +737,7 @@ export interface FileRouteTypes {
     | '/criador'
     | '/despesas'
     | '/despesas-salao'
+    | '/fechamento-mensal'
     | '/financeiro-comissoes'
     | '/fornecedores'
     | '/fornecedores-parceiros'
@@ -792,6 +804,7 @@ export interface FileRouteTypes {
     | '/_authenticated/criador'
     | '/_authenticated/despesas'
     | '/_authenticated/despesas-salao'
+    | '/_authenticated/fechamento-mensal'
     | '/_authenticated/financeiro-comissoes'
     | '/_authenticated/fornecedores'
     | '/_authenticated/fornecedores-parceiros'
@@ -1047,6 +1060,13 @@ declare module '@tanstack/react-router' {
       path: '/despesas-salao'
       fullPath: '/despesas-salao'
       preLoaderRoute: typeof AuthenticatedDespesasSalaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/fechamento-mensal': {
+      id: '/_authenticated/fechamento-mensal'
+      path: '/fechamento-mensal'
+      fullPath: '/fechamento-mensal'
+      preLoaderRoute: typeof AuthenticatedFechamentoMensalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/financeiro-comissoes': {
@@ -1374,6 +1394,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCriadorRoute: typeof AuthenticatedCriadorRoute
   AuthenticatedDespesasRoute: typeof AuthenticatedDespesasRoute
   AuthenticatedDespesasSalaoRoute: typeof AuthenticatedDespesasSalaoRoute
+  AuthenticatedFechamentoMensalRoute: typeof AuthenticatedFechamentoMensalRoute
   AuthenticatedFinanceiroComissoesRoute: typeof AuthenticatedFinanceiroComissoesRoute
   AuthenticatedFornecedoresRoute: typeof AuthenticatedFornecedoresRoute
   AuthenticatedFornecedoresParceirosRoute: typeof AuthenticatedFornecedoresParceirosRoute
@@ -1423,6 +1444,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCriadorRoute: AuthenticatedCriadorRoute,
   AuthenticatedDespesasRoute: AuthenticatedDespesasRoute,
   AuthenticatedDespesasSalaoRoute: AuthenticatedDespesasSalaoRoute,
+  AuthenticatedFechamentoMensalRoute: AuthenticatedFechamentoMensalRoute,
   AuthenticatedFinanceiroComissoesRoute: AuthenticatedFinanceiroComissoesRoute,
   AuthenticatedFornecedoresRoute: AuthenticatedFornecedoresRoute,
   AuthenticatedFornecedoresParceirosRoute:
