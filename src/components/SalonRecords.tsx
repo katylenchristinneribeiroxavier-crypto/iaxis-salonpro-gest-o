@@ -8,12 +8,13 @@ import { salonContextOptions } from '@/lib/salon-data';
 import { PageTitle, inputCls } from './Shell';
 import { PhotoPicker } from './PhotoPicker';
 import { uploadSalonPhoto } from '@/lib/salon-media';
+import { splitCommission } from '@/lib/salon-rules';
 import { Button } from './ui/button';
 type Table = 'professions' | 'professionals' | 'services' | 'salon_clients' | 'supplier_brands' | 'supplier_products';
 type Field = { key: string; label: string; type?: string; required?: boolean; min?: number; max?: number };
 export const recordSpecs: Record<Table, { title: string; fields: Field[] }> = {
   professions: { title: 'Profissões', fields: [{ key: 'name', label: 'Nome da profissão', required: true }] },
-  professionals: { title: 'Funcionários', fields: [{ key: 'name', label: 'Nome', required: true }, { key: 'whatsapp', label: 'WhatsApp (55 + DDD + número)' }, { key: 'commission_pct', label: 'Porcentagem de comissão deste profissional (%)', type: 'number', min: 0, max: 100, required: true }] },
+  professionals: { title: 'Funcionários', fields: [{ key: 'name', label: 'Nome', required: true }, { key: 'whatsapp', label: 'WhatsApp (55 + DDD + número)' }, { key: 'commission_pct', label: 'Porcentagem do funcionário (%)', type: 'number', min: 0, max: 100, required: true }] },
   services: { title: 'Serviços e preços', fields: [{ key: 'name', label: 'Nome do serviço', required: true }, { key: 'price', label: 'Preço (R$)', type: 'number', min: 0, required: true }, { key: 'duration_min', label: 'Duração (minutos)', type: 'number', min: 1, required: true }] },
   salon_clients: { title: 'Clientes', fields: [{ key: 'name', label: 'Nome', required: true }, { key: 'whatsapp', label: 'WhatsApp (55 + DDD + número)', required: true }, { key: 'birthday', label: 'Aniversário', type: 'date' }] },
   supplier_brands: { title: 'Fornecedores parceiros', fields: [{ key: 'name', label: 'Nome da marca', required: true }, { key: 'contact_name', label: 'Responsável', required: true }, { key: 'whatsapp', label: 'WhatsApp (55 + DDD + número)', required: true }] },
@@ -41,6 +42,7 @@ export function SalonRecords({ table, brandId }: { table: Table; brandId?: strin
   const remove = async (id: string) => { if (!ctx.salon || !confirm('Excluir este cadastro?')) return; const r = await supabase.from(table).delete().eq('id',id).eq('salon_id',ctx.salon.id); if (r.error) toast.error('Este cadastro tem vínculos e não pode ser excluído.'); else qc.invalidateQueries({ queryKey: ['records'] }); };
   return <><PageTitle title={spec.title} /><form onSubmit={submit} className="grid max-w-4xl gap-4 border-b pb-6 sm:grid-cols-2">
     {spec.fields.map(f => <label key={f.key} className="text-sm">{f.label}<input aria-label={f.label} required={f.required} type={f.type || 'text'} min={f.min} max={f.max} step={f.type==='number'?'0.01':undefined} className={`${inputCls} mt-2`} value={form[f.key] || ''} onChange={e => setForm({ ...form,[f.key]: e.target.value })} /></label>)}
+    {table==='professionals' && form['commission_pct']?.trim() && Number.isFinite(Number(form['commission_pct'])) && Number(form['commission_pct']) >= 0 && Number(form['commission_pct']) <= 100 && <div className="flex flex-wrap gap-4 text-sm sm:col-span-2"><span className="text-gold">Funcionário: {Number(form['commission_pct'])}%</span><span>Parte da dona: {splitCommission(100, Number(form['commission_pct'])).salon}%</span></div>}
     {table==='professionals' && <label className="text-sm">Profissão<select required aria-label="Profissão" className={`${inputCls} mt-2`} value={form['profession_id'] || ''} onChange={e=>setForm({...form,profession_id:e.target.value})}><option value="">Selecionar profissão</option>{professions.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>}
     {table==='professionals' && <div className="space-y-2 text-sm sm:col-span-2"><p>Foto</p>{form['photo_url'] && <img src={form['photo_url']} alt="Foto" className="h-20 w-20 rounded-full object-cover" />}<PhotoPicker label="Abrir Câmera" facing="user" onFile={async f=>{if(!ctx.salon)return;try{const url=await uploadSalonPhoto(ctx.salon.id,'equipe',f);setForm(v=>({...v,photo_url:url}));}catch(err){toast.error(err instanceof Error?err.message:'Falha no envio');}}} /></div>}
     {table==='salon_clients' && <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form['consent']==='true'} onChange={e=>setForm({...form,consent:String(e.target.checked)})} />Autorizou mensagens por WhatsApp</label>}
