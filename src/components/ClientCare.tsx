@@ -1,5 +1,4 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
 import { PageTitle } from './Shell';
 import { ClientImport } from './ClientImport';
