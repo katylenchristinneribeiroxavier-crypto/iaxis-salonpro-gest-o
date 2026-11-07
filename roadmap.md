@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Fechamento mensal com calendário anual vivo de Brasília, feriados classificados e mensagens por data integradas à fila existente.
 - [x] Financeiro automático: serviços pagos, despesas por foto isoladas por salão, custos de estoque sem duplicação, adiantamentos, comissões privadas e resumo mensal em Brasília; 36 testes e fluxo autenticado de recebimento/foto verificados; publicação solicitada nesta entrega
 - [x] Licença nacional por salão: teste 7 dias, mensal 30 dias, anual 365 dias, bloqueio no layout e no banco, página expirada, controle secreto master e aceite de termos; 46 testes passaram, controles master e renovação verificados, licença de teste restaurada; sem Evolution
 - [x] Entrada master oculta para visitantes; visível apenas à conta super_admin autenticada, com navegação verificada
