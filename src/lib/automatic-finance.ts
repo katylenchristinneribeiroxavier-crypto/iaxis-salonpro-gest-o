@@ -5,7 +5,7 @@ export function brasiliaDate(date = new Date()) {
 }
 export function monthDays(month: string) {
   if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) throw new Error('Mês inválido');
-  const [year, m] = month.split('-').map(Number);
+  const [year = 0, m = 1] = month.split('-').map(Number);
   return new Date(Date.UTC(year, m, 0)).getUTCDate();
 }
 export const money = (v: number) => Math.round((v + Number.EPSILON) * 100) / 100;

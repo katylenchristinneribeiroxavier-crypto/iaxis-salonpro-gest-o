@@ -13,6 +13,8 @@ export const Route = createFileRoute("/_authenticated/salao/")({
     { name: "description", content: "Agenda do dia, faturamento e todas as pastas de gestão do salão." },
     { property: "og:title", content: "Painel do Salão — IAxis SalonPRO" },
     { property: "og:description", content: "Gestão completa do seu salão." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ]}),
   component: Painel,
 });
@@ -42,8 +44,8 @@ function Painel() {
   if (data === null) return <CreateSalon onDone={() => qc.invalidateQueries()} />;
   const { salon, appts, services, pros } = data;
   const validos = appts.filter((a) => a.status !== "cancelado");
-  const fat = appts.filter((a) => a.status === "finalizado").reduce((s, a) => s + Number(a.price), 0);
-  const com = appts.filter((a) => a.status === "finalizado").reduce((s, a) => {
+  const fat = appts.filter((a) => a.status === "finalizado" && a.payment_status === "pago").reduce((s, a) => s + Number(a.price), 0);
+  const com = appts.filter((a) => a.status === "finalizado" && a.payment_status === "pago").reduce((s, a) => {
     return s + Number(a.commission_amount ?? 0);
   }, 0);
   const link = `${window.location.origin}/cliente?s=${salon.slug}`;
@@ -58,7 +60,7 @@ function Painel() {
       <PageTitle title={salon.name} sub={new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })} />
       {salon.status !== "ativo" && <div className="mb-6 rounded-xl border border-destructive bg-destructive/10 p-4 text-sm">Seu salão está <b>{salon.status}</b>. O agendamento online está desativado até a regularização.</div>}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Faturamento hoje" value={brl(fat)} hint="Atendimentos finalizados" />
+        <Stat label="Faturamento hoje" value={brl(fat)} hint="Atendimentos pagos" />
         <Stat label="Agendamentos hoje" value={String(validos.length)} />
         <Stat label="Comissões do dia" value={brl(com)} />
         <Stat label="Sinais recebidos" value={brl(validos.reduce((s, a) => s + Number(a.deposit), 0))} />

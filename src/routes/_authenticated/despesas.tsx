@@ -10,10 +10,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { processarComprovante } from '@/lib/expenses.functions';
 import { EXPENSE_CATEGORIES, despesasCsv } from '@/lib/expenses';
 import { pageHead } from '@/lib/salon-data';
+import { SalonExpenses } from '@/components/SalonExpenses';
+import { Workspace } from '@/components/Workspace';
 
 export const Route = createFileRoute('/_authenticated/despesas')({
   head: () => pageHead('Despesas e comprovantes', 'Envie notas fiscais e recibos, deixe a IA ler e categorizar e exporte suas despesas.'),
-  component: Despesas,
+  component: () => <Workspace manager><SalonExpenses /></Workspace>,
 });
 
 const brl = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });

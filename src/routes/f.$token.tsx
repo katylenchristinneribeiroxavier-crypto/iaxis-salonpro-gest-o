@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Brand, inputCls } from '@/components/Shell';
 import { Button } from '@/components/ui/button';
 import { brl } from '@/lib/auth';
+import { StaffMonthlyFinance } from '@/components/StaffMonthlyFinance';
 
 export const Route = createFileRoute('/f/$token')({
   head: () => ({ meta: [
@@ -55,7 +56,7 @@ function Portal() {
   return <main className="mx-auto min-h-screen max-w-3xl p-5">
     <header className="flex items-center justify-between border-b pb-4"><div className="flex items-center gap-3">{d.salon.logo_url ? <img src={d.salon.logo_url} alt={`Logo ${d.salon.name}`} className="h-12 w-12 rounded-md object-cover" /> : null}<div><p className="text-xs text-muted-foreground">Seu salão</p><h1 className="text-2xl text-gold">{d.salon.name || 'Salão'}</h1></div></div><Brand /></header>
     <section className="mt-6 flex items-center gap-4">{d.professional.photo_url ? <img src={d.professional.photo_url} alt={d.professional.name} className="h-14 w-14 rounded-full object-cover" /> : null}<div><p className="text-sm text-muted-foreground">Olá,</p><p className="text-xl font-semibold">{d.professional.name}</p></div></section>
-    <section className="mt-6 grid gap-4 sm:grid-cols-2"><div className="rounded-xl border bg-card p-5"><p className="text-sm text-muted-foreground">Minha comissão do mês</p><p className="mt-1 font-display text-3xl text-gold">{brl(Number(d.comissao_mes))}</p></div><div className="rounded-xl border bg-card p-5"><p className="text-sm text-muted-foreground">Serviços feitos no mês</p><p className="mt-1 font-display text-3xl">{d.servicos_mes.length}</p></div></section>
+    <StaffMonthlyFinance token={token} />
     <h2 className="mt-8 text-2xl">Minha agenda (hoje e próximos 7 dias)</h2>
     {d.agenda.length === 0 && <p className="mt-3 text-muted-foreground">Nenhum agendamento.</p>}
     <div className="mt-3 space-y-2">{d.agenda.map(a => <article key={a.id} className="rounded-xl border bg-card p-4"><div className="flex flex-wrap items-center gap-3"><span className="font-display text-lg text-gold">{fmt(a.starts_at)}</span><div className="flex-1"><p className="font-semibold">{a.client_name}</p><p className="text-sm text-muted-foreground">{a.service ?? 'Serviço'} · {a.status}</p>{a.motivo && <p className="text-xs text-muted-foreground">{a.motivo}</p>}</div>{!['cancelado', 'finalizado'].includes(a.status) && <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => setOpen({ id: a.id, action: 'remarcar' })}>Remarcar</Button><Button size="sm" variant="destructive" onClick={() => setOpen({ id: a.id, action: 'desmarcar' })}>Desmarcar</Button></div>}</div>

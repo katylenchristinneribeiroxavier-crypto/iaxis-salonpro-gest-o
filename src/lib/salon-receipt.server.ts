@@ -34,7 +34,7 @@ export async function handleSalonReceipt(request: Request) {
     const state = await admin.from('salon_finance_ai_state').select('*').eq('salon_id', data.salonId).maybeSingle();
     if (state.error) throw new Failure(503, 'Não foi possível consultar o estado da leitura.');
     if (state.data?.paused_reason) {
-      if (!data.resume) throw new Failure(state.data.pause_status ?? 403, state.data.paused_reason);
+      if (!data.resume || state.data.pause_status === 403) throw new Failure(state.data.pause_status ?? 403, state.data.paused_reason);
       await admin.from('salon_finance_ai_state').update({ paused_reason: '', pause_status: null }).eq('salon_id', data.salonId);
     }
     const file = await client.storage.from('salon-receipts').download(data.path);
