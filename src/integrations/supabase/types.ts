@@ -26,6 +26,7 @@ export type Database = {
           duration_min: number
           id: string
           motivo_alteracao: string
+          payment_received_at: string | null
           payment_status: string
           price: number
           professional_id: string
@@ -51,6 +52,7 @@ export type Database = {
           duration_min?: number
           id?: string
           motivo_alteracao?: string
+          payment_received_at?: string | null
           payment_status?: string
           price?: number
           professional_id: string
@@ -76,6 +78,7 @@ export type Database = {
           duration_min?: number
           id?: string
           motivo_alteracao?: string
+          payment_received_at?: string | null
           payment_status?: string
           price?: number
           professional_id?: string
@@ -368,33 +371,54 @@ export type Database = {
       }
       despesas_salao: {
         Row: {
+          arquivo_path: string
           categoria: string
           created_at: string
           criado_por: string | null
           data_despesa: string
           descricao: string
+          documento_hash: string | null
+          fornecedor: string
           id: string
+          item_index: number | null
+          professional_id: string | null
+          quantidade: number | null
           salon_id: string
+          unidade: string | null
           valor: number
         }
         Insert: {
+          arquivo_path?: string
           categoria?: string
           created_at?: string
           criado_por?: string | null
           data_despesa?: string
           descricao?: string
+          documento_hash?: string | null
+          fornecedor?: string
           id?: string
+          item_index?: number | null
+          professional_id?: string | null
+          quantidade?: number | null
           salon_id: string
+          unidade?: string | null
           valor: number
         }
         Update: {
+          arquivo_path?: string
           categoria?: string
           created_at?: string
           criado_por?: string | null
           data_despesa?: string
           descricao?: string
+          documento_hash?: string | null
+          fornecedor?: string
           id?: string
+          item_index?: number | null
+          professional_id?: string | null
+          quantidade?: number | null
           salon_id?: string
+          unidade?: string | null
           valor?: number
         }
         Relationships: [
@@ -404,6 +428,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expense_professional_salon_fk"
+            columns: ["professional_id", "salon_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id", "salon_id"]
           },
         ]
       }
@@ -1552,6 +1583,35 @@ export type Database = {
           },
         ]
       }
+      salon_finance_ai_state: {
+        Row: {
+          pause_status: number | null
+          paused_reason: string
+          salon_id: string
+          updated_at: string
+        }
+        Insert: {
+          pause_status?: number | null
+          paused_reason?: string
+          salon_id: string
+          updated_at?: string
+        }
+        Update: {
+          pause_status?: number | null
+          paused_reason?: string
+          salon_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salon_finance_ai_state_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       salon_members: {
         Row: {
           access: string
@@ -1817,6 +1877,7 @@ export type Database = {
           appointment_id: string | null
           created_at: string
           created_by: string | null
+          custo_total: number
           id: string
           motivo: string
           product_id: string
@@ -1828,6 +1889,7 @@ export type Database = {
           appointment_id?: string | null
           created_at?: string
           created_by?: string | null
+          custo_total?: number
           id?: string
           motivo?: string
           product_id: string
@@ -1839,6 +1901,7 @@ export type Database = {
           appointment_id?: string | null
           created_at?: string
           created_by?: string | null
+          custo_total?: number
           id?: string
           motivo?: string
           product_id?: string
@@ -2476,6 +2539,10 @@ export type Database = {
           whatsapp_master: string
         }[]
       }
+      record_salon_receipt: {
+        Args: { _hash: string; _items: Json; _path: string; _salon: string }
+        Returns: Json
+      }
       redeem_sale_code: { Args: { _code: string }; Returns: string }
       redeem_single_test_purchase: {
         Args: { _city?: string; _name: string }
@@ -2499,6 +2566,10 @@ export type Database = {
         }[]
       }
       salon_booking_catalog: { Args: { _salon: string }; Returns: Json }
+      salon_financial_month: {
+        Args: { _month: string; _professional?: string; _salon: string }
+        Returns: Json
+      }
       save_owner_photo: {
         Args: { _salon: string; _url: string }
         Returns: undefined
@@ -2521,6 +2592,10 @@ export type Database = {
           _reason: string
           _token: string
         }
+        Returns: Json
+      }
+      staff_financial_month: {
+        Args: { _month: string; _token: string }
         Returns: Json
       }
       staff_portal: { Args: { _token: string }; Returns: Json }
