@@ -62,6 +62,7 @@ import { Route as AuthenticatedTornarSeRevendedorRouteImport } from './routes/_a
 import { Route as AuthenticatedValidarRouteImport } from './routes/_authenticated/validar'
 import { Route as ApiResellerAiLeadRouteImport } from './routes/api/reseller-ai-lead'
 import { Route as ApiResellerAiPlanRouteImport } from './routes/api/reseller-ai-plan'
+import { Route as ApiSalonReceiptRouteImport } from './routes/api/salon-receipt'
 import { Route as FTokenRouteImport } from './routes/f.$token'
 import { Route as RCodeRouteImport } from './routes/r.$code'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
@@ -366,6 +367,11 @@ const ApiResellerAiPlanRoute = ApiResellerAiPlanRouteImport.update({
   path: '/api/reseller-ai-plan',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSalonReceiptRoute = ApiSalonReceiptRouteImport.update({
+  id: '/api/salon-receipt',
+  path: '/api/salon-receipt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FTokenRoute = FTokenRouteImport.update({
   id: '/f/$token',
   path: '/f/$token',
@@ -480,6 +486,7 @@ export interface FileRoutesByFullPath {
   '/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/api/salon-receipt': typeof ApiSalonReceiptRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/app/$bloco': typeof AuthenticatedAppBlocoRoute
@@ -543,6 +550,7 @@ export interface FileRoutesByTo {
   '/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/api/salon-receipt': typeof ApiSalonReceiptRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/app/$bloco': typeof AuthenticatedAppBlocoRoute
@@ -610,6 +618,7 @@ export interface FileRoutesById {
   '/_authenticated/validar': typeof AuthenticatedValidarRoute
   '/api/reseller-ai-lead': typeof ApiResellerAiLeadRoute
   '/api/reseller-ai-plan': typeof ApiResellerAiPlanRoute
+  '/api/salon-receipt': typeof ApiSalonReceiptRoute
   '/f/$token': typeof FTokenRoute
   '/r/$code': typeof RCodeRoute
   '/_authenticated/app/$bloco': typeof AuthenticatedAppBlocoRoute
@@ -677,6 +686,7 @@ export interface FileRouteTypes {
     | '/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/api/salon-receipt'
     | '/f/$token'
     | '/r/$code'
     | '/app/$bloco'
@@ -740,6 +750,7 @@ export interface FileRouteTypes {
     | '/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/api/salon-receipt'
     | '/f/$token'
     | '/r/$code'
     | '/app/$bloco'
@@ -806,6 +817,7 @@ export interface FileRouteTypes {
     | '/_authenticated/validar'
     | '/api/reseller-ai-lead'
     | '/api/reseller-ai-plan'
+    | '/api/salon-receipt'
     | '/f/$token'
     | '/r/$code'
     | '/_authenticated/app/$bloco'
@@ -832,6 +844,7 @@ export interface RootRouteChildren {
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
+  ApiSalonReceiptRoute: typeof ApiSalonReceiptRoute
   FTokenRoute: typeof FTokenRoute
   RCodeRoute: typeof RCodeRoute
   ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
@@ -1211,6 +1224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResellerAiPlanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/salon-receipt': {
+      id: '/api/salon-receipt'
+      path: '/api/salon-receipt'
+      fullPath: '/api/salon-receipt'
+      preLoaderRoute: typeof ApiSalonReceiptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/f/$token': {
       id: '/f/$token'
       path: '/f/$token'
@@ -1448,6 +1468,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
+  ApiSalonReceiptRoute: ApiSalonReceiptRoute,
   FTokenRoute: FTokenRoute,
   RCodeRoute: RCodeRoute,
   ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,

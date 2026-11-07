@@ -27,3 +27,6 @@
 - National licenses are provisioned transactionally from confirmed purchases; salon_access_allowed enforces expiry with master suspension preserved, and only authenticated super_admin RPCs may renew or block licenses. The root layout checks licensing without gating renewal or support.
 - Staff portal /f/$token uses professionals.portal_token through security-definer RPCs (staff_portal, staff_change_appointment) so staff see only their own agenda and commission without login.
 - Stock (suppliers/products/stock_movements) is salon-scoped via manages_salon; automatic deductions happen only in the appointment 'finalizado' trigger, deduplicated per appointment and product.
+
+- Financial reports use authenticated salon-scoped RPCs and paid appointment commission snapshots in Brasília; receipt AI classifies items but deterministic database arithmetic owns totals and separate cash/purchased-stock versus consumed-stock views prevent duplicate costs.
+- Receipt uploads use private salon-scoped storage, streamed request-local Responses extraction and content-hash deduplication; professional advances are reconciled against commissions rather than charged twice.

@@ -1,0 +1,2 @@
+import { createFileRoute } from '@tanstack/react-router';
+export const Route = createFileRoute('/api/salon-receipt')({ server: { handlers: { POST: async ({ request }) => { const { handleSalonReceipt } = await import('@/lib/salon-receipt.server'); return handleSalonReceipt(request); } } } });
