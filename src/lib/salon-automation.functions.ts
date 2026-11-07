@@ -10,6 +10,8 @@ export const refreshSalonReminders = createServerFn({ method: 'POST' }).middlewa
     const { supabaseAdmin: db } = await import('@/integrations/supabase/client.server');
     const result = await db.rpc('prepare_salon_reminders', { _salon: data.salonId });
     if (result.error) throw new Error('Não foi possível preparar os lembretes');
+    const evolving = await db.rpc('prepare_evolving_messages', { _salon: data.salonId });
+    if (evolving.error) throw new Error('Não foi possível preparar mensagens inteligentes');
     return { count: result.data };
   });
 

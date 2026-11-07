@@ -13,6 +13,7 @@ export const workspaceNav = [
   { to: '/mensagens', label: 'Mensagens WhatsApp' },
   { to: '/minhas-comissoes', label: 'Minhas comissões' },
   { to: '/fechamento-mensal', label: 'Fechamento mensal' },
+  { to: '/clientes-cuidado', label: 'Cuidado inteligente' },
   { to: '/configuracao-loja', label: 'Meu salão' }, { to: '/configurar-secretaria', label: 'Secretária virtual' },
   { to: '/profissoes', label: 'Profissões' }, { to: '/funcionarios', label: 'Funcionários' },
   { to: '/servicos-precos', label: 'Serviços e preços' }, { to: '/financeiro-comissoes', label: 'Financeiro e comissões' }, { to: '/despesas-salao', label: 'Despesas do salão' },

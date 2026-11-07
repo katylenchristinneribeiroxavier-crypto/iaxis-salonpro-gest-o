@@ -1,6 +1,7 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { BrazilYearCalendar } from './BrazilYearCalendar';
+import { ProductionEvolution } from './ProductionEvolution';
 import { Download, Folder, CalendarDays } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
@@ -35,6 +36,7 @@ export function SalonFinance({ personal = false, closure = false }: { personal?:
   };
   return <><PageTitle title={personal ? 'Minhas comissões' : closure ? 'Fechamento mensal' : 'Financeiro automático'} />
     {closure && <BrazilYearCalendar month={month} onMonth={selectMonth} salon={ctx.salon?.name ?? ''} />}
+    {!personal && <ProductionEvolution />}
     <div className="mb-6 flex flex-wrap items-center gap-3"><input aria-label="Mês" type="month" className={`${inputCls} max-w-48`} value={month} onChange={e => { if (e.target.value) selectMonth(e.target.value); }} /><span className="text-sm text-muted-foreground">{month > brasiliaDate().slice(0, 7) ? 'Mês futuro' : d?.closed ? 'Resumo do mês encerrado' : 'Mês em andamento'} · Brasília</span><Button variant="outline" onClick={exportRows} disabled={!d}><Download />Exportar resumo</Button></div>
     {q.isPending && <p>Carregando valores…</p>}{q.error && <p role="alert" className="text-destructive">{q.error.message}</p>}
     {d && <><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
