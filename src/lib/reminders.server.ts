@@ -21,6 +21,9 @@ export const processSalonReminders = createServerOnlyFn(async () => {
   }
   const prepared = await db.rpc('prepare_salon_reminders', {});
   if (prepared.error) throw new Error('Não foi possível preparar lembretes');
+  const connected = await db.from('configuracoes_salao').select('salon_id').eq('evolution_connection_state', 'open');
+  if (connected.error) throw new Error('Não foi possível consultar conexões');
+  for (const salon of connected.data) { const r = await db.rpc('activate_evolving_queue', { _salon: salon.salon_id }); if (r.error) throw new Error('Não foi possível ativar mensagens preparadas'); }
   const claimed = await db.rpc('claim_salon_reminders', { _limit: 5 });
   if (claimed.error) throw new Error('Não foi possível recuperar lembretes');
   let accepted = 0;
@@ -32,12 +35,16 @@ export const processSalonReminders = createServerOnlyFn(async () => {
       if (allowed.error || !allowed.data) throw new Error('Salão suspenso');
       const prefs = await db.from('salon_automation_preferences').select('*').eq('salon_id', row.salon_id).maybeSingle();
       if (prefs.error) throw new Error('Preferências indisponíveis');
+      if ((row.tipo === 'lembrete_24h' && prefs.data?.reminder_24h === false) || (row.tipo === 'agradecimento' && prefs.data?.thank_you_messages === false) || (row.tipo === 'cliente_sumida' && prefs.data?.intelligent_return === false)) throw new Error('Mensagem desativada pelo salão');
       if (row.tipo === 'data_especial' && !prefs.data?.special_date_messages) throw new Error('Mensagens de datas especiais desativadas pelo salão');
       if ((row.tipo === 'lembrete_agendamento' && prefs.data?.appointment_reminders === false) || (row.tipo === 'aniversario' && !prefs.data?.birthday_reminders) || (row.tipo === 'retorno' && !prefs.data?.return_reminders)) throw new Error('Lembrete desativado pelo salão');
-      if (row.appointment_id) {
+      if (row.appointment_id && row.tipo !== 'agradecimento') {
         const appt = await db.from('appointments').select('status,starts_at').eq('id', row.appointment_id).eq('salon_id', row.salon_id).single();
-        if (appt.error || ['cancelado', 'finalizado'].includes(appt.data.status) || new Date(appt.data.starts_at).getTime() <= Date.now() || new Date(appt.data.starts_at).getTime() - 3600000 !== new Date(row.agendado_para).getTime()) throw new Error('Agendamento alterado ou encerrado');
+        const advance = row.tipo === 'lembrete_24h' ? 86400000 : 3600000;
+        if (appt.error || ['cancelado', 'finalizado'].includes(appt.data.status) || new Date(appt.data.starts_at).getTime() <= Date.now() || new Date(appt.data.starts_at).getTime() - advance !== new Date(row.agendado_para).getTime()) throw new Error('Agendamento alterado ou encerrado');
       }
+      if (row.appointment_id && row.tipo === 'agradecimento') { const r = await db.from('appointments').select('status').eq('id', row.appointment_id).eq('salon_id', row.salon_id).single(); if (r.error || r.data.status !== 'finalizado') throw new Error('Atendimento não concluído'); }
+      if (row.tipo === 'cliente_sumida' && row.client_id) { const r = await db.from('appointments').select('id').eq('salon_id', row.salon_id).eq('salon_client_id', row.client_id).gt('starts_at', new Date().toISOString()).neq('status', 'cancelado').limit(1); if (r.error || r.data.length) throw new Error('Cliente já possui retorno agendado'); }
       let phone = row.cliente_whatsapp;
       if (row.client_id) {
         const client = await db.from('salon_clients').select('whatsapp,consent').eq('id', row.client_id).eq('salon_id', row.salon_id).single();
