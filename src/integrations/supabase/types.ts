@@ -2420,6 +2420,7 @@ export type Database = {
     }
     Functions: {
       aceitar_termos_licenca: { Args: { _salon: string }; Returns: undefined }
+      activate_evolving_queue: { Args: { _salon: string }; Returns: number }
       assistant_book_appointment: {
         Args: {
           _client?: string
