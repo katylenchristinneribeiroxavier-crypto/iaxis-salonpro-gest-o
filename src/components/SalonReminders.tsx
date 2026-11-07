@@ -13,7 +13,7 @@ import { Switch } from './ui/switch';
 export function SalonReminders() {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
   const qc = useQueryClient(); const refresh = useServerFn(refreshSalonReminders);
-  const [prefs, setPrefs] = useState({ appointment_reminders: true, birthday_reminders: false, return_reminders: false, return_days: 60, special_date_messages: false });
+  const [prefs, setPrefs] = useState({ appointment_reminders: true, birthday_reminders: false, return_reminders: false, return_days: 60, special_date_messages: false, reminder_24h: true, thank_you_messages: true, intelligent_return: true });
   const [busy, setBusy] = useState(false); const [filter, setFilter] = useState('');
   const { data, isPending, isError } = useQuery({ queryKey: ['salon-reminders', ctx.salon?.id], enabled: !!ctx.salon, refetchInterval: 30000, queryFn: async () => {
     if (!ctx.salon) return null;
@@ -21,12 +21,13 @@ export function SalonReminders() {
     if (p.error || q.error || h.error) throw new Error('Não foi possível consultar lembretes');
     return { prefs:p.data, queue:q.data, handoffs:h.data };
   } });
-  useEffect(() => { if (data?.prefs) setPrefs({ appointment_reminders:data.prefs.appointment_reminders,birthday_reminders:data.prefs.birthday_reminders,return_reminders:data.prefs.return_reminders,return_days:data.prefs.return_days,special_date_messages:data.prefs.special_date_messages }); }, [data?.prefs]);
+  useEffect(() => { if (data?.prefs) setPrefs({ appointment_reminders:data.prefs.appointment_reminders,birthday_reminders:data.prefs.birthday_reminders,return_reminders:data.prefs.return_reminders,return_days:data.prefs.return_days,special_date_messages:data.prefs.special_date_messages,reminder_24h:data.prefs.reminder_24h,thank_you_messages:data.prefs.thank_you_messages,intelligent_return:data.prefs.intelligent_return }); }, [data?.prefs]);
   return <><PageTitle title="Lembretes e atendimento" /><form className="max-w-3xl space-y-5 border-y py-6" onSubmit={async e => {
     e.preventDefault(); if (!ctx.salon) return; setBusy(true);
     try { const r=await supabase.from('salon_automation_preferences').upsert({salon_id:ctx.salon.id,...prefs,updated_at:new Date().toISOString()}); if(r.error)throw r.error; await qc.invalidateQueries({queryKey:['salon-reminders']});toast.success('Preferências salvas'); }catch{toast.error('Não foi possível salvar');}finally{setBusy(false);}
   }}>
     <label className="flex items-center justify-between gap-4"><span>Lembrete de atendimento<span className="block text-sm text-muted-foreground">Uma hora antes</span></span><Switch aria-label="Lembrete de atendimento" checked={prefs.appointment_reminders} onCheckedChange={v=>setPrefs({...prefs,appointment_reminders:v})}/></label>
+    {([{key:'reminder_24h',label:'Lembrete 24h antes'},{key:'thank_you_messages',label:'Agradecimento pós-atendimento'},{key:'intelligent_return',label:'Cliente sumida · retorno por serviço'}] as const).map(({key,label})=><label key={key} className="flex items-center justify-between gap-4"><span>{label}</span><Switch aria-label={label} checked={prefs[key]} onCheckedChange={v=>setPrefs({...prefs,[key]:v})}/></label>)}
     <label className="flex items-center justify-between gap-4"><span>Aniversário<span className="block text-sm text-muted-foreground">07:00 · clientes com autorização</span></span><Switch aria-label="Lembrete de aniversário" checked={prefs.birthday_reminders} onCheckedChange={v=>setPrefs({...prefs,birthday_reminders:v})}/></label>
     <label className="flex items-center justify-between gap-4"><span>Convite de retorno<span className="block text-sm text-muted-foreground">09:00 · clientes com autorização</span></span><Switch aria-label="Lembrete de retorno" checked={prefs.return_reminders} onCheckedChange={v=>setPrefs({...prefs,return_reminders:v})}/></label>
     <label className="flex items-center justify-between gap-4"><span>Mensagens de datas especiais<span className="block text-sm text-muted-foreground">09:00 · Brasília · clientes com autorização</span></span><Switch aria-label="Mensagens de datas especiais" checked={prefs.special_date_messages} onCheckedChange={v=>setPrefs({...prefs,special_date_messages:v})}/></label>

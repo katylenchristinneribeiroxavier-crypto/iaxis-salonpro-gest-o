@@ -1,0 +1,11 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { CalendarHeart, Send } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { Button } from './ui/button';
+export type ReturnInsight = { id:string;name:string;service:string|null;visits:number;interval_days:number;days_away:number|null;needs_care:boolean|null;next_return:string|null;due_this_week:boolean;consent:boolean };
+export const returnInsightOptions = (salonId?: string) => ({queryKey:['client-care',salonId],enabled:!!salonId,refetchInterval:60000,queryFn:async()=>{if(!salonId)return [];const r=await supabase.rpc('salon_crm_insights',{_salon:salonId});if(r.error)throw r.error;return r.data as unknown as ReturnInsight[];}});
+export function ReturnAlert({salonId}:{salonId:string}){
+ const q=useQuery(returnInsightOptions(salonId));const qc=useQueryClient();const due=q.data?.filter(c=>c.due_this_week)??[];const consented=due.filter(c=>c.consent);
+ return <section className="mb-6 flex flex-wrap items-center gap-4 border-b pb-5" aria-label="Retornos da semana"><CalendarHeart className="text-gold"/><div className="min-w-0 flex-1"><h2 className="text-lg">{due.length} clientes precisam voltar esta semana</h2><p className="text-sm text-muted-foreground">{consented.length} com autorização para WhatsApp · inclui retornos atrasados</p></div><Button variant="outline" disabled={!consented.length} onClick={async()=>{if(!confirm(`Preparar mensagens para ${consented.length} clientes autorizadas? O envio aguarda conexão e ativação do WhatsApp.`))return;const r=await supabase.rpc('owner_prepare_service_returns',{_salon:salonId});if(r.error)return void toast.error(r.error.message);toast.success(`${r.data} novas mensagens preparadas; envios aguardam conexão e ativação.`);qc.invalidateQueries({queryKey:['reminders']});}}><Send/>Preparar mensagens automáticas</Button>{q.error&&<p role="alert" className="text-destructive">Não foi possível consultar os retornos.</p>}</section>;
+}

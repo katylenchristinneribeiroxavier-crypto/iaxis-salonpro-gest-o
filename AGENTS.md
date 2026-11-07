@@ -32,3 +32,4 @@
 - Receipt uploads use private salon-scoped storage, streamed request-local Responses extraction and content-hash deduplication; professional advances are reconciled against commissions rather than charged twice.
 - Brazilian occasion dates use date-easter and statutory classifications; date-specific copy is deterministic, consent-scoped and queued idempotently by the existing developer-gated reminder worker, avoiding new AI spend and duplicate schedulers.
 - Evolving CRM derives service frequency from completed tenant-scoped appointments; production totals remain separate from paid cash reports, and prepared WhatsApp messages activate only through service-only connection/control checks without replaying stale campaigns.
+- Service return rules are deterministic and owner-editable; imported visits live in separate salon-scoped history, never financial appointments, and imports preserve existing consent without granting it.

@@ -596,6 +596,58 @@ export type Database = {
           },
         ]
       }
+      imported_client_visits: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          salon_id: string
+          service_id: string
+          source_key: string
+          visited_on: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          salon_id: string
+          service_id: string
+          source_key: string
+          visited_on: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          salon_id?: string
+          service_id?: string
+          source_key?: string
+          visited_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "imported_client_visits_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "salon_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imported_client_visits_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "imported_client_visits_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_conversations: {
         Row: {
           channel: string
@@ -1856,22 +1908,34 @@ export type Database = {
         Row: {
           duration_min: number
           id: string
+          imported_requires_review: boolean
+          intervalo_cliente_antiga_dias: number
+          intervalo_retorno_dias: number
           name: string
           price: number
+          regra_cliente: string
           salon_id: string
         }
         Insert: {
           duration_min?: number
           id?: string
+          imported_requires_review?: boolean
+          intervalo_cliente_antiga_dias?: number
+          intervalo_retorno_dias?: number
           name: string
           price?: number
+          regra_cliente?: string
           salon_id: string
         }
         Update: {
           duration_min?: number
           id?: string
+          imported_requires_review?: boolean
+          intervalo_cliente_antiga_dias?: number
+          intervalo_retorno_dias?: number
           name?: string
           price?: number
+          regra_cliente?: string
           salon_id?: string
         }
         Relationships: [
@@ -2417,10 +2481,33 @@ export type Database = {
           },
         ]
       }
+      service_return_targets: {
+        Row: {
+          client_id: string | null
+          first_visit: string | null
+          interval_days: number | null
+          last_visit: string | null
+          next_return: string | null
+          salon_id: string | null
+          service: string | null
+          service_id: string | null
+          visits: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       aceitar_termos_licenca: { Args: { _salon: string }; Returns: undefined }
       activate_evolving_queue: { Args: { _salon: string }; Returns: number }
+      appointment_return_forecast: {
+        Args: {
+          _date: string
+          _phone: string
+          _salon: string
+          _service: string
+        }
+        Returns: string
+      }
       assistant_book_appointment: {
         Args: {
           _client?: string
@@ -2471,6 +2558,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      import_salon_clients: {
+        Args: { _rows: Json; _salon: string }
+        Returns: Json
+      }
       licenca_valida: { Args: { _salon: string }; Returns: boolean }
       manages_salon: { Args: { _salon: string }; Returns: boolean }
       master_gerar_instancia_futura: {
@@ -2509,10 +2600,18 @@ export type Database = {
         }
         Returns: undefined
       }
+      owner_prepare_service_returns: {
+        Args: { _salon: string }
+        Returns: number
+      }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
       prepare_evolving_messages: { Args: { _salon?: string }; Returns: number }
       prepare_salon_reminders: { Args: { _salon?: string }; Returns: number }
+      prepare_service_returns: {
+        Args: { _manual?: boolean; _salon?: string }
+        Returns: number
+      }
       public_book_appointment: {
         Args: {
           _name: string
