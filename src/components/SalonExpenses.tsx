@@ -1,79 +1,49 @@
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { FileUp, Square, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
 import { brl } from '@/lib/auth';
-import { SALON_EXPENSE_CATEGORIES, intervaloMes, lucroMes, totaisPorCategoria } from '@/lib/salon-expenses';
-import { PageTitle, Stat, inputCls } from './Shell';
+import { intervaloMes } from '@/lib/salon-expenses';
+import { PageTitle, inputCls } from './Shell';
 import { Button } from './ui/button';
+import { PhotoPicker } from './PhotoPicker';
+import { SalonFinance } from './SalonFinance';
 
 export function SalonExpenses() {
-  const qc = useQueryClient();
-  const { data: ctx } = useSuspenseQuery(salonContextOptions);
-  const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
-  const [form, setForm] = useState({ categoria: 'Aluguel', descricao: '', valor: '', data: new Date().toISOString().slice(0, 10) });
-  const salonId = ctx.salon?.id;
-  const key = ['despesas-salao', salonId, month];
-  const { data } = useQuery({
-    queryKey: key, enabled: !!salonId,
-    queryFn: async () => {
-      const { inicio, fim } = intervaloMes(month);
-      const [d, a] = await Promise.all([
-        supabase.from('despesas_salao').select('*').eq('salon_id', salonId!).gte('data_despesa', inicio).lt('data_despesa', fim).order('data_despesa', { ascending: false }),
-        supabase.from('appointments').select('price').eq('salon_id', salonId!).eq('status', 'finalizado').gte('starts_at', new Date(`${inicio}T00:00:00`).toISOString()).lt('starts_at', new Date(`${fim}T00:00:00`).toISOString()),
-      ]);
-      if (d.error) throw d.error;
-      return { rows: d.data ?? [], faturamento: (a.data ?? []).reduce((s, r) => s + Number(r.price), 0) };
-    },
-  });
-  if (!salonId) return <p className="text-muted-foreground">Nenhum salão encontrado.</p>;
-  const rows = data?.rows ?? [];
-  const totalDesp = rows.reduce((s, r) => s + Number(r.valor), 0);
-  const fat = data?.faturamento ?? 0;
-  const lucro = lucroMes(fat, totalDesp);
-  const chart = totaisPorCategoria(rows.map(r => ({ categoria: r.categoria, valor: Number(r.valor) })));
-
-  async function salvar() {
-    const valor = Number(form.valor.replace(',', '.'));
-    if (!(valor > 0)) return void toast.error('Informe um valor maior que zero.');
-    const r = await supabase.from('despesas_salao').insert({ salon_id: salonId!, categoria: form.categoria, descricao: form.descricao.trim(), valor, data_despesa: form.data });
-    if (r.error) return void toast.error('Não foi possível salvar a despesa.');
-    toast.success('Despesa cadastrada'); setForm(f => ({ ...f, descricao: '', valor: '' }));
-    qc.invalidateQueries({ queryKey: ['despesas-salao'] });
+  const { data: ctx } = useSuspenseQuery(salonContextOptions); const qc = useQueryClient();
+  const [busy, setBusy] = useState(false); const [pending, setPending] = useState<{ path: string; mime: string } | null>(null);
+  const abort = useRef<AbortController | null>(null);
+  async function read(path: string, mime: string, resume = false) {
+    if (!ctx.salon || busy) return;
+    setBusy(true); abort.current = new AbortController();
+    try {
+      const session = await supabase.auth.getSession(); const token = session.data.session?.access_token;
+      if (!token) throw new Error('Entre na sua conta.');
+      const response = await fetch('/api/salon-receipt', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ salonId: ctx.salon.id, path, mime, resume }), signal: abort.current.signal });
+      if (!response.ok) { const error = await response.json(); throw new Error(error.message ?? 'Não foi possível ler o comprovante.'); }
+      const reader = response.body?.getReader(); if (!reader) throw new Error('Leitura indisponível.');
+      const decoder = new TextDecoder(); let buffer = ''; let done = false;
+      for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
+        buffer += decoder.decode(chunk.value, { stream: true }); const lines = buffer.split('\n'); buffer = lines.pop() ?? '';
+        for (const line of lines) { if (!line.trim()) continue; const event = JSON.parse(line); if (event.type === 'error') throw new Error(event.message); if (event.type === 'done') { done = true; toast.success(`${event.count} despesas classificadas e registradas`); } }
+      }
+      if (!done) throw new Error('Leitura interrompida antes de salvar.');
+      setPending(null); await qc.invalidateQueries({ queryKey: ['automatic-finance'] });
+    } catch (e) { if (e instanceof Error && e.name === 'AbortError') toast.info('Leitura interrompida.'); else toast.error(e instanceof Error ? e.message : 'Erro na leitura.'); }
+    finally { setBusy(false); abort.current = null; }
   }
-  async function remover(id: string) {
-    if (!confirm('Excluir esta despesa?')) return;
-    const r = await supabase.from('despesas_salao').delete().eq('id', id);
-    if (r.error) toast.error('Não foi possível excluir.'); else qc.invalidateQueries({ queryKey: ['despesas-salao'] });
+  async function upload(file: File) {
+    if (!ctx.salon || busy) return;
+    if (!['image/jpeg', 'image/png', 'image/webp', 'application/pdf'].includes(file.type) || file.size > 10 * 1024 * 1024) return void toast.error('Envie JPG, PNG, WEBP ou PDF de até 10 MB.');
+    setBusy(true);
+    const path = `${ctx.salon.id}/${crypto.randomUUID()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    const uploaded = await supabase.storage.from('salon-receipts').upload(path, file, { contentType: file.type }); setBusy(false);
+    if (uploaded.error) return void toast.error('Não foi possível enviar o comprovante.');
+    setPending({ path, mime: file.type }); await read(path, file.type);
   }
-
-  return <>
-    <PageTitle title="Despesas do salão" />
-    <input aria-label="Mês" type="month" className={`${inputCls} mb-6 max-w-48`} value={month} onChange={e => setMonth(e.target.value)} />
-    <div className="grid gap-4 sm:grid-cols-3">
-      <Stat label="Faturamento do mês" value={brl(fat)} />
-      <Stat label="Despesas do mês" value={brl(totalDesp)} />
-      <Stat label="Lucro (faturamento − despesas)" value={brl(lucro)} />
-    </div>
-    <section className="mt-8 rounded-lg border bg-card p-4">
-      <h2 className="text-xl">Nova despesa</h2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-5">
-        <select aria-label="Categoria" className={inputCls} value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })}>{SALON_EXPENSE_CATEGORIES.map(c => <option key={c}>{c}</option>)}</select>
-        <input aria-label="Descrição" placeholder="Descrição" className={`${inputCls} sm:col-span-2`} value={form.descricao} onChange={e => setForm({ ...form, descricao: e.target.value })} />
-        <input aria-label="Valor" inputMode="decimal" placeholder="Valor (R$)" className={inputCls} value={form.valor} onChange={e => setForm({ ...form, valor: e.target.value })} />
-        <input aria-label="Data" type="date" className={inputCls} value={form.data} onChange={e => setForm({ ...form, data: e.target.value })} />
-      </div>
-      <Button className="mt-3" onClick={salvar}><Plus />Cadastrar despesa</Button>
-    </section>
-    <section className="mt-8">
-      <h2 className="text-xl">Despesas por categoria no mês</h2>
-      {chart.length ? <div className="mt-3 h-64"><ResponsiveContainer><BarChart data={chart}><CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" /><XAxis dataKey="categoria" stroke="currentColor" fontSize={12} /><YAxis stroke="currentColor" fontSize={12} /><Tooltip formatter={(v: number) => brl(v)} /><Bar dataKey="total" fill="var(--gold, currentColor)" className="fill-gold" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer></div> : <p className="mt-3 text-muted-foreground">Nenhuma despesa neste mês.</p>}
-    </section>
-    {rows.length > 0 && <div className="mt-6 overflow-x-auto"><table className="w-full text-sm"><thead><tr className="border-b text-left text-muted-foreground"><th className="p-3">Data</th><th className="p-3">Categoria</th><th className="p-3">Descrição</th><th className="p-3 text-right">Valor</th><th /></tr></thead><tbody>{rows.map(r => <tr key={r.id} className="border-b"><td className="p-3">{r.data_despesa.split('-').reverse().join('/')}</td><td className="p-3">{r.categoria}</td><td className="p-3">{r.descricao || '—'}</td><td className="p-3 text-right">{brl(Number(r.valor))}</td><td className="p-3"><button aria-label="Excluir" onClick={() => remover(r.id)}><Trash2 className="h-4 w-4 text-destructive" /></button></td></tr>)}</tbody></table></div>}
-  </>;
+  return <><PageTitle title="Notas e despesas automáticas" /><section className="mb-8 space-y-4 border-b pb-6"><PhotoPicker busy={busy} label="Fotografar nota ou despesa" onFile={file => { void upload(file); }} /><label className="inline-flex cursor-pointer items-center gap-2 text-gold"><FileUp />Enviar PDF<input type="file" accept="application/pdf" className="sr-only" disabled={busy} onChange={e => { const file = e.target.files?.[0]; e.target.value = ''; if (file) void upload(file); }} /></label>{busy && <div className="flex items-center gap-3"><p role="status">Lendo e separando despesas…</p><Button variant="outline" onClick={() => abort.current?.abort()}><Square />Parar</Button></div>}{pending && !busy && <Button variant="outline" onClick={() => read(pending.path, pending.mime, true)}><RotateCcw />Retomar leitura do comprovante</Button>}</section><SalonFinance /></>;
 }
 
 export function MasterSalonExpenses() {
