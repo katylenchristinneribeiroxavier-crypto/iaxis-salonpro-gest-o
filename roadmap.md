@@ -1,6 +1,7 @@
 # Roadmap
 - [ ] Retorno por serviço editável, previsão automática, alertas semanais, importação CSV/XLSX com progresso e mensagens consentidas; verificar e publicar.
 - [ ] Deixar campos e mensagens destes módulos preparados para ativação posterior, sem ligar envios externos.
+- [ ] Ativar gatilhos 24h, agradecimento e cliente sumida; envios reais exigem conexão validada e consentimento.
 - [x] Automação evolutiva: produção por períodos/gráfico separada dos recebimentos, CRM por histórico real e gatilhos 24h/pós-atendimento/retorno/aniversário aguardando WhatsApp; 19 testes e conclusão autenticada com frequência de 90 dias e agradecimento verificados; dados temporários removidos.
 - [x] Fechamento mensal com calendário anual vivo de Brasília, feriados nacionais classificados e mensagens por data integradas à fila existente; 36 testes e navegação autenticada desktop/celular verificados.
 - [x] Financeiro automático: serviços pagos, despesas por foto isoladas por salão, custos de estoque sem duplicação, adiantamentos, comissões privadas e resumo mensal em Brasília; 36 testes e fluxo autenticado de recebimento/foto verificados; publicação solicitada nesta entrega
