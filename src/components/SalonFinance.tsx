@@ -16,7 +16,7 @@ export function SalonFinance({ personal = false }: { personal?: boolean }) {
   const q = useQuery({ queryKey: ['automatic-finance', ctx.salon?.id, month, personal], enabled: !!ctx.salon, queryFn: async () => {
     if (!ctx.salon) return null;
     if (personal && !ctx.member?.professional_id) throw new Error('Profissional não identificada.');
-    const r = await supabase.rpc('salon_financial_month', { _salon: ctx.salon.id, _month: month, _professional: personal ? ctx.member?.professional_id : undefined });
+    const r = await supabase.rpc('salon_financial_month', { _salon: ctx.salon.id, _month: month, ...(personal && ctx.member?.professional_id ? { _professional: ctx.member.professional_id } : {}) });
     if (r.error) throw r.error;
     return r.data as unknown as FinancialMonth;
   } });
