@@ -6,6 +6,7 @@ import { SalonAgenda } from './SalonAgenda';
 import { SalonDeposits } from './SalonDeposits';
 import { SalonRecords } from './SalonRecords';
 import { SalonSubscription } from './SalonSubscription';
+import { ReturnAlert } from './ReturnAlert';
 
 const sections = [
   { id: 'agendamentos', label: 'Agendamentos', icon: CalendarDays },
@@ -21,6 +22,7 @@ export function SalonOverview() {
       {data.salon?.logo_url && <img src={data.salon.logo_url} alt={data.salon.name || 'Logo do salão'} className="h-16 w-16 rounded-md object-contain" />}
       <div><p className="mb-1 text-sm text-gold">Gestão do salão</p><h1 className="break-words text-3xl font-semibold">{data.salon?.name || 'Meu salão'}</h1></div>
     </header>
+    {data.salon&&data.manager&&<ReturnAlert salonId={data.salon.id}/>}
     <nav aria-label="Áreas da gestão integrada" className="mb-8 flex flex-wrap gap-2 border-b pb-5">
       {sections.map(({ id, label, icon: Icon }) => <Button key={id} asChild variant="outline"><a href={`#${id}`}><Icon className="h-4 w-4" />{label}</a></Button>)}
     </nav>
