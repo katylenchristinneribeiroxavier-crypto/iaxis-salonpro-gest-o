@@ -1,11 +1,24 @@
 import { createServerOnlyFn } from '@tanstack/react-start';
 import { evolutionPhone } from './evolution';
+import { brazilCalendar } from './brazil-calendar';
+import { brasiliaDate } from './automatic-finance';
 
 export const processSalonReminders = createServerOnlyFn(async () => {
   const { supabaseAdmin: db } = await import('@/integrations/supabase/client.server');
   const control = await db.from('platform_reminder_control').select('enabled').eq('id', true).maybeSingle();
   if (control.error) throw new Error('Não foi possível consultar a ativação');
   if (!control.data?.enabled) return { active: false, accepted: 0 };
+  const today = brasiliaDate();
+  const events = brazilCalendar(Number(today.slice(0, 4))).filter(e => e.date === today && e.message);
+  if (events.length) {
+    const salons = await db.from('salon_automation_preferences').select('salon_id').eq('special_date_messages', true);
+    if (salons.error) throw new Error('Não foi possível consultar datas especiais');
+    for (const salon of salons.data) for (const event of events) {
+      if (!event.message) continue;
+      const result = await db.rpc('queue_special_date', { _salon: salon.salon_id, _date: today, _key: event.key, _message: event.message });
+      if (result.error) throw new Error('Não foi possível preparar a mensagem da data');
+    }
+  }
   const prepared = await db.rpc('prepare_salon_reminders', {});
   if (prepared.error) throw new Error('Não foi possível preparar lembretes');
   const claimed = await db.rpc('claim_salon_reminders', { _limit: 5 });
@@ -19,6 +32,7 @@ export const processSalonReminders = createServerOnlyFn(async () => {
       if (allowed.error || !allowed.data) throw new Error('Salão suspenso');
       const prefs = await db.from('salon_automation_preferences').select('*').eq('salon_id', row.salon_id).maybeSingle();
       if (prefs.error) throw new Error('Preferências indisponíveis');
+      if (row.tipo === 'data_especial' && !prefs.data?.special_date_messages) throw new Error('Mensagens de datas especiais desativadas pelo salão');
       if ((row.tipo === 'lembrete_agendamento' && prefs.data?.appointment_reminders === false) || (row.tipo === 'aniversario' && !prefs.data?.birthday_reminders) || (row.tipo === 'retorno' && !prefs.data?.return_reminders)) throw new Error('Lembrete desativado pelo salão');
       if (row.appointment_id) {
         const appt = await db.from('appointments').select('status,starts_at').eq('id', row.appointment_id).eq('salon_id', row.salon_id).single();

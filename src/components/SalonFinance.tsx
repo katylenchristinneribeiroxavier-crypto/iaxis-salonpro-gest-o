@@ -1,5 +1,6 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { BrazilYearCalendar } from './BrazilYearCalendar';
 import { Download, Folder, CalendarDays } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { salonContextOptions } from '@/lib/salon-data';
@@ -8,9 +9,12 @@ import { PageTitle, Stat, inputCls } from './Shell';
 import { Button } from './ui/button';
 import { brl } from '@/lib/auth';
 
-export function SalonFinance({ personal = false }: { personal?: boolean }) {
+export function SalonFinance({ personal = false, closure = false }: { personal?: boolean; closure?: boolean }) {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
   const [month, setMonth] = useState(brasiliaDate().slice(0, 7));
+  const [followCurrent, setFollowCurrent] = useState(true);
+  useEffect(() => { const update = () => { if (followCurrent) setMonth(brasiliaDate().slice(0, 7)); }; const id = setInterval(update, 1000); return () => clearInterval(id); }, [followCurrent]);
+  const selectMonth = (value: string) => { setMonth(value); setFollowCurrent(value === brasiliaDate().slice(0, 7)); };
   const [professional, setProfessional] = useState('');
   const [folder, setFolder] = useState('');
   const q = useQuery({ queryKey: ['automatic-finance', ctx.salon?.id, month, personal], enabled: !!ctx.salon, queryFn: async () => {
@@ -29,8 +33,9 @@ export function SalonFinance({ personal = false }: { personal?: boolean }) {
     const url = URL.createObjectURL(new Blob(['\uFEFF' + lines.map(line => line.map(safe).join(';')).join('\n')], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a'); a.href = url; a.download = `resumo-${month}.csv`; a.click(); URL.revokeObjectURL(url);
   };
-  return <><PageTitle title={personal ? 'Minhas comissões' : 'Financeiro automático'} />
-    <div className="mb-6 flex flex-wrap items-center gap-3"><input aria-label="Mês" type="month" className={`${inputCls} max-w-48`} value={month} onChange={e => { if (e.target.value) setMonth(e.target.value); }} /><span className="text-sm text-muted-foreground">{d?.closed ? 'Resumo mensal encerrado' : 'Mês em andamento'} · Brasília</span><Button variant="outline" onClick={exportRows} disabled={!d}><Download />Exportar resumo</Button></div>
+  return <><PageTitle title={personal ? 'Minhas comissões' : closure ? 'Fechamento mensal' : 'Financeiro automático'} />
+    {closure && <BrazilYearCalendar month={month} onMonth={selectMonth} salon={ctx.salon?.name ?? ''} />}
+    <div className="mb-6 flex flex-wrap items-center gap-3"><input aria-label="Mês" type="month" className={`${inputCls} max-w-48`} value={month} onChange={e => { if (e.target.value) selectMonth(e.target.value); }} /><span className="text-sm text-muted-foreground">{d?.closed ? 'Resumo do mês encerrado' : 'Mês em andamento'} · Brasília</span><Button variant="outline" onClick={exportRows} disabled={!d}><Download />Exportar resumo</Button></div>
     {q.isPending && <p>Carregando valores…</p>}{q.error && <p role="alert" className="text-destructive">{q.error.message}</p>}
     {d && <><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {!personal && <><Stat label="Faturamento total pago" value={brl(Number(d.revenue))} /><Stat label="Parte da dona antes das despesas" value={brl(Number(d.revenue) - Number(d.commissions))} /></>}<Stat label={personal ? 'Comissões dos serviços pagos' : 'Parte da equipe · comissões'} value={brl(d.commissions)} /><Stat label="Adiantamentos" value={brl(d.advances)} />
