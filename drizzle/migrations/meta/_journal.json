@@ -351,6 +351,13 @@
       "when": 1794032715775,
       "tag": "0049_service_returns_and_client_import",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1794032797878,
+      "tag": "0050_service_return_forecast_and_import_review",
+      "breakpoints": true
     }
   ]
 }

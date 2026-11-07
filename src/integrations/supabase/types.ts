@@ -1908,6 +1908,7 @@ export type Database = {
         Row: {
           duration_min: number
           id: string
+          imported_requires_review: boolean
           intervalo_cliente_antiga_dias: number
           intervalo_retorno_dias: number
           name: string
@@ -1918,6 +1919,7 @@ export type Database = {
         Insert: {
           duration_min?: number
           id?: string
+          imported_requires_review?: boolean
           intervalo_cliente_antiga_dias?: number
           intervalo_retorno_dias?: number
           name: string
@@ -1928,6 +1930,7 @@ export type Database = {
         Update: {
           duration_min?: number
           id?: string
+          imported_requires_review?: boolean
           intervalo_cliente_antiga_dias?: number
           intervalo_retorno_dias?: number
           name?: string
@@ -2496,6 +2499,15 @@ export type Database = {
     Functions: {
       aceitar_termos_licenca: { Args: { _salon: string }; Returns: undefined }
       activate_evolving_queue: { Args: { _salon: string }; Returns: number }
+      appointment_return_forecast: {
+        Args: {
+          _date: string
+          _phone: string
+          _salon: string
+          _service: string
+        }
+        Returns: string
+      }
       assistant_book_appointment: {
         Args: {
           _client?: string
