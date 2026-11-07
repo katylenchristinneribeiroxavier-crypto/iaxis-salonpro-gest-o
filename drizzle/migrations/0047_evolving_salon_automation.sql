@@ -1,0 +1,47 @@
+ALTER TABLE public.salon_automation_preferences ADD COLUMN reminder_24h boolean NOT NULL DEFAULT true, ADD COLUMN thank_you_messages boolean NOT NULL DEFAULT true, ADD COLUMN intelligent_return boolean NOT NULL DEFAULT true;
+CREATE VIEW public.client_service_patterns WITH (security_invoker=true) AS
+WITH visits AS (SELECT salon_id,salon_client_id,service_id,starts_at,lag(starts_at) OVER(PARTITION BY salon_id,salon_client_id,service_id ORDER BY starts_at) previous FROM public.appointments WHERE status='finalizado' AND salon_client_id IS NOT NULL), stats AS (SELECT salon_id,salon_client_id,service_id,count(*) visits,max(starts_at) last_visit,round(avg(extract(epoch FROM starts_at-previous)/86400) FILTER(WHERE starts_at>previous))::integer interval_days FROM visits GROUP BY salon_id,salon_client_id,service_id)
+SELECT *,row_number() OVER(PARTITION BY salon_id,salon_client_id ORDER BY visits DESC,last_visit DESC,service_id) preference_rank FROM stats;
+GRANT SELECT ON public.client_service_patterns TO authenticated,service_role;
+CREATE FUNCTION public.salon_crm_insights(_salon uuid) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=public AS $$
+BEGIN
+ IF NOT public.manages_salon(_salon) THEN RAISE EXCEPTION 'Acesso restrito'; END IF;
+ RETURN coalesce((SELECT jsonb_agg(jsonb_build_object('id',c.id,'name',c.name,'service',s.name,'visits',coalesce(p.visits,0),'last_visit',p.last_visit,'interval_days',coalesce(greatest(p.interval_days,1),prefs.return_days,60),'days_away',(now() AT TIME ZONE 'America/Sao_Paulo')::date-(p.last_visit AT TIME ZONE 'America/Sao_Paulo')::date,'needs_care',(now() AT TIME ZONE 'America/Sao_Paulo')::date>=(p.last_visit AT TIME ZONE 'America/Sao_Paulo')::date+coalesce(greatest(p.interval_days,1),prefs.return_days,60),'consent',c.consent) ORDER BY c.name) FROM public.salon_clients c LEFT JOIN public.client_service_patterns p ON p.salon_id=c.salon_id AND p.salon_client_id=c.id AND p.preference_rank=1 LEFT JOIN public.services s ON s.id=p.service_id LEFT JOIN public.salon_automation_preferences prefs ON prefs.salon_id=c.salon_id WHERE c.salon_id=_salon),'[]'::jsonb);
+END $$;
+REVOKE ALL ON FUNCTION public.salon_crm_insights(uuid) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.salon_crm_insights(uuid) TO authenticated;
+CREATE FUNCTION public.salon_production_year(_salon uuid,_year integer) RETURNS jsonb LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=public AS $$
+BEGIN
+ IF NOT public.manages_salon(_salon) OR _year<1900 OR _year>2199 THEN RAISE EXCEPTION 'Acesso ou ano inválido'; END IF;
+ RETURN coalesce((SELECT jsonb_agg(jsonb_build_object('id',a.id,'date',(a.starts_at AT TIME ZONE 'America/Sao_Paulo')::date,'value',a.price,'paid',a.payment_status='pago','commission',a.commission_amount,'product_cost',coalesce((SELECT sum(m.custo_total) FROM public.stock_movements m WHERE m.appointment_id=a.id AND m.salon_id=a.salon_id AND m.tipo='saida_uso'),0)) ORDER BY a.starts_at) FROM public.appointments a WHERE a.salon_id=_salon AND a.status='finalizado' AND a.starts_at>=make_date(_year,1,1)::timestamp AT TIME ZONE 'America/Sao_Paulo' AND a.starts_at<make_date(_year+1,1,1)::timestamp AT TIME ZONE 'America/Sao_Paulo'),'[]'::jsonb);
+END $$;
+REVOKE ALL ON FUNCTION public.salon_production_year(uuid,integer) FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.salon_production_year(uuid,integer) TO authenticated;
+CREATE FUNCTION public.prepare_evolving_messages(_salon uuid DEFAULT NULL) RETURNS integer LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$
+DECLARE n integer; total integer:=0;
+BEGIN
+ UPDATE public.fila_mensagens_ia q SET status='cancelado',error='Atendimento alterado ou encerrado' FROM public.appointments a WHERE q.appointment_id=a.id AND (_salon IS NULL OR q.salon_id=_salon) AND q.status IN ('pendente','aguardando_conexao_whatsapp') AND ((q.tipo='lembrete_24h' AND (a.status IN ('cancelado','finalizado') OR q.agendado_para<>a.starts_at-interval '24 hours')) OR (q.tipo='agradecimento' AND a.status<>'finalizado'));
+ INSERT INTO public.fila_mensagens_ia(salon_id,client_id,appointment_id,dedupe_key,cliente_whatsapp,mensagem,tipo,status,agendado_para)
+ SELECT a.salon_id,c.id,a.id,'24h:'||a.id||':'||extract(epoch FROM a.starts_at),c.whatsapp,'Oi, '||c.name||'! 💛 Passando para lembrar do nosso encontro amanhã, às '||to_char(a.starts_at AT TIME ZONE 'America/Sao_Paulo','HH24:MI')||'. Estou te esperando com carinho! Se precisar ajustar algo, me avise. ✨','lembrete_24h','aguardando_conexao_whatsapp',a.starts_at-interval '24 hours'
+ FROM public.appointments a JOIN public.salon_clients c ON c.id=a.salon_client_id AND c.salon_id=a.salon_id LEFT JOIN public.salon_automation_preferences p ON p.salon_id=a.salon_id WHERE (_salon IS NULL OR a.salon_id=_salon) AND public.salon_access_allowed(a.salon_id) AND c.consent AND a.status NOT IN ('cancelado','finalizado') AND a.starts_at>now() AND coalesce(p.reminder_24h,true) ON CONFLICT(dedupe_key) DO NOTHING;
+ GET DIAGNOSTICS n=ROW_COUNT;total:=total+n;
+ INSERT INTO public.fila_mensagens_ia(salon_id,client_id,appointment_id,dedupe_key,cliente_whatsapp,mensagem,tipo,status,agendado_para)
+ SELECT a.salon_id,c.id,a.id,'thanks:'||a.id,c.whatsapp,'Oi, '||c.name||'! 💛 Adorei cuidar de você hoje. Obrigada pela confiança! Se precisar de alguma orientação depois do atendimento, estou por aqui. Até nosso próximo encontro! ✨','agradecimento','aguardando_conexao_whatsapp',greatest(a.starts_at+make_interval(mins=>a.duration_min),now())+interval '30 minutes'
+ FROM public.appointments a JOIN public.salon_clients c ON c.id=a.salon_client_id AND c.salon_id=a.salon_id LEFT JOIN public.salon_automation_preferences p ON p.salon_id=a.salon_id WHERE (_salon IS NULL OR a.salon_id=_salon) AND public.salon_access_allowed(a.salon_id) AND c.consent AND a.status='finalizado' AND a.starts_at>now()-interval '1 day' AND coalesce(p.thank_you_messages,true) ON CONFLICT(dedupe_key) DO NOTHING;
+ GET DIAGNOSTICS n=ROW_COUNT;total:=total+n;
+ INSERT INTO public.fila_mensagens_ia(salon_id,client_id,dedupe_key,cliente_whatsapp,mensagem,tipo,status,agendado_para)
+ SELECT c.salon_id,c.id,'care:'||c.id||':'||extract(epoch FROM patterns.last_visit),c.whatsapp,'Oi, '||c.name||'! 💛 Como você está? Lembrei de você e do nosso cuidado com '||coalesce(s.name,'seu visual')||'. Quando quiser um tempinho para você, será um prazer te receber de novo. Sem pressa, estou por aqui! ✨','cliente_sumida','aguardando_conexao_whatsapp',((patterns.last_visit AT TIME ZONE 'America/Sao_Paulo')::date+coalesce(greatest(patterns.interval_days-10,1),p.return_days,60)+time '09:00') AT TIME ZONE 'America/Sao_Paulo'
+ FROM public.salon_clients c JOIN public.client_service_patterns patterns ON patterns.salon_client_id=c.id AND patterns.salon_id=c.salon_id AND patterns.preference_rank=1 LEFT JOIN public.services s ON s.id=patterns.service_id LEFT JOIN public.salon_automation_preferences p ON p.salon_id=c.salon_id WHERE (_salon IS NULL OR c.salon_id=_salon) AND public.salon_access_allowed(c.salon_id) AND c.consent AND coalesce(p.intelligent_return,true) AND NOT EXISTS(SELECT 1 FROM public.appointments a WHERE a.salon_id=c.salon_id AND a.salon_client_id=c.id AND a.starts_at>now() AND a.status<>'cancelado') ON CONFLICT(dedupe_key) DO NOTHING;
+ GET DIAGNOSTICS n=ROW_COUNT;total:=total+n;
+ INSERT INTO public.fila_mensagens_ia(salon_id,client_id,dedupe_key,cliente_whatsapp,mensagem,tipo,status,agendado_para)
+ SELECT c.salon_id,c.id,'birthday:'||c.id||':'||to_char(d.next_birthday,'YYYY-MM-DD'),c.whatsapp,'Feliz aniversário, '||c.name||'! 🎂💛 Que seu novo ciclo tenha saúde, alegria e muitos momentos leves. Receba meu carinho hoje e sempre! ✨','aniversario_evolutivo','aguardando_conexao_whatsapp',(d.next_birthday+time '07:00') AT TIME ZONE 'America/Sao_Paulo'
+ FROM public.salon_clients c CROSS JOIN LATERAL(SELECT make_date(extract(year FROM now() AT TIME ZONE 'America/Sao_Paulo')::integer,extract(month FROM c.birthday)::integer,least(extract(day FROM c.birthday)::integer,extract(day FROM (date_trunc('month',make_date(extract(year FROM now() AT TIME ZONE 'America/Sao_Paulo')::integer,extract(month FROM c.birthday)::integer,1))+interval '1 month -1 day'))::integer)) b) current_b CROSS JOIN LATERAL(SELECT CASE WHEN current_b.b<(now() AT TIME ZONE 'America/Sao_Paulo')::date THEN (current_b.b+interval '1 year')::date ELSE current_b.b END next_birthday) d
+ WHERE (_salon IS NULL OR c.salon_id=_salon) AND c.birthday IS NOT NULL AND c.consent AND public.salon_access_allowed(c.salon_id) ON CONFLICT(dedupe_key) DO NOTHING;
+ GET DIAGNOSTICS n=ROW_COUNT;RETURN total+n;
+END $$;
+REVOKE ALL ON FUNCTION public.prepare_evolving_messages(uuid) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION public.prepare_evolving_messages(uuid) TO service_role;
+CREATE FUNCTION public.evolving_message_trigger() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN PERFORM public.prepare_evolving_messages(NEW.salon_id); RETURN NEW; END $$;
+CREATE TRIGGER evolving_appointment AFTER INSERT OR UPDATE ON public.appointments FOR EACH ROW EXECUTE FUNCTION public.evolving_message_trigger();
+CREATE TRIGGER evolving_client AFTER INSERT OR UPDATE ON public.salon_clients FOR EACH ROW EXECUTE FUNCTION public.evolving_message_trigger();
+CREATE TRIGGER evolving_preferences AFTER INSERT OR UPDATE ON public.salon_automation_preferences FOR EACH ROW EXECUTE FUNCTION public.evolving_message_trigger();

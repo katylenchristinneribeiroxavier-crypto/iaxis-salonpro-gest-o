@@ -1453,28 +1453,37 @@ export type Database = {
         Row: {
           appointment_reminders: boolean
           birthday_reminders: boolean
+          intelligent_return: boolean
+          reminder_24h: boolean
           return_days: number
           return_reminders: boolean
           salon_id: string
           special_date_messages: boolean
+          thank_you_messages: boolean
           updated_at: string
         }
         Insert: {
           appointment_reminders?: boolean
           birthday_reminders?: boolean
+          intelligent_return?: boolean
+          reminder_24h?: boolean
           return_days?: number
           return_reminders?: boolean
           salon_id: string
           special_date_messages?: boolean
+          thank_you_messages?: boolean
           updated_at?: string
         }
         Update: {
           appointment_reminders?: boolean
           birthday_reminders?: boolean
+          intelligent_return?: boolean
+          reminder_24h?: boolean
           return_days?: number
           return_reminders?: boolean
           salon_id?: string
           special_date_messages?: boolean
+          thank_you_messages?: boolean
           updated_at?: string
         }
         Relationships: [
@@ -2374,7 +2383,40 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      client_service_patterns: {
+        Row: {
+          interval_days: number | null
+          last_visit: string | null
+          preference_rank: number | null
+          salon_client_id: string | null
+          salon_id: string | null
+          service_id: string | null
+          visits: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_salon_client_id_fkey"
+            columns: ["salon_client_id"]
+            isOneToOne: false
+            referencedRelation: "salon_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_salon_id_fkey"
+            columns: ["salon_id"]
+            isOneToOne: false
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       aceitar_termos_licenca: { Args: { _salon: string }; Returns: undefined }
@@ -2468,6 +2510,7 @@ export type Database = {
       }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
+      prepare_evolving_messages: { Args: { _salon?: string }; Returns: number }
       prepare_salon_reminders: { Args: { _salon?: string }; Returns: number }
       public_book_appointment: {
         Args: {
@@ -2573,8 +2616,13 @@ export type Database = {
         }[]
       }
       salon_booking_catalog: { Args: { _salon: string }; Returns: Json }
+      salon_crm_insights: { Args: { _salon: string }; Returns: Json }
       salon_financial_month: {
         Args: { _month: string; _professional?: string; _salon: string }
+        Returns: Json
+      }
+      salon_production_year: {
+        Args: { _salon: string; _year: number }
         Returns: Json
       }
       save_owner_photo: {

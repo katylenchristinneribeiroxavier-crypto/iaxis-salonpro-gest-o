@@ -330,6 +330,13 @@
       "when": 1794031627386,
       "tag": "0046_special_date_messages",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1794032067466,
+      "tag": "0047_evolving_salon_automation",
+      "breakpoints": true
     }
   ]
 }
