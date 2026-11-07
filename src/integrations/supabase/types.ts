@@ -1456,6 +1456,7 @@ export type Database = {
           return_days: number
           return_reminders: boolean
           salon_id: string
+          special_date_messages: boolean
           updated_at: string
         }
         Insert: {
@@ -1464,6 +1465,7 @@ export type Database = {
           return_days?: number
           return_reminders?: boolean
           salon_id: string
+          special_date_messages?: boolean
           updated_at?: string
         }
         Update: {
@@ -1472,6 +1474,7 @@ export type Database = {
           return_days?: number
           return_reminders?: boolean
           salon_id?: string
+          special_date_messages?: boolean
           updated_at?: string
         }
         Relationships: [
@@ -2538,6 +2541,10 @@ export type Database = {
           nome_suporte: string
           whatsapp_master: string
         }[]
+      }
+      queue_special_date: {
+        Args: { _date: string; _key: string; _message: string; _salon: string }
+        Returns: number
       }
       record_salon_receipt: {
         Args: { _hash: string; _items: Json; _path: string; _salon: string }
