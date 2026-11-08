@@ -1921,7 +1921,7 @@ export type Database = {
           id?: string
           imported_requires_review?: boolean
           intervalo_cliente_antiga_dias?: number
-          intervalo_retorno_dias?: number
+          intervalo_retorno_dias: number
           name: string
           price?: number
           regra_cliente?: string

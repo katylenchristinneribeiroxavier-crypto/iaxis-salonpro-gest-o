@@ -18,7 +18,7 @@ export function ClientImport({ salonId }: { salonId: string }) {
     if (file.size>10*1024*1024) return void toast.error('O arquivo deve ter até 10 MB.');
     setBusy(true); setResult('');setDone(0);setIssues([]);
     try {
-      const XLSX = await import('xlsx'); const book = XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true});
+      const XLSX = await import('xlsx'); const csv=/\.csv$/i.test(file.name); const book = csv ? XLSX.read(await file.text(),{type:'string',cellDates:true,raw:true}) : XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true});
       const first=book.SheetNames[0]; const sheet=first ? book.Sheets[first] : undefined;
       if (!sheet) throw new Error('Planilha vazia.');
       const grid=XLSX.utils.sheet_to_json<unknown[]>(sheet,{header:1,defval:'',raw:true});
