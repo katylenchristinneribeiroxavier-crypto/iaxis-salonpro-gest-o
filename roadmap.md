@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Resumo curto diário por Lovable AI de vendas, agendamentos e tarefas abertas de ontem, enviado pela manhã à solicitante; verificar domínio de e-mail e preparar envio seguro.
+- [ ] Resumo curto diário por Lovable AI de vendas, agendamentos e tarefas abertas de ontem, enviado pela manhã à solicitante — bloqueado: configurar domínio próprio de e-mail; nenhum domínio configurado.
 - [x] Retorno por serviço editável, previsão automática, alertas semanais, importação CSV/XLSX com progresso e mensagens consentidas; 44 testes e fluxo autenticado CSV/XLSX sem duplicação verificados; publicação solicitada.
 - [x] Campos e mensagens destes módulos preparados para ativação posterior; importação não cria faturamento nem presume consentimento.
 - [x] Gatilhos 24h, agradecimento e cliente sumida ativos e geração verificada; execução gerenciada criada. Envios externos bloqueados até configurar e validar Evolution, parear WhatsApp e habilitar controle master.
