@@ -379,6 +379,13 @@
       "when": 1794319101867,
       "tag": "0053_scope_plans_read",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1794319728910,
+      "tag": "0054_lock_master_email",
+      "breakpoints": true
     }
   ]
 }
