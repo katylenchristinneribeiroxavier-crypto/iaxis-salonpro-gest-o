@@ -45,6 +45,7 @@ import { Route as AuthenticatedFornecedoresParceirosRouteImport } from './routes
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedGestaoRevendedoresRouteImport } from './routes/_authenticated/gestao-revendedores'
 import { Route as AuthenticatedGestaoSalaoRouteImport } from './routes/_authenticated/gestao-salao'
+import { Route as AuthenticatedIndiqueEGanheRouteImport } from './routes/_authenticated/indique-e-ganhe'
 import { Route as AuthenticatedLembretesRouteImport } from './routes/_authenticated/lembretes'
 import { Route as AuthenticatedMasterAutomacoesRouteImport } from './routes/_authenticated/master-automacoes'
 import { Route as AuthenticatedMasterDesenvolvedoraRouteImport } from './routes/_authenticated/master-desenvolvedora'
@@ -277,6 +278,12 @@ const AuthenticatedGestaoSalaoRoute =
     path: '/gestao-salao',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedIndiqueEGanheRoute =
+  AuthenticatedIndiqueEGanheRouteImport.update({
+    id: '/indique-e-ganhe',
+    path: '/indique-e-ganhe',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedLembretesRoute = AuthenticatedLembretesRouteImport.update({
   id: '/lembretes',
   path: '/lembretes',
@@ -483,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/indique-e-ganhe': typeof AuthenticatedIndiqueEGanheRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
   '/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
@@ -550,6 +558,7 @@ export interface FileRoutesByTo {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/indique-e-ganhe': typeof AuthenticatedIndiqueEGanheRoute
   '/lembretes': typeof AuthenticatedLembretesRoute
   '/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
@@ -619,6 +628,7 @@ export interface FileRoutesById {
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/gestao-revendedores': typeof AuthenticatedGestaoRevendedoresRoute
   '/_authenticated/gestao-salao': typeof AuthenticatedGestaoSalaoRoute
+  '/_authenticated/indique-e-ganhe': typeof AuthenticatedIndiqueEGanheRoute
   '/_authenticated/lembretes': typeof AuthenticatedLembretesRoute
   '/_authenticated/master-automacoes': typeof AuthenticatedMasterAutomacoesRoute
   '/_authenticated/master-desenvolvedora': typeof AuthenticatedMasterDesenvolvedoraRoute
@@ -689,6 +699,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/gestao-revendedores'
     | '/gestao-salao'
+    | '/indique-e-ganhe'
     | '/lembretes'
     | '/master-automacoes'
     | '/master-desenvolvedora'
@@ -756,6 +767,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/gestao-revendedores'
     | '/gestao-salao'
+    | '/indique-e-ganhe'
     | '/lembretes'
     | '/master-automacoes'
     | '/master-desenvolvedora'
@@ -824,6 +836,7 @@ export interface FileRouteTypes {
     | '/_authenticated/funcionarios'
     | '/_authenticated/gestao-revendedores'
     | '/_authenticated/gestao-salao'
+    | '/_authenticated/indique-e-ganhe'
     | '/_authenticated/lembretes'
     | '/_authenticated/master-automacoes'
     | '/_authenticated/master-desenvolvedora'
@@ -1131,6 +1144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestaoSalaoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/indique-e-ganhe': {
+      id: '/_authenticated/indique-e-ganhe'
+      path: '/indique-e-ganhe'
+      fullPath: '/indique-e-ganhe'
+      preLoaderRoute: typeof AuthenticatedIndiqueEGanheRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/lembretes': {
       id: '/_authenticated/lembretes'
       path: '/lembretes'
@@ -1422,6 +1442,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedGestaoRevendedoresRoute: typeof AuthenticatedGestaoRevendedoresRoute
   AuthenticatedGestaoSalaoRoute: typeof AuthenticatedGestaoSalaoRoute
+  AuthenticatedIndiqueEGanheRoute: typeof AuthenticatedIndiqueEGanheRoute
   AuthenticatedLembretesRoute: typeof AuthenticatedLembretesRoute
   AuthenticatedMasterAutomacoesRoute: typeof AuthenticatedMasterAutomacoesRoute
   AuthenticatedMasterDesenvolvedoraRoute: typeof AuthenticatedMasterDesenvolvedoraRoute
@@ -1474,6 +1495,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedGestaoRevendedoresRoute: AuthenticatedGestaoRevendedoresRoute,
   AuthenticatedGestaoSalaoRoute: AuthenticatedGestaoSalaoRoute,
+  AuthenticatedIndiqueEGanheRoute: AuthenticatedIndiqueEGanheRoute,
   AuthenticatedLembretesRoute: AuthenticatedLembretesRoute,
   AuthenticatedMasterAutomacoesRoute: AuthenticatedMasterAutomacoesRoute,
   AuthenticatedMasterDesenvolvedoraRoute:
