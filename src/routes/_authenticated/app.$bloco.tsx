@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronLeft, FolderOpen } from "lucide-react";
+import { FolderOpen } from "lucide-react";
 import { PageTitle } from "@/components/Shell";
 import { ownerBlocks } from "@/lib/owner-menu";
 
@@ -24,15 +24,14 @@ function Bloco() {
   const b = Route.useLoaderData();
   return (
     <div className="p-4 sm:p-8">
-      <Link to="/app" className="mb-4 inline-flex items-center gap-1 text-sm text-gold hover:underline"><ChevronLeft className="h-4 w-4" />Voltar ao menu</Link>
       <PageTitle title={b.title} sub={b.desc} />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {b.links.map((l) => (
-          <a key={l.to + l.title} href={l.to} className="rounded-2xl border bg-card p-5 transition hover:border-primary hover:shadow-gold">
+          <Link key={l.to} to={l.to} className="rounded-2xl border bg-card p-5 transition hover:border-primary hover:shadow-gold">
             <FolderOpen className="h-7 w-7 text-gold" />
             <h3 className="mt-3 text-lg font-semibold">{l.title}</h3>
             <p className="text-sm text-muted-foreground">{l.desc}</p>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Crown, Handshake, Store, UserRound } from "lucide-react";
+import { Crown, Store } from "lucide-react";
 import { Brand } from "@/components/Shell";
 import { PlansSection } from "@/components/PlansSection";
 import { homeFor, useMe } from '@/lib/auth';
@@ -21,9 +21,7 @@ export const Route = createFileRoute("/")({
 
 const portais = [
   { to: "/admin", icon: Crown, t: "Super Admin", d: "Painel master: salões, planos, revendedores, MRR e churn." },
-  { to: "/revendedor", icon: Handshake, t: "Revendedor", d: "Link de afiliado, salões vendidos e repasse recorrente." },
   { to: "/salao", icon: Store, t: "Dono do Salão", d: "Agenda, financeiro, estoque, comissões, CRM e IA." },
-  { to: "/cliente", icon: UserRound, t: "Cliente", d: "Agende serviço e profissional, veja cashback e pacotes." },
 ] as const;
 
 function Index() {
