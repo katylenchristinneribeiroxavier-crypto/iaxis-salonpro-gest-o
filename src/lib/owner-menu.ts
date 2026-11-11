@@ -5,7 +5,6 @@ export const ownerBlocks: OwnerBlock[] = [
   { slug: "funcionarias", title: "Funcionárias", desc: "Equipe, comissão e link pessoal", icon: "Users", links: [
     { to: "/funcionarios", title: "Equipe e link pessoal", desc: "Lista, adicionar funcionária e Enviar Acesso WhatsApp" },
     { to: "/profissoes", title: "Profissões", desc: "Cargos da equipe" },
-    { to: "/financeiro-comissoes", title: "Comissões", desc: "Percentual e valores por funcionária" },
   ]},
   { slug: "administracao", title: "Administração", desc: "Agenda, clientes e horários", icon: "CalendarDays", links: [
     { to: "/agenda-do-dia", title: "Agenda do dia", desc: "Atendimentos de hoje" },
@@ -19,7 +18,6 @@ export const ownerBlocks: OwnerBlock[] = [
     { to: "/fornecedores-parceiros", title: "Pedidos por marca", desc: "Histórico de pedidos de reposição" },
   ]},
   { slug: "pedidos", title: "Pedidos", desc: "Agendamentos e lista de espera", icon: "ClipboardList", links: [
-    { to: "/agenda-do-dia", title: "Agendamentos e lista de espera", desc: "Reservas, confirmações e fila" },
     { to: "/clientes-sinais", title: "Sinais", desc: "Pagamentos antecipados" },
   ]},
   { slug: "financeiro", title: "Financeiro", desc: "Faturamento, comissões e relatórios", icon: "Wallet", links: [
@@ -33,5 +31,6 @@ export const ownerBlocks: OwnerBlock[] = [
     { to: "/configuracao-loja", title: "Dados do salão e logo", desc: "Nome, cor e logotipo" },
     { to: "/configuracoes", title: "Configurações gerais", desc: "WhatsApp e preferências" },
     { to: "/minha-licenca", title: "Minha Licença", desc: "Plano, vencimento e renovação" },
+    { to: "/indique-e-ganhe", title: "Indique e Ganhe", desc: "Indicações e comissões" },
   ]},
 ];

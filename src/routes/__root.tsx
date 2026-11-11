@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { Splash } from "@/components/Splash";
 import { LicenseLayoutGate } from '@/components/LicenseLayoutGate';
+import { PageBack } from '@/components/PageBack';
 
 function NotFoundComponent() {
   return (
@@ -135,6 +136,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Splash />
+      <PageBack />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <LicenseLayoutGate><Outlet /></LicenseLayoutGate>
       <Toaster richColors position="top-center" />

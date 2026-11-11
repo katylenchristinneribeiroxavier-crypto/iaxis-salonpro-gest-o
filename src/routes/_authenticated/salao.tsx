@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/salao")({
         role="Dono do Salão"
         nav={[
           { to: "/salao", label: "Início" },
-          { to: "/validar", label: "Código do revendedor" },
+          { to: "/indique-e-ganhe", label: "Indique e Ganhe" },
           { to: "/configuracao-loja", label: "Meu salão" },
           { to: "/configurar-secretaria", label: "Secretária virtual" },
           { to: "/agenda-do-dia", label: "Agenda do dia" },

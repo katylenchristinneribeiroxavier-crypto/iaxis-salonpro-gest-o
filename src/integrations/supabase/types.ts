@@ -1295,6 +1295,44 @@ export type Database = {
           },
         ]
       }
+      referral_payout_log: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          performed_by: string
+          remaining: number
+          reseller_id: string
+          sale_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          performed_by: string
+          remaining: number
+          reseller_id: string
+          sale_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          performed_by?: string
+          remaining?: number
+          reseller_id?: string
+          sale_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_payout_log_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "referral_sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       referral_sales: {
         Row: {
           amount: number
@@ -1303,6 +1341,7 @@ export type Database = {
           commission: number
           created_at: string
           id: string
+          paid_amount: number
           paid_at: string | null
           request_id: string
           reseller_id: string
@@ -1316,6 +1355,7 @@ export type Database = {
           commission: number
           created_at?: string
           id?: string
+          paid_amount?: number
           paid_at?: string | null
           request_id: string
           reseller_id: string
@@ -1329,6 +1369,7 @@ export type Database = {
           commission?: number
           created_at?: string
           id?: string
+          paid_amount?: number
           paid_at?: string | null
           request_id?: string
           reseller_id?: string
@@ -2605,6 +2646,10 @@ export type Database = {
         Returns: number
       }
       owns_salon: { Args: { _salon: string }; Returns: boolean }
+      pay_referral_amount: {
+        Args: { _amount: number; _sale: string }
+        Returns: number
+      }
       pay_referral_commission: { Args: { _sale: string }; Returns: undefined }
       prepare_evolving_messages: { Args: { _salon?: string }; Returns: number }
       prepare_salon_reminders: { Args: { _salon?: string }; Returns: number }

@@ -20,7 +20,7 @@ export const workspaceNav = [
   { to: '/sinais', label: 'Sinais' }, { to: '/clientes-sinais', label: 'Clientes e sinais' },
   { to: '/clientes-categorias', label: 'Clientes' }, { to: '/fornecedores', label: 'Fornecedores' }, { to: '/produtos', label: 'Produtos e estoque' },
   { to: '/configuracoes', label: 'Configurações e WhatsApp' }, { to: '/minha-licenca', label: 'Minha Licença' }, { to: '/despesas', label: 'Despesas' }, { to: '/gestao-revendedores', label: 'Revendas' },
-  { to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' }, { to: '/salao', label: 'Todas as pastas' },
+  { to: '/indique-e-ganhe', label: 'Indique e Ganhe' }, { to: '/suporte', label: 'Suporte técnico' }, { to: '/meus-chamados', label: 'Meus chamados' }, { to: '/app', label: 'Todas as pastas' },
 ];
 export function Workspace({ children, manager = false }: { children: ReactNode; manager?: boolean }) {
   const { data } = useSuspenseQuery(salonContextOptions);

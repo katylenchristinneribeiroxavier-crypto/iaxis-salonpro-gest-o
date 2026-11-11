@@ -16,10 +16,11 @@ export const resellerLeadSchema = z.object({
   idealCustomer: z.string().trim().min(15).max(3000),
 });
 export type ResellerPlanInput = z.infer<typeof resellerPlanSchema>;
-export function salesSummary(rows: {commission: number; status: string}[]) {
+export function salesSummary(rows: {commission: number; status: string; paid_amount?: number}[]) {
   const validated = rows.filter(r => r.status !== 'cancelado');
   const total=(items:typeof rows)=>Math.round(items.reduce((s,r)=>s+Number(r.commission),0)*100)/100;
-  return { count: validated.length, generated: total(validated), paid: total(validated.filter(r=>r.status==='pago')), pending: total(validated.filter(r=>r.status==='pendente_a_pagar')) };
+  const paid = Math.round(validated.reduce((sum,r)=>sum+Number(r.paid_amount ?? (r.status==='pago' ? r.commission : 0)),0)*100)/100;
+  return { count: validated.length, generated: total(validated), paid, pending: Math.round((total(validated)-paid)*100)/100 };
 }
 export function normalizeQualification(value: {score: number; summary: string; callRecommended: boolean; callReason: string}) {
   if (!Number.isFinite(value.score)) throw new Error('Pontuação inválida');

@@ -386,6 +386,13 @@
       "when": 1794319728910,
       "tag": "0054_lock_master_email",
       "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1794435889559,
+      "tag": "0055_owner_entry_internal_partnerships",
+      "breakpoints": true
     }
   ]
 }

@@ -23,17 +23,10 @@ export const Route = createFileRoute("/auth")({
   component: Auth,
 });
 
-const roles: { v: Role; l: string }[] = [
-  { v: "dono_salao", l: "Dono de Salão" },
-  { v: "revendedor", l: "Revendedor" },
-  { v: "cliente", l: "Cliente" },
-];
-
 function Auth() {
   const search = Route.useSearch();
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"in" | "up">(search.ref || search.role ? "up" : "in");
-  const [role, setRole] = useState<Role>((search.role as Role) ?? (search.ref ? "dono_salao" : "cliente"));
+  const [mode, setMode] = useState<"in" | "up">(search.role === 'dono_salao' ? "up" : "in");
   const [f, setF] = useState({ name: "", email: "", password: "", confirm: "", salon: "", city: "" });
   const [busy, setBusy] = useState(false);
 
@@ -59,13 +52,13 @@ function Auth() {
       email: f.email, password: f.password,
       options: {
         emailRedirectTo: window.location.origin + "/auth",
-        data: { full_name: f.name, role, salon_name: f.salon, city: f.city, ref: search.ref },
+        data: { full_name: f.name, role: 'dono_salao', salon_name: f.salon, city: f.city },
       },
     });
     if (error) { setBusy(false); return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta. Use Entrar." : /weak|pwned|known/i.test(error.message) ? "Senha muito fácil ou já vazada na internet. Crie outra senha mais forte." : error.message); }
     if (!data.session) {
-      const r = await supabase.auth.signInWithPassword({ email: f.email, password: f.password });
-      if (r.error) { setBusy(false); return toast.error("Conta criada, mas não foi possível entrar. Tente Entrar."); }
+      setBusy(false);
+      return toast.success('Conta criada! Confira seu e-mail para confirmar o cadastro.');
     }
     setBusy(false);
     toast.success("Conta criada! Abrindo seu aplicativo…");
@@ -82,22 +75,13 @@ function Auth() {
     <div className="grid min-h-screen place-items-center bg-gradient-navy p-6">
       <div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-gold">
         <Brand />
-        <h1 className="mt-6 text-3xl">{mode === "in" ? "Entrar" : "Criar conta"}</h1>
-        {search.ref && <p className="mt-1 text-xs text-gold">Indicação de parceiro: {search.ref}</p>}
+        <h1 className="mt-6 text-3xl">{mode === "in" ? "Entrar como Dono do Salão" : "Criar conta de Dono do Salão"}</h1>
         <form onSubmit={submit} className="mt-6 space-y-3">
           {mode === "up" && (
             <>
-              <div className="grid grid-cols-3 gap-2">
-                {roles.map((r) => (
-                  <button type="button" key={r.v} onClick={() => setRole(r.v)}
-                    className={`rounded-md border p-2 text-xs ${role === r.v ? "border-primary bg-primary/15 text-gold" : ""}`}>{r.l}</button>
-                ))}
-              </div>
-              {role === "dono_salao" && (
                 <label className="block text-sm">Nome do Salão
                   <input required maxLength={100} placeholder="Nome do seu salão" className={`${inputCls} mt-1`} value={f.salon} onChange={(e) => setF({ ...f, salon: e.target.value })} /></label>
-              )}
-              <label className="block text-sm">{role === "dono_salao" ? "Nome da Dona" : "Seu nome"}
+              <label className="block text-sm">Nome da Dona
                 <input required maxLength={100} placeholder="Seu nome" className={`${inputCls} mt-1`} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></label>
             </>
           )}
