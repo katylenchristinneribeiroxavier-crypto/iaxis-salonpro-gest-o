@@ -33,3 +33,5 @@
 - Brazilian occasion dates use date-easter and statutory classifications; date-specific copy is deterministic, consent-scoped and queued idempotently by the existing developer-gated reminder worker, avoiding new AI spend and duplicate schedulers.
 - Evolving CRM derives service frequency from completed tenant-scoped appointments; production totals remain separate from paid cash reports, and prepared WhatsApp messages activate only through service-only connection/control checks without replaying stale campaigns.
 - Service return rules are deterministic and owner-editable; imported visits live in separate salon-scoped history, never financial appointments, and imports preserve existing consent without granting it.
+- Public sign-in exposes owner access only; internal partnership reuses reseller entities, confirmed purchases and immutable commission snapshots, with transactional partial payout logs.
+- Render one shared back control above route content; retain old referral URLs as redirects to the canonical internal partnership page to preserve existing links.
