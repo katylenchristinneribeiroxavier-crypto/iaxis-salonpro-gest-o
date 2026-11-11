@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Pacote dos dois documentos: remover duplicações reais preservando módulos, voltar em páginas internas, entrada pública só dona, parceria interna, crédito transacional com saldo e histórico — aguarda definição do bônus e uso dos créditos para não alterar comissões existentes sem decisão.
 - [ ] Resumo curto diário por Lovable AI de vendas, agendamentos e tarefas abertas de ontem, enviado pela manhã à solicitante — bloqueado: configurar domínio próprio de e-mail; nenhum domínio configurado.
 - [x] Retorno por serviço editável, previsão automática, alertas semanais, importação CSV/XLSX com progresso e mensagens consentidas; 44 testes e fluxo autenticado CSV/XLSX sem duplicação verificados; publicação solicitada.
 - [x] Campos e mensagens destes módulos preparados para ativação posterior; importação não cria faturamento nem presume consentimento.
