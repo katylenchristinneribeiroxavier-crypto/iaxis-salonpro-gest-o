@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import * as Icons from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { PageTitle, Stat, btnGold } from "@/components/Shell";
-import { salaoFolders } from "@/lib/modules";
 import { brl } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/salao/")({
@@ -89,19 +87,7 @@ function Painel() {
         ))}
       </div>
 
-      <h2 className="mt-10 mb-4 text-2xl">Pastas</h2>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {salaoFolders.map((f) => {
-          const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[f.icon] ?? Icons.Sparkles;
-          return (
-            <Link key={f.slug} to="/salao/$pasta" params={{ pasta: f.slug }} className="rounded-2xl border bg-card p-5 transition hover:-translate-y-1 hover:shadow-gold">
-              <Icon className="h-7 w-7 text-gold" />
-              <h3 className="mt-3 text-xl font-semibold">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.topics.length} tópicos · {f.desc}</p>
-            </Link>
-          );
-        })}
-      </div>
+      <Link to="/app" className="mt-10 inline-block text-gold hover:underline">Todas as pastas</Link>
     </>
   );
 }

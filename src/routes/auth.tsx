@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
-import { Brand, btnGold, inputCls } from "@/components/Shell";
+import { Brand, inputCls } from "@/components/Shell";
+import { Button } from '@/components/ui/button';
 import { homeFor, type Role } from "@/lib/auth";
 import { BRANDING } from "@/constants/branding";
 
@@ -97,12 +98,12 @@ function Auth() {
             </label>
           )}
           {mode === "up" && <p className="text-xs text-muted-foreground">Mínimo 6 caracteres. É uma senha só deste app, não a do seu email.</p>}
-          <button disabled={busy} className={`${btnGold} w-full py-3`}>{mode === "in" ? "Entrar" : busy ? "Criando…" : "Criar conta"}</button>
+          <Button disabled={busy} className="w-full" type="submit">{mode === "in" ? "Entrar" : busy ? "Criando…" : "Criar conta"}</Button>
         </form>
-        <button onClick={google} className="mt-3 w-full rounded-md border py-3 text-sm hover:border-primary">Continuar com Google</button>
-        <button onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-sm text-gold hover:underline">
+        <Button variant="outline" onClick={google} className="mt-3 w-full">Continuar com Google</Button>
+        <Button variant="ghost" onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-gold">
           {mode === "in" ? "Não tem conta? Cadastre-se" : "Já tenho conta"}
-        </button>
+        </Button>
         <p className="mt-6 text-center text-xs text-muted-foreground">
           Desenvolvido por <span className="font-semibold text-foreground">{BRANDING.devName}</span>
         </p>

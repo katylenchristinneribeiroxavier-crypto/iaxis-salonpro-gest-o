@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Shell } from "@/components/Shell";
 import { RoleGate } from "@/components/RoleGate";
-import { salaoFolders } from "@/lib/modules";
 import {SalonAccessGate} from '@/components/SalonAccessGate';
 
 export const Route = createFileRoute("/_authenticated/salao")({
@@ -17,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/salao")({
           { to: "/agenda-do-dia", label: "Agenda do dia" },
           { to: "/funcionarios", label: "Funcionários" },
           { to: "/financeiro-comissoes", label: "Financeiro e comissões" },
-          ...salaoFolders.map((f) => ({ to: "/salao/$pasta", label: f.title, params: { pasta: f.slug } })),
+          { to: '/app', label: 'Todas as pastas' },
         ]}
       >
         <SalonAccessGate><Outlet /></SalonAccessGate>
