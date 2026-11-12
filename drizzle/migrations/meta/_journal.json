@@ -393,6 +393,13 @@
       "when": 1794435889559,
       "tag": "0055_owner_entry_internal_partnerships",
       "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "7",
+      "when": 1794485934431,
+      "tag": "0056_restrict_referral_payout_grants",
+      "breakpoints": true
     }
   ]
 }
