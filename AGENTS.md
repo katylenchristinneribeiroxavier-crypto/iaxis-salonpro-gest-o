@@ -35,3 +35,4 @@
 - Service return rules are deterministic and owner-editable; imported visits live in separate salon-scoped history, never financial appointments, and imports preserve existing consent without granting it.
 - Public sign-in exposes owner access only; internal partnership reuses reseller entities, confirmed purchases and immutable commission snapshots, with transactional partial payout logs.
 - Render one shared back control above route content; retain old referral URLs as redirects to the canonical internal partnership page to preserve existing links.
+- Authenticate password sign-in through Cloud Auth, then resolve privileges from protected user_roles; never issue admin tokens based on an email or embed account passwords in app code.

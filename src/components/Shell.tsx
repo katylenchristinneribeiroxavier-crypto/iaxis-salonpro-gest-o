@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Crown, LogOut, Headset } from "lucide-react";
 import { Button } from './ui/button';
-import { useSignOut } from "@/lib/auth";
+import { useMe, useSignOut } from "@/lib/auth";
 import { BRANDING } from "@/constants/branding";
 
 export type NavItem = { to: string; label: string; params?: Record<string, string> };
@@ -22,6 +22,7 @@ export function Brand() {
 
 export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; children: ReactNode }) {
   const signOut = useSignOut();
+  const me = useMe();
   return (
     <div className="min-h-screen md:flex">
       <aside className="border-b bg-sidebar p-5 md:flex md:min-h-screen md:w-64 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
@@ -52,6 +53,13 @@ export function Shell({ role, nav, children }: { role: string; nav: NavItem[]; c
         </div>
       </aside>
       <main className="min-w-0 flex-1 bg-gradient-navy p-6 pb-24 md:p-10">
+        {me.data?.roles.includes('super_admin') && <header className="mb-6 flex items-center justify-end gap-3 border-b pb-4">
+          <Crown aria-hidden="true" className="h-6 w-6 shrink-0 text-gold" />
+          <div>
+            <p className="text-sm font-bold text-gold">Desenvolvedora {BRANDING.devName}</p>
+            <p className="text-xs italic text-foreground/80">Idealizador {BRANDING.devName}</p>
+          </div>
+        </header>}
         {children}
         <footer className="mt-10 w-full border-t py-3 text-center text-xs text-muted-foreground">
           {BRANDING.copyright} | Todos os direitos reservados
