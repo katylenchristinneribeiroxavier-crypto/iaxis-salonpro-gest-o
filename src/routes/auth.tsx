@@ -44,13 +44,13 @@ function Auth() {
     if (mode === "up" && f.password !== f.confirm) return void toast.error("As senhas não são iguais");
     setBusy(true);
     if (mode === "in") {
-      const { error } = await supabase.auth.signInWithPassword({ email: f.email, password: f.password });
+      const { error } = await supabase.auth.signInWithPassword({ email: f.email.trim().toLowerCase(), password: f.password });
       setBusy(false);
       if (error) return toast.error("E-mail ou senha inválidos");
       return goHome();
     }
     const { data, error } = await supabase.auth.signUp({
-      email: f.email, password: f.password,
+      email: f.email.trim().toLowerCase(), password: f.password,
       options: {
         emailRedirectTo: window.location.origin + "/auth",
         data: { full_name: f.name, role: 'dono_salao', salon_name: f.salon, city: f.city },
@@ -98,15 +98,16 @@ function Auth() {
             </label>
           )}
           {mode === "up" && <p className="text-xs text-muted-foreground">Mínimo 6 caracteres. É uma senha só deste app, não a do seu email.</p>}
-          <Button disabled={busy} className="w-full" type="submit">{mode === "in" ? "Entrar" : busy ? "Criando…" : "Criar conta"}</Button>
+          <Button disabled={busy} className="w-full" type="submit">{busy ? mode === "in" ? "Entrando…" : "Criando…" : mode === "in" ? "Entrar" : "Criar conta"}</Button>
         </form>
         <Button variant="outline" onClick={google} className="mt-3 w-full">Continuar com Google</Button>
         <Button variant="ghost" onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-gold">
           {mode === "in" ? "Não tem conta? Cadastre-se" : "Já tenho conta"}
         </Button>
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          Desenvolvido por <span className="font-semibold text-foreground">{BRANDING.devName}</span>
-        </p>
+        <div className="mt-6 text-center">
+          <p className="text-sm font-bold text-gold">Desenvolvedora {BRANDING.devName}</p>
+          <p className="text-xs italic text-foreground/80">Idealizador {BRANDING.devName}</p>
+        </div>
       </div>
     </div>
   );
