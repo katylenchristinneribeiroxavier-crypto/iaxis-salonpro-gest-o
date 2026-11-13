@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Correção de segurança sem mudar visual/pagamentos: restringir destinatários WhatsApp ao salão, bloquear portal de funcionários em salões suspensos, neutralizar fórmulas em exportações e atualizar dependências sem novas versões principais; limitação de envios depende de aprovação de solução provisória.
 - [x] Correção atual de apresentação e login: senha obrigatória preservada, e-mail normalizado, nenhum atalho de admin por e-mail adicionado; assinatura no login, topo autenticado master e Sobre. 5 testes passaram, senha vazia bloqueada e visual móvel verificado; login real da desenvolvedora não verificado e senha da conta não alterada.
 - [ ] Logo /iaxis-logo.png — bloqueado: imagem solicitada não está nos arquivos do projeto nem nos anexos; logo existente preservada.
 - [ ] Aquisição automática Pix Asaas — bloqueado: conectar conta Asaas; depois implementar cobrança dinâmica, confirmação verificada e liberação transacional. Chave de recebimento registrada como requisito, não ativada. Alerta crítico existente refere-se ao envio WhatsApp, não a login sem senha; nenhum resultado de segurança marcado como corrigido sem correção.
