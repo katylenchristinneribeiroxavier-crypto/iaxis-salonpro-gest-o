@@ -2,7 +2,7 @@ export const EXPENSE_CATEGORIES = ['Produtos e insumos', 'Aluguel', 'Água, luz 
 
 export type ExpenseRow = { data_documento: string | null; tipo: string; fornecedor: string; numero_documento: string; categoria: string; descricao: string; valor: number | string };
 
-const cell = (v: string) => `"${v.replace(/"/g, '""')}"`;
+import { csvCell as cell } from './csv-security';
 
 /** CSV em padrão brasileiro (ponto e vírgula, vírgula decimal) para abrir direto no Excel. */
 export function despesasCsv(rows: ExpenseRow[]): string {

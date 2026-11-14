@@ -36,3 +36,6 @@
 - Public sign-in exposes owner access only; internal partnership reuses reseller entities, confirmed purchases and immutable commission snapshots, with transactional partial payout logs.
 - Render one shared back control above route content; retain old referral URLs as redirects to the canonical internal partnership page to preserve existing links.
 - Authenticate password sign-in through Cloud Auth, then resolve privileges from protected user_roles; never issue admin tokens based on an email or embed account passwords in app code.
+- Manual WhatsApp sends require a tenant-owned recipient or inbound conversation and a database-serialized salon send cap; authentication alone cannot authorize arbitrary destinations.
+- All spreadsheet exports use csvCell to neutralize formulas without changing numeric accounting values.
+- Public staff RPCs check salon_access_allowed before returning data or changing appointments, so suspension and license expiry revoke staff-link access.

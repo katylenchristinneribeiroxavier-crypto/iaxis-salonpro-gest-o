@@ -1,7 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
-import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { evolutionPhone } from './evolution';
+import { salonMessageSchema } from './message-security';
 
 export const getEvolutionSettings = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -21,10 +20,12 @@ export const getEvolutionSettings = createServerFn({ method: 'POST' }).middlewar
   });
 
 export const sendSalonMessage = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ salonId: z.string().uuid(), phone: z.string().max(30), body: z.string().trim().min(1).max(4000), appointmentId: z.string().uuid().optional() }).parse(input))
+  .inputValidator((input: unknown) => salonMessageSchema.parse(input))
   .handler(async ({ data, context }) => {
     const access = await context.supabase.rpc('manages_salon', { _salon: data.salonId });
     if (access.error || !access.data) throw new Error('Sem acesso às mensagens deste salão.');
+    const recipient = await context.supabase.rpc('salon_message_recipient_allowed', { _salon: data.salonId, _phone: data.phone, _appointment: data.appointmentId ?? null });
+    if (recipient.error || !recipient.data) throw new Error('Envie apenas para clientes, agendamentos ou conversas recebidas deste salão.');
     if (data.appointmentId) {
       const appointment = await context.supabase.from('appointments').select('id').eq('id', data.appointmentId).eq('salon_id', data.salonId).single();
       if (appointment.error) throw new Error('Agendamento não pertence ao salão.');
@@ -38,7 +39,7 @@ export const sendSalonMessage = createServerFn({ method: 'POST' }).middleware([r
     const c = await resolveEvolutionConfig(data.salonId);
     if (c.user_id !== salon.data.owner_id || !c.evolution_api_url || !c.evolution_api_key || !c.evolution_instance) throw new Error('A dona precisa conectar o WhatsApp primeiro.');
     if (c.evolution_managed && c.evolution_connection_state !== 'open') throw new Error('Reconecte o WhatsApp do salão antes de enviar.');
-    const phone = evolutionPhone(data.phone);
+    const phone = data.phone;
     const saved = await supabaseAdmin.from('salon_messages').insert({ salon_id: data.salonId, contact_phone: phone, direction: 'outbound', body: data.body, appointment_id: data.appointmentId ?? null, created_by: context.userId }).select('id').single();
     if (saved.error) throw new Error(saved.error.message);
     const { evolutionRequest } = await import('./evolution.server');
