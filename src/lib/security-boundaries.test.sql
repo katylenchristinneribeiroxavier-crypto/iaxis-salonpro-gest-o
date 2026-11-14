@@ -1,0 +1,6 @@
+-- Read-only checks for deployed security boundaries; failures divide by zero.
+SELECT 1 / CASE WHEN pg_get_functiondef('public.staff_portal(uuid)'::regprocedure) LIKE '%salon_access_allowed(_p.salon_id)%' THEN 1 ELSE 0 END AS staff_read_revocation;
+SELECT 1 / CASE WHEN pg_get_functiondef('public.staff_change_appointment(uuid,uuid,text,text,timestamptz)'::regprocedure) LIKE '%salon_access_allowed(_p.salon_id)%' THEN 1 ELSE 0 END AS staff_write_revocation;
+SELECT 1 / CASE WHEN NOT has_function_privilege('anon','public.salon_message_recipient_allowed(uuid,text,uuid)','EXECUTE') THEN 1 ELSE 0 END AS anonymous_recipient_denied;
+SELECT 1 / CASE WHEN pg_get_functiondef('public.guard_manual_salon_message()'::regprocedure) LIKE '%>=20%' AND pg_get_functiondef('public.guard_manual_salon_message()'::regprocedure) LIKE '%FOR UPDATE%' THEN 1 ELSE 0 END AS serialized_twenty_per_minute;
+SELECT 1 / CASE WHEN NOT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind='r' AND NOT c.relrowsecurity) THEN 1 ELSE 0 END AS rls_enabled;

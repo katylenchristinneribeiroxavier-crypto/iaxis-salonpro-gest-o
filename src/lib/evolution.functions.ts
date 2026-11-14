@@ -24,7 +24,7 @@ export const sendSalonMessage = createServerFn({ method: 'POST' }).middleware([r
   .handler(async ({ data, context }) => {
     const access = await context.supabase.rpc('manages_salon', { _salon: data.salonId });
     if (access.error || !access.data) throw new Error('Sem acesso às mensagens deste salão.');
-    const recipient = await context.supabase.rpc('salon_message_recipient_allowed', { _salon: data.salonId, _phone: data.phone, _appointment: data.appointmentId ?? null });
+    const recipient = await context.supabase.rpc('salon_message_recipient_allowed', { _salon: data.salonId, _phone: data.phone, ...(data.appointmentId ? { _appointment: data.appointmentId } : {}) });
     if (recipient.error || !recipient.data) throw new Error('Envie apenas para clientes, agendamentos ou conversas recebidas deste salão.');
     if (data.appointmentId) {
       const appointment = await context.supabase.from('appointments').select('id').eq('id', data.appointmentId).eq('salon_id', data.salonId).single();
