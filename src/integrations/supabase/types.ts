@@ -2766,6 +2766,10 @@ export type Database = {
         Args: { _month: string; _professional?: string; _salon: string }
         Returns: Json
       }
+      salon_message_recipient_allowed: {
+        Args: { _appointment?: string; _phone: string; _salon: string }
+        Returns: boolean
+      }
       salon_production_year: {
         Args: { _salon: string; _year: number }
         Returns: Json

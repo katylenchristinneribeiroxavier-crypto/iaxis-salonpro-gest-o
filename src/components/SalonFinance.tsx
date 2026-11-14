@@ -9,6 +9,7 @@ import { brasiliaDate, monthDays, FINANCE_CATEGORIES, type FinancialMonth } from
 import { PageTitle, Stat, inputCls } from './Shell';
 import { Button } from './ui/button';
 import { brl } from '@/lib/auth';
+import { csvCell } from '@/lib/csv-security';
 
 export function SalonFinance({ personal = false, closure = false }: { personal?: boolean; closure?: boolean }) {
   const { data: ctx } = useSuspenseQuery(salonContextOptions);
@@ -29,7 +30,7 @@ export function SalonFinance({ personal = false, closure = false }: { personal?:
   const rows = (d?.rows ?? []).filter(r => !professional || r.professional_id === professional);
   const exportRows = () => {
     if (!d) return;
-    const safe = (v: unknown) => `"${String(v ?? '').replaceAll('"', '""').replace(/^[=+@-]/, "'")}"`;
+    const safe = csvCell;
     const lines = [['Mês', month], ['Faturamento', d.revenue], ['Parte da equipe', d.commissions], ['Parte da dona antes das despesas', Number(d.revenue) - Number(d.commissions)], ['Despesas', d.expenses], ['Lucro de caixa', d.cash_profit], ['Resultado operacional', d.operating_profit], [], ['Data recebimento', 'Cliente', 'Profissional', 'Total', 'Comissão %', 'Comissão'], ...rows.map(r => [brasiliaDate(new Date(r.received_at)), r.client_name, r.professional, r.price, r.applied_commission_pct, r.commission_amount]), [], ['Categoria', 'Descrição', 'Valor'], ...d.expense_rows.map(e => [e.categoria, e.descricao, e.valor])];
     const url = URL.createObjectURL(new Blob(['\uFEFF' + lines.map(line => line.map(safe).join(';')).join('\n')], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a'); a.href = url; a.download = `resumo-${month}.csv`; a.click(); URL.revokeObjectURL(url);

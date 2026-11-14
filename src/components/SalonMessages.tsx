@@ -9,6 +9,7 @@ import { salonContextOptions } from '@/lib/salon-data';
 import { sendSalonMessage } from '@/lib/evolution.functions';
 import { recoverSalonMessages } from '@/lib/salon-messages.functions';
 import { evolutionPhone } from '@/lib/evolution';
+import { salonMessageSchema } from '@/lib/message-security';
 import { brl } from '@/lib/auth';
 import { Button } from './ui/button';
 import { PageTitle, inputCls } from './Shell';
@@ -51,7 +52,7 @@ export function SalonMessages() {
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); if (!ctx.salon || !phone || !draft.trim()) return;
     setBusy(true);
-    try { await send({ data: { salonId: ctx.salon.id, phone, body: draft, appointmentId: appointment || undefined } }); setDraft(''); toast.success('Mensagem aceita pela Evolution'); }
+    try { const validated = salonMessageSchema.parse({ salonId: ctx.salon.id, phone, body: draft, appointmentId: appointment || undefined }); await send({ data: validated }); setDraft(''); toast.success('Mensagem aceita pela Evolution'); }
     catch (err) { toast.error(err instanceof Error ? err.message : 'Falha no envio.'); }
     finally { setBusy(false); await qc.invalidateQueries({ queryKey: ['salon-messages'] }); }
   };

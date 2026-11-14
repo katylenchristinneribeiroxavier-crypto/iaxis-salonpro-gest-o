@@ -7,6 +7,8 @@ import { PageTitle, Stat, inputCls } from './Shell';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from './ui/dialog';
 import { brl } from '@/lib/auth';
+import { z } from 'zod';
+import { csvCell } from '@/lib/csv-security';
 
 type Mov = { id: string; salon_id: string | null; nome_salao: string; tipo: string; descricao: string; valor: number; valor_liquido: number; taxa: number; forma_pagamento: string; status: string; data_recebimento: string; mes_referencia: string };
 
@@ -49,19 +51,20 @@ export function MasterFinance() {
   const filtradas = rows.filter((r) => (!month || r.mes_referencia === month) && (!status || r.status === status));
 
   const exportar = () => {
-    const csv = ['Data;Salão;Tipo;Descrição;Valor;Líquido;Status', ...filtradas.map((r) => `${r.data_recebimento};${r.nome_salao.replaceAll(';', ',')};${TIPOS[r.tipo] ?? r.tipo};${r.descricao.replaceAll(';', ',')};${r.valor};${r.valor_liquido};${r.status}`)].join('\n');
+    const csv = [['Data', 'Salão', 'Tipo', 'Descrição', 'Valor', 'Líquido', 'Status'], ...filtradas.map((r) => [r.data_recebimento, r.nome_salao, TIPOS[r.tipo] ?? r.tipo, r.descricao, Number(r.valor), Number(r.valor_liquido), r.status])].map(row => row.map(csvCell).join(';')).join('\n');
     const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a'); link.href = url; link.download = 'meu-financeiro.csv'; link.click(); URL.revokeObjectURL(url);
   };
 
   const lancarDespesa = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    const v = Number(valor);
-    if (!desc.trim() || !Number.isFinite(v) || v <= 0) { toast.error('Informe descrição e valor maior que zero.'); return; }
+    const parsed = z.object({ description: z.string().trim().min(1).max(1000), amount: z.coerce.number().finite().positive() }).safeParse({ description: desc, amount: valor });
+    if (!parsed.success) { toast.error('Informe descrição de até 1000 caracteres e valor maior que zero.'); return; }
+    const v = parsed.data.amount;
     setBusy(true);
     const { data: u } = await supabase.auth.getUser();
     const r = await supabase.from('caixa_master_saas').insert({
-      tipo: 'saida_despesa_app', descricao: desc.trim(), valor: -v, valor_liquido: -v,
+      tipo: 'saida_despesa_app', descricao: parsed.data.description, valor: -v, valor_liquido: -v,
       status: 'recebido', criado_por: u.user?.id ?? null,
     });
     setBusy(false);
@@ -112,7 +115,7 @@ export function MasterFinance() {
         <DialogTitle>Lançar despesa minha</DialogTitle>
         <DialogDescription>Ex.: ferramentas, hospedagem, anúncios. O valor entra como saída no seu caixa.</DialogDescription>
         <form className="space-y-4" onSubmit={lancarDespesa}>
-          <label className="block text-sm">Descrição<input className={`${inputCls} mt-2`} required minLength={3} value={desc} onChange={(e) => setDesc(e.target.value)} /></label>
+          <label className="block text-sm">Descrição<input className={`${inputCls} mt-2`} required minLength={3} maxLength={1000} value={desc} onChange={(e) => setDesc(e.target.value)} /></label>
           <label className="block text-sm">Valor (R$)<input className={`${inputCls} mt-2`} type="number" min="0.01" step="0.01" required value={valor} onChange={(e) => setValor(e.target.value)} /></label>
           <Button type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Lançar despesa'}</Button>
         </form>
