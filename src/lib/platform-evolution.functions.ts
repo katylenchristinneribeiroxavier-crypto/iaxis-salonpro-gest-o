@@ -25,8 +25,10 @@ export const savePlatformEvolution = createServerFn({ method: 'POST' }).middlewa
     const callback = new URL(evolutionBaseUrl(data.callbackOrigin));
     if (callback.pathname !== '/') throw new Error('Informe somente o endereço público do app, sem caminho.');
     const { supabaseAdmin: db } = await import('@/integrations/supabase/client.server');
-    const current = await db.from('platform_evolution_settings').select('api_key').eq('id', true).maybeSingle();
+    const current = await db.from('platform_evolution_settings').select('api_key, api_url').eq('id', true).maybeSingle();
     if (current.error) throw new Error('Não foi possível consultar a configuração.');
+    // The stored key may only be reused against the same saved destination.
+    if (!data.token && current.data?.api_key && current.data.api_url !== url) throw new Error('Ao alterar o endereço, informe novamente a chave global.');
     const key = data.token || current.data?.api_key;
     if (!key) throw new Error('Informe a chave global da Evolution.');
     if (!process.env['EVOLUTION_WEBHOOK_SIGNING_KEY']) throw new Error('Segurança do recebimento não configurada.');
