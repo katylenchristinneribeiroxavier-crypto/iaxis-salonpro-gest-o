@@ -18,6 +18,7 @@ import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as LicencaExpiradaRouteImport } from './routes/licenca-expirada'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ReservaRouteImport } from './routes/reserva'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SuporteRouteImport } from './routes/suporte'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminMasterIaxis2026SecretoRouteImport } from './routes/_authenticated/admin-master-iaxis-2026-secreto'
@@ -120,6 +121,11 @@ const LoginRoute = LoginRouteImport.update({
 const ReservaRoute = ReservaRouteImport.update({
   id: '/reserva',
   path: '/reserva',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SuporteRoute = SuporteRouteImport.update({
@@ -463,6 +469,7 @@ export interface FileRoutesByFullPath {
   '/licenca-expirada': typeof LicencaExpiradaRoute
   '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -532,6 +539,7 @@ export interface FileRoutesByTo {
   '/licenca-expirada': typeof LicencaExpiradaRoute
   '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/suporte': typeof SuporteRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -601,6 +609,7 @@ export interface FileRoutesById {
   '/licenca-expirada': typeof LicencaExpiradaRoute
   '/login': typeof LoginRoute
   '/reserva': typeof ReservaRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/suporte': typeof SuporteRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/admin-master-iaxis-2026-secreto': typeof AuthenticatedAdminMasterIaxis2026SecretoRoute
@@ -672,6 +681,7 @@ export interface FileRouteTypes {
     | '/licenca-expirada'
     | '/login'
     | '/reserva'
+    | '/reset-password'
     | '/suporte'
     | '/admin'
     | '/admin-master-iaxis-2026-secreto'
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/licenca-expirada'
     | '/login'
     | '/reserva'
+    | '/reset-password'
     | '/suporte'
     | '/admin'
     | '/admin-master-iaxis-2026-secreto'
@@ -809,6 +820,7 @@ export interface FileRouteTypes {
     | '/licenca-expirada'
     | '/login'
     | '/reserva'
+    | '/reset-password'
     | '/suporte'
     | '/_authenticated/admin'
     | '/_authenticated/admin-master-iaxis-2026-secreto'
@@ -880,6 +892,7 @@ export interface RootRouteChildren {
   LicencaExpiradaRoute: typeof LicencaExpiradaRoute
   LoginRoute: typeof LoginRoute
   ReservaRoute: typeof ReservaRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SuporteRoute: typeof SuporteRoute
   ApiResellerAiLeadRoute: typeof ApiResellerAiLeadRoute
   ApiResellerAiPlanRoute: typeof ApiResellerAiPlanRoute
@@ -953,6 +966,13 @@ declare module '@tanstack/react-router' {
       path: '/reserva'
       fullPath: '/reserva'
       preLoaderRoute: typeof ReservaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/suporte': {
@@ -1531,6 +1551,7 @@ const rootRouteChildren: RootRouteChildren = {
   LicencaExpiradaRoute: LicencaExpiradaRoute,
   LoginRoute: LoginRoute,
   ReservaRoute: ReservaRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SuporteRoute: SuporteRoute,
   ApiResellerAiLeadRoute: ApiResellerAiLeadRoute,
   ApiResellerAiPlanRoute: ApiResellerAiPlanRoute,
