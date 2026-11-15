@@ -66,6 +66,14 @@ function Auth() {
     goHome();
   };
 
+  const forgot = async () => {
+    const email = f.email.trim().toLowerCase();
+    if (!/^\S+@\S+\.\S+$/.test(email)) return void toast.error("Digite seu e-mail acima primeiro");
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + "/reset-password" });
+    if (error) return void toast.error("Não foi possível enviar agora. Tente de novo em alguns minutos.");
+    toast.success("Se este e-mail tiver conta, enviamos um link para criar uma nova senha.");
+  };
+
   const google = async () => {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
     if (r.error) toast.error("Não foi possível entrar com Google");
@@ -100,6 +108,7 @@ function Auth() {
           {mode === "up" && <p className="text-xs text-muted-foreground">Mínimo 6 caracteres. É uma senha só deste app, não a do seu email.</p>}
           <Button disabled={busy} className="w-full" type="submit">{busy ? mode === "in" ? "Entrando…" : "Criando…" : mode === "in" ? "Entrar" : "Criar conta"}</Button>
         </form>
+        {mode === "in" && <Button type="button" variant="link" onClick={forgot} className="mt-1 w-full text-gold">Esqueci minha senha</Button>}
         <Button variant="outline" onClick={google} className="mt-3 w-full">Continuar com Google</Button>
         <Button variant="ghost" onClick={() => setMode(mode === "in" ? "up" : "in")} className="mt-4 w-full text-gold">
           {mode === "in" ? "Não tem conta? Cadastre-se" : "Já tenho conta"}
