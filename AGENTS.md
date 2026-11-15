@@ -39,3 +39,4 @@
 - Manual WhatsApp sends require a tenant-owned recipient or inbound conversation and a database-serialized salon send cap; authentication alone cannot authorize arbitrary destinations.
 - All spreadsheet exports use csvCell to neutralize formulas without changing numeric accounting values.
 - Public staff RPCs check salon_access_allowed before returning data or changing appointments, so suspension and license expiry revoke staff-link access.
+- Validate subscription amounts transactionally against the selected plan and billing cycle before insertion or confirmation; preserve only the protected internal test-purchase exception so mismatched payments cannot grant access.
