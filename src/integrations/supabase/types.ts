@@ -2592,6 +2592,10 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      claim_verified_purchase: {
+        Args: { _email: string; _meta: Json; _uid: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

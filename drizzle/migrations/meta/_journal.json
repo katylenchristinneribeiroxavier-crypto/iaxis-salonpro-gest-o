@@ -407,6 +407,13 @@
       "when": 1794616291588,
       "tag": "0057_security_staff_and_outbound_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1794707163597,
+      "tag": "0058_verified_email_purchase_claims",
+      "breakpoints": true
     }
   ]
 }
