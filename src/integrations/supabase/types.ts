@@ -2807,6 +2807,10 @@ export type Database = {
         Returns: Json
       }
       staff_portal: { Args: { _token: string }; Returns: Json }
+      subscription_amount_matches_plan: {
+        Args: { _amount: number; _billing: string; _plan: string }
+        Returns: boolean
+      }
       verificar_licenca: { Args: never; Returns: Json }
     }
     Enums: {
