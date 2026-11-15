@@ -414,6 +414,13 @@
       "when": 1794707163597,
       "tag": "0058_verified_email_purchase_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1794710303853,
+      "tag": "0059_subscription_exact_plan_amount",
+      "breakpoints": true
     }
   ]
 }
