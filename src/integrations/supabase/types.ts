@@ -2047,6 +2047,7 @@ export type Database = {
         Row: {
           aceitou_termos: boolean
           amount: number
+          asaas_payment_id: string | null
           billing: string
           confirmed_at: string | null
           created_at: string
@@ -2063,6 +2064,7 @@ export type Database = {
         Insert: {
           aceitou_termos?: boolean
           amount: number
+          asaas_payment_id?: string | null
           billing?: string
           confirmed_at?: string | null
           created_at?: string
@@ -2079,6 +2081,7 @@ export type Database = {
         Update: {
           aceitou_termos?: boolean
           amount?: number
+          asaas_payment_id?: string | null
           billing?: string
           confirmed_at?: string | null
           created_at?: string

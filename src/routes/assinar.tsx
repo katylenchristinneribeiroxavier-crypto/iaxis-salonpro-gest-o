@@ -8,6 +8,9 @@ import { brl } from "@/lib/auth";
 import { planCharge, type Ciclo } from "@/lib/plans";
 import { TermosELGPD } from '@/components/TermosELGPD';
 import { Button } from '@/components/ui/button';
+import { useEffect } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { createSubscriptionPix, subscriptionPixStatus } from "@/lib/asaas.functions";
 
 export const Route = createFileRoute("/assinar")({
   validateSearch: (s: Record<string, unknown>): { plano?: string | undefined; ciclo?: Ciclo | undefined } => ({
@@ -27,33 +30,42 @@ export const Route = createFileRoute("/assinar")({
 
 function Assinar() {
   const { plano, ciclo = "mensal" } = Route.useSearch();
-  const [f, setF] = useState({ name: "", email: "", phone: "" });
-  const [sent, setSent] = useState(false);
+  const [f, setF] = useState({ name: "", email: "", phone: "", cpfCnpj: "" });
   const [aceitou, setAceitou] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [pixGerado, setPixGerado] = useState<{ requestId: string; amount: number; qrImage: string; copiaECola: string } | null>(null);
+  const [pago, setPago] = useState(false);
+  const gerar = useServerFn(createSubscriptionPix);
+  const consultar = useServerFn(subscriptionPixStatus);
   const { data } = useQuery({
     queryKey: ["assinar"],
     queryFn: async () => {
-      const [p, s] = await Promise.all([
-        supabase.rpc("public_plans"),
-        supabase.rpc("public_pix_payment"),
-      ]);
-      return { plans: p.data ?? [], pix: s.data?.[0] ?? null };
+      const p = await supabase.rpc("public_plans");
+      return { plans: p.data ?? [] };
     },
   });
   const plan = data?.plans.find((p) => p.id === plano) ?? data?.plans[0];
   const valor = plan ? planCharge(plan, ciclo) : 0;
-  const pix = data?.pix;
+
+  useEffect(() => {
+    if (!pixGerado || pago) return;
+    const t = setInterval(async () => {
+      try { const r = await consultar({ data: { requestId: pixGerado.requestId } }); if (r.status === "confirmado") setPago(true); } catch { /* tenta de novo */ }
+    }, 6000);
+    return () => clearInterval(t);
+  }, [pixGerado, pago, consultar]);
 
   const enviar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!plan || !aceitou) { toast.error('Concorde com os termos para continuar.'); return; }
-    const { data: { user } } = await supabase.auth.getUser();
-    const { error } = await supabase.from("subscription_requests").insert({
-      user_id: user?.id ?? null, name: f.name, email: f.email, phone: f.phone,
-      plan_id: plan.id, billing: ciclo, amount: valor, aceitou_termos: aceitou,
-    });
-    if (error) { toast.error(error.message); return; }
-    setSent(true);
+    setBusy(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const r = await gerar({ data: { planId: plan.id, ciclo, name: f.name, email: f.email, phone: f.phone, cpfCnpj: f.cpfCnpj, aceitou: true, userId: user?.id ?? null } });
+      setPixGerado(r);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Não foi possível gerar o Pix.");
+    } finally { setBusy(false); }
   };
 
   return (
@@ -78,35 +90,30 @@ function Assinar() {
           </div>
         )}
 
-        <div className="mt-4 rounded-2xl border border-primary bg-card p-6 shadow-gold">
-          <h2 className="text-2xl">Dados para o PIX</h2>
-          {pix?.pix_key ? (
-            <dl className="mt-3 space-y-2 text-sm">
-              <div><dt className="text-muted-foreground">Chave PIX</dt><dd className="flex items-center gap-2"><code className="text-gold">{pix.pix_key}</code>
-                <button className="text-xs text-gold underline" onClick={() => { navigator.clipboard?.writeText(pix.pix_key); toast.success("Chave copiada"); }}>copiar</button></dd></div>
-              {pix.pix_holder && <div><dt className="text-muted-foreground">Favorecido</dt><dd>{pix.pix_holder}</dd></div>}
-              {pix.pix_cnpj && <div><dt className="text-muted-foreground">CNPJ/CPF</dt><dd>{pix.pix_cnpj}</dd></div>}
-              {pix.pix_bank && <div><dt className="text-muted-foreground">Banco</dt><dd>{pix.pix_bank}</dd></div>}
-            </dl>
-          ) : (
-            <p className="mt-3 text-sm text-muted-foreground">Os dados do PIX ainda não foram cadastrados pela empresa.</p>
-          )}
-        </div>
-
-        {sent ? (
-          <div className="mt-4 rounded-2xl border bg-card p-6 text-center">
-            <h3 className="text-2xl">Pedido registrado ✦</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Após o PIX ser confirmado, seu acesso é liberado. Crie sua conta de salão se ainda não tiver.</p>
-            <Link to="/auth" search={{ role: "dono_salao" }} className={`${btnGold} mt-4 inline-block`}>Criar conta do salão</Link>
+        {pago ? (
+          <div className="mt-4 rounded-2xl border border-primary bg-card p-6 text-center shadow-gold">
+            <h3 className="text-2xl">Pagamento confirmado ✦</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Seu acesso foi liberado. Entre ou crie sua conta com o mesmo e-mail.</p>
+            <Link to="/auth" search={{ role: "dono_salao" }} className={`${btnGold} mt-4 inline-block`}>Entrar no salão</Link>
+          </div>
+        ) : pixGerado ? (
+          <div className="mt-4 rounded-2xl border border-primary bg-card p-6 text-center shadow-gold">
+            <h2 className="text-2xl">Pague {brl(pixGerado.amount)} com Pix</h2>
+            <img src={`data:image/png;base64,${pixGerado.qrImage}`} alt="QR Code Pix" className="mx-auto mt-4 h-56 w-56 rounded-lg bg-card" />
+            <p className="mt-4 text-sm text-muted-foreground">Ou copie o código Pix copia e cola:</p>
+            <code className="mt-2 block break-all rounded-md border p-2 text-xs">{pixGerado.copiaECola}</code>
+            <Button type="button" className="mt-3" onClick={() => { navigator.clipboard?.writeText(pixGerado.copiaECola); toast.success("Código copiado"); }}>Copiar código</Button>
+            <p className="mt-4 text-sm text-muted-foreground">Aguardando confirmação do pagamento… esta tela atualiza sozinha.</p>
           </div>
         ) : (
           <form onSubmit={enviar} className="mt-4 space-y-3 rounded-2xl border bg-card p-6">
-            <p className="text-sm text-muted-foreground">Depois de pagar, informe seus dados para liberarmos o acesso:</p>
-            <input required placeholder="Nome / Salão" className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
-            <input required type="email" placeholder="E-mail" className={inputCls} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
-            <input placeholder="WhatsApp" className={inputCls} value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
+            <p className="text-sm text-muted-foreground">Informe seus dados para gerar o Pix:</p>
+            <input required maxLength={120} placeholder="Nome / Salão" className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+            <input required maxLength={200} type="email" placeholder="E-mail" className={inputCls} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
+            <input required maxLength={18} placeholder="CPF ou CNPJ" className={inputCls} value={f.cpfCnpj} onChange={(e) => setF({ ...f, cpfCnpj: e.target.value })} />
+            <input maxLength={30} placeholder="WhatsApp" className={inputCls} value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
             <TermosELGPD checked={aceitou} onChange={setAceitou} />
-            <Button type="submit" disabled={!aceitou} className="w-full">Já paguei o PIX</Button>
+            <Button type="submit" disabled={!aceitou || busy} className="w-full">{busy ? "Gerando Pix…" : "Gerar Pix"}</Button>
           </form>
         )}
       </div>

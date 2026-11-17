@@ -428,6 +428,13 @@
       "when": 1794920090622,
       "tag": "0060_close_master_signup_and_booked_slots",
       "breakpoints": true
+    },
+    {
+      "idx": 61,
+      "version": "7",
+      "when": 1794930629937,
+      "tag": "0061_asaas_pix_subscription",
+      "breakpoints": true
     }
   ]
 }

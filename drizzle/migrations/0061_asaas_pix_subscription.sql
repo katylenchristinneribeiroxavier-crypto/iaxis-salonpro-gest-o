@@ -1,0 +1,2 @@
+ALTER TABLE public.subscription_requests ADD COLUMN IF NOT EXISTS asaas_payment_id text;
+CREATE UNIQUE INDEX IF NOT EXISTS subscription_requests_asaas_payment_uidx ON public.subscription_requests(asaas_payment_id) WHERE asaas_payment_id IS NOT NULL;

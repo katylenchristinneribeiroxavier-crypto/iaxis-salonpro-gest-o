@@ -76,6 +76,7 @@ import { Route as AuthenticatedConfiguracoesWhatsappRouteImport } from './routes
 import { Route as AuthenticatedRevendedorCodigosRouteImport } from './routes/_authenticated/revendedor.codigos'
 import { Route as AuthenticatedSalaoIndexRouteImport } from './routes/_authenticated/salao.index'
 import { Route as AuthenticatedSalaoPastaRouteImport } from './routes/_authenticated/salao.$pasta'
+import { Route as ApiPublicAsaasWebhookRouteImport } from './routes/api/public/asaas-webhook'
 import { Route as ApiPublicEvolutionSalonIdRouteImport } from './routes/api/public/evolution/$salonId'
 import { Route as ApiPublicJobsSalonRemindersRouteImport } from './routes/api/public/jobs/salon-reminders'
 
@@ -447,6 +448,11 @@ const AuthenticatedSalaoPastaRoute = AuthenticatedSalaoPastaRouteImport.update({
   path: '/$pasta',
   getParentRoute: () => AuthenticatedSalaoRoute,
 } as any)
+const ApiPublicAsaasWebhookRoute = ApiPublicAsaasWebhookRouteImport.update({
+  id: '/api/public/asaas-webhook',
+  path: '/api/public/asaas-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicEvolutionSalonIdRoute =
   ApiPublicEvolutionSalonIdRouteImport.update({
     id: '/api/public/evolution/$salonId',
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao/': typeof AuthenticatedSalaoIndexRoute
@@ -592,6 +599,7 @@ export interface FileRoutesByTo {
   '/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesIndexRoute
   '/salao': typeof AuthenticatedSalaoIndexRoute
@@ -664,6 +672,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/whatsapp': typeof AuthenticatedConfiguracoesWhatsappRoute
   '/_authenticated/revendedor/codigos': typeof AuthenticatedRevendedorCodigosRoute
   '/_authenticated/salao/$pasta': typeof AuthenticatedSalaoPastaRoute
+  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/configuracoes/': typeof AuthenticatedConfiguracoesIndexRoute
   '/_authenticated/salao/': typeof AuthenticatedSalaoIndexRoute
@@ -736,6 +745,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/api/public/asaas-webhook'
     | '/app/'
     | '/configuracoes/'
     | '/salao/'
@@ -804,6 +814,7 @@ export interface FileRouteTypes {
     | '/configuracoes/whatsapp'
     | '/revendedor/codigos'
     | '/salao/$pasta'
+    | '/api/public/asaas-webhook'
     | '/app'
     | '/configuracoes'
     | '/salao'
@@ -875,6 +886,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/whatsapp'
     | '/_authenticated/revendedor/codigos'
     | '/_authenticated/salao/$pasta'
+    | '/api/public/asaas-webhook'
     | '/_authenticated/app/'
     | '/_authenticated/configuracoes/'
     | '/_authenticated/salao/'
@@ -899,6 +911,7 @@ export interface RootRouteChildren {
   ApiSalonReceiptRoute: typeof ApiSalonReceiptRoute
   FTokenRoute: typeof FTokenRoute
   RCodeRoute: typeof RCodeRoute
+  ApiPublicAsaasWebhookRoute: typeof ApiPublicAsaasWebhookRoute
   ApiPublicEvolutionSalonIdRoute: typeof ApiPublicEvolutionSalonIdRoute
   ApiPublicJobsSalonRemindersRoute: typeof ApiPublicJobsSalonRemindersRoute
 }
@@ -1374,6 +1387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalaoPastaRouteImport
       parentRoute: typeof AuthenticatedSalaoRoute
     }
+    '/api/public/asaas-webhook': {
+      id: '/api/public/asaas-webhook'
+      path: '/api/public/asaas-webhook'
+      fullPath: '/api/public/asaas-webhook'
+      preLoaderRoute: typeof ApiPublicAsaasWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/evolution/$salonId': {
       id: '/api/public/evolution/$salonId'
       path: '/api/public/evolution/$salonId'
@@ -1558,6 +1578,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSalonReceiptRoute: ApiSalonReceiptRoute,
   FTokenRoute: FTokenRoute,
   RCodeRoute: RCodeRoute,
+  ApiPublicAsaasWebhookRoute: ApiPublicAsaasWebhookRoute,
   ApiPublicEvolutionSalonIdRoute: ApiPublicEvolutionSalonIdRoute,
   ApiPublicJobsSalonRemindersRoute: ApiPublicJobsSalonRemindersRoute,
 }

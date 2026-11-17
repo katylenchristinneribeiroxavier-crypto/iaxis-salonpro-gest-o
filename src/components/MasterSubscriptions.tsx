@@ -5,6 +5,26 @@ import { supabase } from '@/integrations/supabase/client';
 import { accessOpen } from '@/lib/salon-access';
 import { PageTitle, Stat, StatusBadge, inputCls } from './Shell';
 import { brl } from '@/lib/auth';
+import { useServerFn } from '@tanstack/react-start';
+import { testAsaasConnection } from '@/lib/asaas.functions';
+
+function AsaasStatus() {
+  const testar = useServerFn(testAsaasConnection);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const run = async () => {
+    setBusy(true);
+    try { const r = await testar(); setMsg(`${r.connected ? '✅' : '❌'} ${r.message}${r.connected && !r.hasWebhook ? ' Falta o código do aviso automático.' : ''}`); }
+    catch (e) { setMsg(e instanceof Error ? e.message : 'Falha'); } finally { setBusy(false); }
+  };
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border bg-card p-4 text-sm">
+      <span className="font-medium">Pix Asaas (produção)</span>
+      <button onClick={run} disabled={busy} className="rounded-md border px-3 py-1 text-gold">{busy ? 'Testando…' : 'Testar conexão'}</button>
+      {msg && <span>{msg}</span>}
+    </div>
+  );
+}
 
 export function MasterSubscriptions() {
   const [search, setSearch] = useState('');
@@ -51,6 +71,7 @@ export function MasterSubscriptions() {
 
   return <>
     <PageTitle title="Assinaturas por salão" sub="O que cada cliente paga e o status de cada plano" />
+    <AsaasStatus />
     {error && <p role="alert">Não foi possível consultar as assinaturas.</p>}
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <Stat label="Receita mensal prevista" value={brl(mrr)} />
