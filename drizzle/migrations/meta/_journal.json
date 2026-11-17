@@ -421,6 +421,13 @@
       "when": 1794710303853,
       "tag": "0059_subscription_exact_plan_amount",
       "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "7",
+      "when": 1794920090622,
+      "tag": "0060_close_master_signup_and_booked_slots",
+      "breakpoints": true
     }
   ]
 }
