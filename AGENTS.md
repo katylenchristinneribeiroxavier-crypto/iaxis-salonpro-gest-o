@@ -40,3 +40,4 @@
 - All spreadsheet exports use csvCell to neutralize formulas without changing numeric accounting values.
 - Public staff RPCs check salon_access_allowed before returning data or changing appointments, so suspension and license expiry revoke staff-link access.
 - Validate subscription amounts transactionally against the selected plan and billing cycle before insertion or confirmation; preserve only the protected internal test-purchase exception so mismatched payments cannot grant access.
+- Asaas Pix subscriptions use production only: server functions price from plans, the public webhook checks a shared header token and re-reads the payment from Asaas before confirming exact amounts.
