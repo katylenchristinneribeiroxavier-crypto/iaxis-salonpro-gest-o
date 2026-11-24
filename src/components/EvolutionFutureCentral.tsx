@@ -7,15 +7,15 @@ import { Button } from '@/components/ui/button';
 
 export function EvolutionFutureCentral() {
   const qc = useQueryClient();
-  const config = useQuery({ queryKey: ['evolution-global'], queryFn: async () => { const r = await supabase.from('evolution_config_global').select('*').order('criado_em').limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
+  const config = useQuery({ queryKey: ['evolution-global'], queryFn: async () => { const r = await supabase.from('evolution_config_global').select('id, evolution_url, ativo, criado_em').order('criado_em').limit(1).maybeSingle(); if (r.error) throw r.error; return r.data; } });
   const salons = useQuery({ queryKey: ['evolution-salons'], queryFn: async () => { const r = await supabase.from('salons').select('id, name, evolution_instance_name, evolution_conectado').order('created_at'); if (r.error) throw r.error; return r.data; } });
   const [url, setUrl] = useState('');
   const [key, setKey] = useState('');
-  useEffect(() => { if (config.data) { setUrl(config.data.evolution_url); setKey(config.data.evolution_api_key_global); } }, [config.data]);
+  useEffect(() => { if (config.data) { setUrl(config.data.evolution_url); setKey(''); } }, [config.data]);
 
   async function salvar() {
     const r = config.data
-      ? await supabase.from('evolution_config_global').update({ evolution_url: url.trim(), evolution_api_key_global: key.trim() }).eq('id', config.data.id)
+      ? await supabase.from('evolution_config_global').update(key.trim() ? { evolution_url: url.trim(), evolution_api_key_global: key.trim() } : { evolution_url: url.trim() }).eq('id', config.data.id)
       : await supabase.from('evolution_config_global').insert({ evolution_url: url.trim(), evolution_api_key_global: key.trim() });
     if (r.error) toast.error('Não foi possível salvar.'); else { toast.success('Configuração salva (modo simulação)'); qc.invalidateQueries({ queryKey: ['evolution-global'] }); }
   }

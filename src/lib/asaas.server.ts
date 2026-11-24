@@ -28,8 +28,8 @@ export async function confirmFromAsaas(paymentId: string) {
   const p = await asaasFetch<{ id: string; status: string; value: number; externalReference?: string }>(`/payments/${encodeURIComponent(paymentId)}`);
   if (!['RECEIVED', 'CONFIRMED', 'RECEIVED_IN_CASH'].includes(p.status)) return 'pendente';
   const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
-  const { data: req } = await supabaseAdmin.from('subscription_requests').select('id, amount, status, asaas_payment_id').eq('asaas_payment_id', p.id).maybeSingle();
-  if (!req || req.id !== p.externalReference) return 'desconhecido';
+  const { data: req } = await supabaseAdmin.from('subscription_requests').select('id, amount, status, asaas_payment_id, user_id').eq('asaas_payment_id', p.id).maybeSingle();
+  if (!req || req.id !== p.externalReference || !req.user_id) return 'desconhecido';
   if (req.status === 'confirmado') return 'confirmado';
   if (Math.round(Number(req.amount) * 100) !== Math.round(Number(p.value) * 100)) {
     console.error(`Asaas amount mismatch for ${req.id}`);

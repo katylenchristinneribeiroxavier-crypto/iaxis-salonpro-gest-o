@@ -9,6 +9,6 @@ export async function enviarMensagemFuturaCom(config: EvolutionGlobalConfig | nu
     return { modo: 'simulado', ok: true };
   }
   const url = `${config.evolution_url.replace(/\/+$/, '')}/message/sendText/${encodeURIComponent(msg.instancia)}`;
-  const res = await fetcher(url, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: config.evolution_api_key_global }, body: JSON.stringify({ number: msg.numero.replace(/\D/g, ''), text: msg.mensagem }) });
+  const res = await fetcher(url, { method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json', apikey: config.evolution_api_key_global }, body: JSON.stringify({ number: msg.numero.replace(/\D/g, ''), text: msg.mensagem }) });
   return res.ok ? { modo: 'real', ok: true } : { modo: 'real', ok: false, erro: `Evolution respondeu ${res.status}` };
 }

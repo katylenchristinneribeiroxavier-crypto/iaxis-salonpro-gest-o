@@ -12,18 +12,25 @@ const pixInput = z.object({
   phone: z.string().trim().max(30).optional().default(''),
   cpfCnpj: z.string().transform((v) => v.replace(/\D/g, '')).refine((v) => v.length === 11 || v.length === 14, 'CPF ou CNPJ inválido'),
   aceitou: z.literal(true),
-  userId: z.string().uuid().nullable().optional(),
+  userId: z.string().uuid().nullable().optional(), // ignored: owner comes from the signed-in session
 });
 
 export const createSubscriptionPix = createServerFn({ method: 'POST' })
   .inputValidator((d) => pixInput.parse(d))
   .handler(async ({ data }) => {
+    const { getRequestHeader } = await import('@tanstack/react-start/server');
+    const token = (getRequestHeader('authorization') ?? '').replace(/^Bearer\s+/i, '');
+    if (!token) throw new Error('Entre na sua conta para comprar o plano.');
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+    const { data: auth } = await supabaseAdmin.auth.getUser(token);
+    const buyer = auth.user;
+    if (!buyer?.email || !buyer.email_confirmed_at) throw new Error('Confirme o e-mail da sua conta antes de comprar.');
+    if (buyer.email.toLowerCase() !== data.email) throw new Error('Use o mesmo e-mail da conta logada.');
     const { data: plan, error: pe } = await supabaseAdmin.from('plans').select('id, name, price, annual_monthly_price').eq('id', data.planId).single();
     if (pe || !plan) throw new Error('Plano não encontrado');
     const amount = planCharge(plan, data.ciclo); // price always comes from the plan, never from the browser
     const { data: req, error } = await supabaseAdmin.from('subscription_requests').insert({
-      user_id: data.userId ?? null, name: data.name, email: data.email, phone: data.phone,
+      user_id: buyer.id, name: data.name, email: data.email, phone: data.phone,
       plan_id: plan.id, billing: data.ciclo, amount, aceitou_termos: true,
     }).select('id').single();
     if (error || !req) throw new Error('Não foi possível registrar o pedido');
